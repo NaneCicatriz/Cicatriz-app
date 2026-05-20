@@ -505,13 +505,13 @@ Recomendaciones concretas por trimestre para 2026.
 
 Lenguaje poético pero concreto. Máximo 220 palabras por sección.`;
 
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})
-      });
-      const data = await res.json();
-      const text = data.content?.[0]?.text || "";
+      const res = await fetch("/api/lectura-cosmica", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ prompt }),
+});
+const data = await res.json();
+const text = data.lectura || "";
       const fm = text.match(/===LECTURA_GRATUITA===([\s\S]*?)===FIN_GRATUITA===/);
       const lm = text.match(/===LECTURA_COMPLETA===([\s\S]*?)===FIN_COMPLETA===/);
       setReport({free: fm?fm[1].trim():text.slice(0,text.length/2), locked: lm?lm[1].trim():text.slice(text.length/2)});
