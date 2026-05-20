@@ -543,7 +543,7 @@ Lenguaje poético pero concreto. Máximo 220 palabras por sección.`;
 
             <div className="home-tools z1" style={{padding:"24px 20px 0"}}>
               {[
-                {icon:"🌌",tag:"Lectura Esotérica · IA",title:"Tu Año Cósmico 2026",desc:"Carta natal · Numerología · I Ching · Lenormand · Cábala",go:()=>setTab("cosmico")},
+                {icon:"🌌",tag:"Lectura Esotérica · IA",title:"Tu año Cósmico",desc:"Carta natal · Numerología · I Ching · Lenormand · Cábala",go:()=>setTab("cosmico")},
                 {icon:"🌸",tag:"Oráculo · Ritual Diario",title:"Oráculo Kintsugi",desc:"52 cartas · Una por día · Ritual de presencia",go:()=>{setTab("oraculo");setOrPhase("home");}},
                 {icon:"🌿",tag:"Programa · 21 Días",title:"Bajar el Ruido",desc:"5 minutos al día para recuperar tu centro",go:()=>{setTab("programa");setProgView("home");}},
               ].map((t,i) => (
