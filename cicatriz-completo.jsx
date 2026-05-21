@@ -667,7 +667,7 @@ const text = data.lectura || "";
                     );
                   })}
 
-                  {lockedSections.length > 0 && (
+                  {false && (
                     <>
                       <div style={{fontSize:10,fontWeight:700,letterSpacing:4,color:"rgba(180,140,60,.5)",textTransform:"uppercase",margin:"18px 0 10px",display:"flex",alignItems:"center",gap:7}}>
                         <span style={{width:7,height:7,borderRadius:"50%",background:"#c07820",display:"inline-block"}}/>
