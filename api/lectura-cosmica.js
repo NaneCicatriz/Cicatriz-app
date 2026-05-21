@@ -35,7 +35,7 @@ export default async function handler(req, res) {
       response.on('end', () => {
         const parsed = JSON.parse(data);
         const texto = parsed.content?.[0]?.text ?? '';
-        res.status(200).json({ lectura: texto });
+        res.status(200).json({ lectura: texto, debug: parsed });
         resolve();
       });
     });
