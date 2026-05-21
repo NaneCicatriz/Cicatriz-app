@@ -1,5 +1,3 @@
-import https from 'https';
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
@@ -7,45 +5,29 @@ export default async function handler(req, res) {
 
   const { prompt } = req.body;
   if (!prompt) {
-    return res.status(400).json({ error: 'Falta el prompt' });
+    return res.status(400).json({ error: 'Sin prompt', body: req.body });
   }
 
-  const postData = JSON.stringify({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 1500,
-    messages: [{ role: 'user', content: prompt }],
-  });
-
-  return new Promise((resolve) => {
-    const options = {
-      hostname: 'api.anthropic.com',
-      path: '/v1/messages',
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': process.env.ANTHROPIC_API_KEY,
         'anthropic-version': '2023-06-01',
-        'Content-Length': Buffer.byteLength(postData),
       },
-    };
-
-    const request = https.request(options, (response) => {
-      let data = '';
-      response.on('data', (chunk) => { data += chunk; });
-      response.on('end', () => {
-        const parsed = JSON.parse(data);
-        const texto = parsed.content?.[0]?.text ?? '';
-        res.status(200).json({ lectura: texto, debug: parsed });
-        resolve();
-      });
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1500,
+        messages: [{ role: 'user', content: prompt }],
+      }),
     });
 
-    request.on('error', (error) => {
-      res.status(500).json({ error: error.message });
-      resolve();
-    });
+    const data = await response.json();
+    const texto = data.content?.[0]?.text ?? '';
+    return res.status(200).json({ lectura: texto, httpStatus: response.status, debug: data });
 
-    request.write(postData);
-    request.end();
-  });
+  } catch (error) {
+    return res.status(200).json({ lectura: '', error: error.message });
+  }
 }
