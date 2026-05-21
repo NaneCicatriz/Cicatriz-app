@@ -573,12 +573,12 @@ const text = data.lectura || "";
             <div className="header">
               <button className="hbk" onClick={()=>setTab("home")}>‹</button>
               <div className="htitle">Tu Año Cósmico</div>
-              <div className="hsub">2026</div>
+              <div className="hsub"></div>
             </div>
 
             <div className="cy-hero">
               <span className="cy-glyph">🌌</span>
-              <div className="cy-title">Año Cósmico 2026</div>
+              <div className="cy-title">Año Cósmico </div>
               <div className="cy-sub">Lectura esotérica integrada · IA</div>
               <p className="cy-desc">Carta natal, numerología, I Ching, Lenormand y Cábala — sintetizados en tu informe personalizado.</p>
               <div className="free-badge">✦ Vista previa gratuita</div>
