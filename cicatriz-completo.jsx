@@ -703,8 +703,9 @@ const text = data.lectura || "";
                       </div>
                     </>
                   )}
-
-                  <button className="restart-btn" onClick={()=>{setCyScreen("form");setReport({free:"",locked:""});setCyForm({nombre:"",fecha:"",hora:"",ciudad:""});}}>
+<button className="restart-btn" style={{background:"linear-gradient(135deg,#2d7a4a,#3a9a5c)",marginBottom:8}} onClick={()=>window.print()}>
+  ✦ Descargar mi lectura en PDF
+</button>
                     ↩ Nueva lectura para otra persona
                   </button>
                   <div className="powered">Cicatriz · IA · by Nanette Vezanka</div>
