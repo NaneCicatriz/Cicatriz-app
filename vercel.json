@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/lectura-cosmica.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}
