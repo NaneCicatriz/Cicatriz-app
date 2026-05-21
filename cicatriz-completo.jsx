@@ -514,7 +514,7 @@ const data = await res.json();
 const text = data.lectura || "";
       const fm = text.match(/===LECTURA_GRATUITA===([\s\S]*?)===FIN_GRATUITA===/);
       const lm = text.match(/===LECTURA_COMPLETA===([\s\S]*?)===FIN_COMPLETA===/);
-      setReport({free: fm?fm[1].trim():text.slice(0,text.length/2), locked: lm?lm[1].trim():text.slice(text.length/2)});
+      setReport({free: (fm?fm[1].trim():'') + '\n' + (lm?lm[1].trim():''), locked: ''});
     } catch {
       setReport({free:"**Error de conexión.** Por favor intenta nuevamente.",locked:""});
     }
