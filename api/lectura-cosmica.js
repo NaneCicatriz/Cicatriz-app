@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
   }
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ lectura: texto });
 
   } catch (error) {
-    console.error('Error en lectura-cosmica:', error);
-    return res.status(500).json({ error: 'Error interno del servidor' });
+    console.error('Error:', error);
+    return res.status(500).json({ error: 'Error interno' });
   }
-}
+};
