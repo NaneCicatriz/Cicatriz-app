@@ -19,34 +19,41 @@ const sbFetch = async (path, options = {}) => {
   return text ? JSON.parse(text) : null;
 };
 
-const validarCodigo = async (codigo) => {
+const validarCodigo = async (codigo, producto) => {
   const data = await sbFetch(`CODIGOS?codigo=eq.${encodeURIComponent(codigo)}&usado=eq.false&select=*`);
   if (!data || data.length === 0) return null;
-  return data[0];
+  const row = data[0];
+  if (row.producto !== "all" && row.producto !== producto) return null;
+  return row;
 };
 
-const buscarLectura = async (nombre, fecha) => {
-  const nombreBase = nombre.trim().toLowerCase();
-  const data = await sbFetch(`lecturas?nombre=eq.${encodeURIComponent(nombreBase)}&fecha_nacimiento=eq.${encodeURIComponent(fecha)}&select=informe`);
+const buscarLectura = async (tabla, nombre, fecha) => {
+  const data = await sbFetch(`${tabla}?nombre=eq.${encodeURIComponent(nombre.trim().toLowerCase())}&fecha_nacimiento=eq.${encodeURIComponent(fecha)}&select=informe`);
   if (!data || data.length === 0) return null;
   return data[0].informe;
 };
 
-const guardarLectura = async (nombre, fecha, ciudad, informe) => {
-  await sbFetch(`lecturas`, {
+const guardarLectura = async (tabla, nombre, fecha, ciudad, informe) => {
+  await sbFetch(tabla, {
     method: "POST",
     prefer: "return=minimal",
-    body: JSON.stringify({
-      nombre: nombre.trim().toLowerCase(),
-      fecha_nacimiento: fecha,
-      ciudad,
-      informe,
-    }),
+    body: JSON.stringify({ nombre: nombre.trim().toLowerCase(), fecha_nacimiento: fecha, ciudad, informe }),
   });
 };
 
 const FONTS = `@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,400;1,9..144,700&family=DM+Sans:wght@300;400;500;600&display=swap');`;
 
+// ─── LINKS DE PAGO ───────────────────────────────────────────
+const LINKS = {
+  cosmico:  "https://mpago.la/1PnezC6",   // actualizar cuando tengas links nuevos
+  cosmica:  "https://mpago.la/PENDIENTE",
+  oraculo:  "https://mpago.la/PENDIENTE",
+  programa: "https://mpago.la/1aYsaBZ",
+  combo:    "https://mpago.la/PENDIENTE",
+  upgrade:  "https://mpago.la/PENDIENTE",
+};
+
+// ─── ORACLE DATA ─────────────────────────────────────────────
 const CATS = [
   { id:1, name:"Reconociendo el Dolor", color:"#e89090", bg:"linear-gradient(145deg,#2a0e0e,#1a0808)", border:"rgba(220,100,100,0.25)", emoji:"💔",
     cards:[
@@ -149,24 +156,16 @@ const S = `
 ${FONTS}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#08060e;
-  --surface:#110f1a;
-  --gold:#c8900a;
-  --gold-l:#e8c060;
-  --text:#e8e0d0;
-  --muted:#7a6a50;
-  --border:rgba(200,150,40,0.12);
-  --green:#5a9a6a;
-  --purple:#9a50c0;
+  --bg:#08060e;--surface:#110f1a;--gold:#c8900a;--gold-l:#e8c060;--text:#e8e0d0;--muted:#7a6a50;--border:rgba(200,150,40,0.12);
 }
 body{background:var(--bg);}
 .app{background:var(--bg);min-height:100vh;font-family:'DM Sans',sans-serif;color:var(--text);max-width:480px;margin:0 auto;position:relative;overflow-x:hidden;}
 .app::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(180,120,20,0.07) 0%,transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(100,50,180,0.06) 0%,transparent 50%);pointer-events:none;z-index:0;}
 .z1{position:relative;z-index:1;}
-.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(8,5,14,0.97);border-top:1px solid var(--border);display:flex;padding:10px 0 16px;z-index:100;backdrop-filter:blur(12px);}
-.bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:all 0.2s;}
-.bni-icon{font-size:22px;line-height:1;}
-.bni-label{font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(8,5,14,0.97);border-top:1px solid var(--border);display:flex;padding:8px 0 14px;z-index:100;backdrop-filter:blur(12px);}
+.bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;transition:all 0.2s;}
+.bni-icon{font-size:20px;line-height:1;}
+.bni-label{font-size:8px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
 .bni.on .bni-label{color:var(--gold-l);}
 .bni.on .bni-icon{filter:drop-shadow(0 0 6px rgba(200,160,40,0.5));}
 .bni:not(.on) .bni-label{color:rgba(140,110,40,0.3);}
@@ -175,10 +174,9 @@ body{background:var(--bg);}
 .hbk{background:transparent;border:none;color:rgba(200,160,40,0.5);font-size:22px;cursor:pointer;line-height:1;padding:0;}
 .htitle{font-family:'Fraunces',serif;font-size:18px;color:var(--gold-l);flex:1;}
 .hsub{font-size:10px;color:rgba(160,130,50,0.4);letter-spacing:2px;}
-.pb80{padding-bottom:80px;}
+.pb80{padding-bottom:90px;}
 .sec-label{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;opacity:.8;display:flex;align-items:center;gap:10px;}
 .sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:12px;}
 .hl{background:rgba(180,140,20,0.07);border:1px solid rgba(180,140,20,0.18);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:16px 18px;margin:14px 0;}
 .hl p{font-size:14px;line-height:1.72;color:rgba(200,170,100,.7);}
 .field{margin-bottom:16px;}
@@ -188,49 +186,60 @@ body{background:var(--bg);}
 .finput:focus{border-color:rgba(200,160,40,.4);}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .btn-primary{background:linear-gradient(135deg,#7a5010,#c07820);color:#f5e8c0;border:none;border-radius:12px;padding:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;width:100%;transition:all .2s;box-shadow:0 4px 20px rgba(180,100,20,.2);}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(180,100,20,.3);}
+.btn-primary:hover{transform:translateY(-1px);}
 .btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;}
 
-/* GATE — pantalla de código de acceso */
-.gate-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;background:radial-gradient(ellipse at 50% 30%,rgba(140,80,200,.12) 0%,transparent 65%);}
+/* ── GATE ── */
+.gate-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;}
 .gate-glyph{font-size:56px;margin-bottom:20px;display:block;}
-.gate-title{font-family:'Fraunces',serif;font-size:28px;color:var(--gold-l);margin-bottom:8px;}
-.gate-sub{font-size:14px;color:rgba(200,170,100,.5);font-style:italic;margin-bottom:32px;line-height:1.6;}
-.gate-input{width:100%;max-width:300px;background:rgba(180,140,30,.06);border:1px solid rgba(180,140,30,.25);border-radius:12px;padding:16px;font-family:'DM Sans',sans-serif;font-size:16px;color:var(--text);outline:none;text-align:center;letter-spacing:2px;margin-bottom:14px;}
+.gate-title{font-family:'Fraunces',serif;font-size:26px;color:var(--gold-l);margin-bottom:8px;}
+.gate-price{font-family:'Fraunces',serif;font-size:20px;color:rgba(200,160,60,.6);margin-bottom:6px;}
+.gate-sub{font-size:13px;color:rgba(200,170,100,.4);font-style:italic;margin-bottom:28px;line-height:1.6;}
+.gate-input{width:100%;max-width:300px;background:rgba(180,140,30,.06);border:1px solid rgba(180,140,30,.25);border-radius:12px;padding:16px;font-family:'DM Sans',sans-serif;font-size:16px;color:var(--text);outline:none;text-align:center;letter-spacing:2px;margin-bottom:12px;}
 .gate-input::placeholder{color:rgba(180,140,60,.25);letter-spacing:0;}
 .gate-input:focus{border-color:rgba(200,160,40,.5);}
-.gate-btn{background:linear-gradient(135deg,#7a5010,#c07820);color:#f5e8c0;border:none;border-radius:12px;padding:15px 32px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;}
+.gate-btn{background:linear-gradient(135deg,#7a5010,#c07820);color:#f5e8c0;border:none;border-radius:12px;padding:14px 32px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;margin-bottom:16px;}
 .gate-btn:disabled{opacity:.4;cursor:not-allowed;}
-.gate-error{font-size:13px;color:#e08080;margin-top:10px;font-style:italic;}
-.gate-link{font-size:12px;color:rgba(180,140,60,.4);margin-top:20px;}
-.gate-link a{color:rgba(200,160,80,.6);text-decoration:none;}
+.gate-error{font-size:13px;color:#e08080;margin-bottom:12px;font-style:italic;}
+.gate-divider{font-size:10px;color:rgba(180,140,60,.25);letter-spacing:3px;text-transform:uppercase;margin:16px 0;}
+.gate-buy{background:rgba(180,140,20,.08);border:1px solid rgba(180,140,20,.2);border-radius:12px;padding:16px;width:100%;max-width:300px;text-align:center;cursor:pointer;text-decoration:none;display:block;transition:all .2s;}
+.gate-buy:hover{border-color:rgba(180,140,20,.4);}
+.gate-buy-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(180,140,60,.5);margin-bottom:4px;}
+.gate-buy-price{font-family:'Fraunces',serif;font-size:18px;color:var(--gold-l);margin-bottom:2px;}
+.gate-buy-sub{font-size:11px;color:rgba(180,140,60,.35);}
+.gate-combo{background:linear-gradient(135deg,rgba(140,80,200,.15),rgba(80,40,140,.1));border:1px solid rgba(160,90,220,.25);border-radius:12px;padding:16px;width:100%;max-width:300px;text-align:center;cursor:pointer;text-decoration:none;display:block;margin-top:10px;transition:all .2s;}
+.gate-combo:hover{border-color:rgba(160,90,220,.5);}
+.gate-combo-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(160,100,220,.5);margin-bottom:4px;}
+.gate-combo-price{font-family:'Fraunces',serif;font-size:18px;color:#d4a8f8;margin-bottom:2px;}
+.gate-combo-sub{font-size:11px;color:rgba(160,100,220,.35);}
 
-/* HOME */
+/* ── HOME ── */
 .home-hero{text-align:center;padding:56px 20px 44px;border-bottom:1px solid var(--border);background:radial-gradient(ellipse at 50% 30%,rgba(180,120,20,.1) 0%,transparent 65%);}
 .home-glyph{font-size:56px;display:block;margin-bottom:16px;filter:drop-shadow(0 0 24px rgba(200,160,30,.4));}
 .home-eyebrow{font-size:10px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;opacity:.8;}
-.home-title{font-family:'Fraunces',serif;font-size:clamp(44px,12vw,80px);font-weight:900;color:var(--gold-l);letter-spacing:-2px;line-height:.95;text-shadow:0 0 40px rgba(200,160,30,.2);margin-bottom:8px;}
+.home-title{font-family:'Fraunces',serif;font-size:clamp(44px,12vw,80px);font-weight:900;color:var(--gold-l);letter-spacing:-2px;line-height:.95;margin-bottom:8px;}
 .home-sub{font-family:'Fraunces',serif;font-style:italic;font-size:15px;color:rgba(200,160,60,.45);margin-bottom:14px;}
 .home-desc{font-size:15px;line-height:1.75;color:rgba(200,180,140,.55);max-width:380px;margin:0 auto;}
 .tool-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:12px;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:16px;}
-.tool-card:hover{border-color:rgba(200,150,40,.3);transform:translateY(-1px);box-shadow:0 6px 24px rgba(0,0,0,.2);}
+.tool-card:hover{border-color:rgba(200,150,40,.3);transform:translateY(-1px);}
 .tc-icon{font-size:36px;flex-shrink:0;}
 .tc-body{flex:1;}
 .tc-tag{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:3px;opacity:.7;}
 .tc-title{font-family:'Fraunces',serif;font-size:18px;color:var(--gold-l);margin-bottom:2px;}
 .tc-desc{font-size:12px;color:var(--muted);}
+.tc-price{font-size:11px;color:rgba(180,140,60,.5);margin-top:4px;font-weight:600;}
 .tc-arrow{color:rgba(200,150,40,.3);font-size:20px;}
-.home-by{text-align:center;padding:20px;font-family:'Fraunces',serif;font-style:italic;font-size:12px;color:rgba(160,130,50,.3);letter-spacing:1px;}
+.home-by{text-align:center;padding:20px;font-family:'Fraunces',serif;font-style:italic;font-size:12px;color:rgba(160,130,50,.3);}
 
-/* COSMIC */
-.cy-hero{text-align:center;padding:40px 20px 28px;background:radial-gradient(ellipse at 50% 30%,rgba(120,60,180,.12) 0%,transparent 60%),linear-gradient(170deg,#12080e 0%,var(--bg) 70%);border-bottom:1px solid var(--border);}
-.cy-glyph{font-size:48px;display:block;margin-bottom:12px;filter:drop-shadow(0 0 20px rgba(180,100,220,.3));}
-.cy-title{font-family:'Fraunces',serif;font-size:clamp(26px,6vw,40px);font-weight:900;color:#d4a8f8;margin-bottom:4px;}
-.cy-sub{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:rgba(180,130,220,.4);margin-bottom:10px;}
-.cy-desc{font-size:14px;line-height:1.7;color:rgba(180,150,200,.5);max-width:360px;margin:0 auto;}
+/* ── COSMIC / COSMICA ── */
+.cy-hero{text-align:center;padding:36px 20px 24px;background:radial-gradient(ellipse at 50% 30%,rgba(120,60,180,.12) 0%,transparent 60%),linear-gradient(170deg,#12080e 0%,var(--bg) 70%);border-bottom:1px solid var(--border);}
+.cy-glyph{font-size:44px;display:block;margin-bottom:10px;}
+.cy-title{font-family:'Fraunces',serif;font-size:clamp(22px,5vw,36px);font-weight:900;color:#d4a8f8;margin-bottom:4px;}
+.cy-sub{font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:rgba(180,130,220,.4);margin-bottom:8px;}
+.cy-desc{font-size:13px;line-height:1.7;color:rgba(180,150,200,.5);max-width:360px;margin:0 auto;}
 .num-preview{background:rgba(180,140,20,.06);border:1px solid rgba(180,140,20,.15);border-radius:10px;padding:14px 16px;margin-bottom:16px;}
 .np-title{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(180,140,60,.5);margin-bottom:8px;}
-.np-item{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:13px;border-bottom:1px solid rgba(180,140,30,.07);}
+.np-item{display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid rgba(180,140,30,.07);}
 .np-item:last-child{border-bottom:none;}
 .np-k{color:rgba(180,150,80,.5);}
 .np-v{color:#c8a840;font-weight:600;font-family:'Fraunces',serif;}
@@ -238,7 +247,7 @@ body{background:var(--bg);}
 .spin{font-size:48px;display:block;margin-bottom:16px;animation:spin 8s linear infinite;}
 @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 .ls-items{text-align:left;max-width:280px;margin:20px auto 0;}
-.ls-item{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:13px;color:rgba(180,150,80,.4);border-bottom:1px solid rgba(180,140,30,.05);}
+.ls-item{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:13px;color:rgba(180,150,80,.4);}
 .ls-item.on{color:var(--gold-l);}
 .ls-item.done{color:#80c080;}
 .ls-dot{width:8px;height:8px;border-radius:50%;border:1px solid currentColor;flex-shrink:0;}
@@ -262,10 +271,10 @@ body{background:var(--bg);}
 .restart-btn:hover{border-color:rgba(180,140,30,.35);color:var(--gold);}
 .powered{text-align:center;padding:14px 0 0;font-size:10px;color:rgba(140,110,40,.25);letter-spacing:2px;text-transform:uppercase;}
 
-/* ORACLE */
+/* ── ORACLE ── */
 .or-hero{text-align:center;padding:32px 20px 24px;background:radial-gradient(ellipse at 50% 30%,rgba(140,70,200,.12) 0%,transparent 60%),linear-gradient(170deg,#120a22 0%,var(--bg) 80%);border-bottom:1px solid rgba(140,80,200,.08);}
-.or-title{font-family:'Fraunces',serif;font-size:28px;color:#d4a8f0;margin-bottom:4px;}
-.or-sub{font-size:14px;color:rgba(180,130,220,.4);font-style:italic;}
+.or-title{font-family:'Fraunces',serif;font-size:26px;color:#d4a8f0;margin-bottom:4px;}
+.or-sub{font-size:13px;color:rgba(180,130,220,.4);font-style:italic;}
 .streak-bar{background:rgba(12,8,22,.95);padding:12px 20px;border-bottom:1px solid rgba(140,80,200,.08);display:flex;align-items:center;justify-content:space-between;}
 .streak-n{font-family:'Fraunces',serif;font-size:20px;color:#d4a8f0;font-weight:700;}
 .streak-lbl{font-size:10px;color:rgba(160,110,220,.4);letter-spacing:1px;text-transform:uppercase;}
@@ -307,7 +316,7 @@ body{background:var(--bg);}
 .card-face{position:absolute;inset:0;border-radius:22px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;}
 .card-back{background:linear-gradient(145deg,#1a0e2e,#120a22);border:1px solid rgba(160,100,220,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:10px;}
 .cbp{position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(160,100,220,.03) 20px,rgba(160,100,220,.03) 21px);}
-.cb-g{font-size:44px;position:relative;z-index:1;filter:drop-shadow(0 0 16px rgba(160,100,220,.3));animation:breathe 3s ease-in-out infinite;}
+.cb-g{font-size:44px;position:relative;z-index:1;animation:breathe 3s ease-in-out infinite;}
 .cb-t{font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:rgba(180,130,220,.35);position:relative;z-index:1;}
 .cb-h{font-size:9px;color:rgba(140,100,200,.28);letter-spacing:2px;text-transform:uppercase;position:relative;z-index:1;}
 .card-front{transform:rotateY(180deg);display:flex;flex-direction:column;padding:24px 20px;border:1px solid;}
@@ -338,9 +347,9 @@ body{background:var(--bg);}
 .sc-s{font-size:11px;color:rgba(160,110,220,.35);font-style:italic;margin-bottom:12px;}
 .sc-btn{background:transparent;border:1px solid rgba(140,80,200,.2);border-radius:7px;padding:8px 18px;color:rgba(180,120,230,.55);font-size:12px;cursor:pointer;}
 
-/* 21 DIAS */
+/* ── 21 DIAS ── */
 .prog-hero{background:linear-gradient(170deg,#0c1a14 0%,var(--bg) 70%);padding:30px 20px 22px;text-align:center;border-bottom:1px solid rgba(80,160,80,.07);}
-.prog-t{font-family:'Fraunces',serif;font-size:26px;color:#7ecf94;margin-bottom:3px;}
+.prog-t{font-family:'Fraunces',serif;font-size:24px;color:#7ecf94;margin-bottom:3px;}
 .prog-s{font-size:13px;color:rgba(120,180,130,.4);font-style:italic;}
 .day-scroll{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;margin-bottom:20px;scrollbar-width:none;}
 .day-scroll::-webkit-scrollbar{display:none;}
@@ -360,11 +369,10 @@ body{background:var(--bg);}
 .day-card{background:#101a12;border:1px solid rgba(80,160,80,.1);border-radius:15px;overflow:hidden;margin-bottom:14px;}
 .dc-head{padding:20px 20px 16px;border-bottom:1px solid rgba(80,160,80,.07);}
 .dc-blq{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;opacity:.7;}
-.dc-num{font-family:'Fraunces',serif;font-size:12px;color:rgba(120,180,130,.45);margin-bottom:3px;letter-spacing:1px;}
+.dc-num{font-family:'Fraunces',serif;font-size:12px;color:rgba(120,180,130,.45);margin-bottom:3px;}
 .dc-t{font-family:'Fraunces',serif;font-size:22px;color:#c8e8cc;}
 .momento{padding:16px 20px;border-bottom:1px solid rgba(80,160,80,.06);}
 .m-badge{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 9px;border-radius:8px;display:inline-block;margin-bottom:7px;}
-.m-hora{font-size:10px;color:rgba(120,180,130,.35);margin-left:8px;letter-spacing:1px;}
 .m-title{font-family:'Fraunces',serif;font-size:15px;margin-bottom:6px;}
 .m-text{font-size:14px;line-height:1.7;color:rgba(180,220,190,.6);}
 .aterrizaje{background:rgba(60,100,60,.12);border:1px solid rgba(80,160,80,.15);border-radius:11px;padding:16px;margin:14px 0;}
@@ -381,14 +389,27 @@ body{background:var(--bg);}
 .note-inp{width:100%;background:rgba(60,100,60,.08);border:1px solid rgba(80,160,80,.1);border-radius:7px;padding:11px 13px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:#dde8e0;resize:none;min-height:65px;outline:none;line-height:1.6;}
 .note-inp::placeholder{color:rgba(120,180,130,.22);}
 .day-nav{display:flex;gap:9px;margin-top:6px;}
-.dn-btn{flex:1;border-radius:9px;border:1px solid rgba(80,160,80,.15);padding:11px;background:transparent;color:rgba(120,180,130,.5);font-size:13px;cursor:pointer;transition:all .2s;}
+.dn-btn{flex:1;border-radius:9px;border:1px solid rgba(80,160,80,.15);padding:11px;background:transparent;color:rgba(120,180,130,.5);font-size:13px;cursor:pointer;}
 .dn-btn:hover{border-color:rgba(80,160,80,.3);color:#7ecf94;}
 .dn-btn.fwd{background:linear-gradient(135deg,#2d7a4a,#3a9a5c);border-color:#3a9a5c;color:#e8f5ec;font-weight:600;}
 `;
 
 const JQ = ["¿Qué resuena de esta carta en lo que vives hoy?","¿Qué parte de ti necesitaba escuchar esto?","¿Qué harás diferente después de esta carta?","¿Qué emoción se mueve en ti al leerla?"];
 const LOADING_STEPS = ["Calculando camino de vida y expresión...","Analizando tránsitos planetarios 2026...","Consultando el I Ching...","Leyendo el Lenormand...","Interpretando las 12 casas...","Sintetizando todos los sistemas...","Preparando tu informe personalizado..."];
-const SECTION_META = {"PERFIL NUMEROLÓGICO":{icon:"🔢",lbl:"Numerología"},"EL AÑO 2026 EN SÍNTESIS":{icon:"🪐",lbl:"Astrología"},"EL MENSAJE DEL I CHING":{icon:"☯️",lbl:"I Ching"},"LECTURA DE LAS 12 CASAS":{icon:"🏛️",lbl:"Casas"},"LENORMAND Y TAROT":{icon:"🃏",lbl:"Oráculos"},"PROPÓSITO Y MISIÓN DE VIDA":{icon:"🔱",lbl:"Propósito"},"GUÍA DE ACCIÓN 2026":{icon:"🗓️",lbl:"Acción"},"Tu Lectura":{icon:"✨",lbl:"Lectura"}};
+const LOADING_STEPS_COSMICA = ["Calculando carta natal completa...","Analizando Diseño Humano...","Cruzando sistemas esotéricos...","Interpretando centros y canales...","Sintetizando propósito profundo...","Preparando tu lectura cósmica..."];
+const SECTION_META = {
+  "PERFIL NUMEROLÓGICO":{icon:"🔢",lbl:"Numerología"},
+  "EL AÑO 2026 EN SÍNTESIS":{icon:"🪐",lbl:"Astrología"},
+  "EL MENSAJE DEL I CHING":{icon:"☯️",lbl:"I Ching"},
+  "LECTURA DE LAS 12 CASAS":{icon:"🏛️",lbl:"Casas"},
+  "LENORMAND Y TAROT":{icon:"🃏",lbl:"Oráculos"},
+  "PROPÓSITO Y MISIÓN DE VIDA":{icon:"🔱",lbl:"Propósito"},
+  "GUÍA DE ACCIÓN 2026":{icon:"🗓️",lbl:"Acción"},
+  "DISEÑO HUMANO":{icon:"⬡",lbl:"Diseño Humano"},
+  "CARTA NATAL COMPLETA":{icon:"🌟",lbl:"Carta Natal"},
+  "INTEGRACIÓN CÓSMICA":{icon:"🔮",lbl:"Integración"},
+  "Tu Lectura":{icon:"✨",lbl:"Lectura"},
+};
 
 function parseSections(text) {
   if (!text) return [];
@@ -400,32 +421,31 @@ function parseSections(text) {
   return sections;
 }
 
-// ── GATE COMPONENT ──────────────────────────────────────────────
-function Gate({ producto, emoji, titulo, subtitulo, onAccess }) {
+// ── GATE ────────────────────────────────────────────────────────
+function Gate({ producto, emoji, titulo, precio, subtitulo, linkCompra, onAccess }) {
   const [codigo, setCodigo] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleValidar = async () => {
     if (!codigo.trim()) return;
-    setLoading(true);
-    setError("");
+    setLoading(true); setError("");
     try {
-      const row = await validarCodigo(codigo.trim().toUpperCase());
+      const row = await validarCodigo(codigo.trim().toUpperCase(), producto);
       if (!row) {
         setError("Código inválido o ya utilizado. Verifica e intenta de nuevo.");
-      } else if (row.producto !== "all" && row.producto !== producto) {
-        setError("Este código no corresponde a este producto.");
       } else {
-        // Guardar acceso en localStorage
         const accesos = JSON.parse(localStorage.getItem("cicatriz_accesos") || "{}");
-        accesos[producto] = true;
+        if (row.producto === "all") {
+          accesos["cosmico"] = true; accesos["cosmica"] = true;
+          accesos["oraculo"] = true; accesos["programa"] = true;
+        } else {
+          accesos[producto] = true;
+        }
         localStorage.setItem("cicatriz_accesos", JSON.stringify(accesos));
         onAccess();
       }
-    } catch {
-      setError("Error de conexión. Intenta nuevamente.");
-    }
+    } catch { setError("Error de conexión. Intenta nuevamente."); }
     setLoading(false);
   };
 
@@ -433,22 +453,60 @@ function Gate({ producto, emoji, titulo, subtitulo, onAccess }) {
     <div className="gate-wrap z1">
       <span className="gate-glyph">{emoji}</span>
       <div className="gate-title">{titulo}</div>
+      <div className="gate-price">{precio}</div>
       <div className="gate-sub">{subtitulo}</div>
-      <input
-        className="gate-input"
-        placeholder="CICATRIZ-2026-XXXX"
-        value={codigo}
-        onChange={e => { setCodigo(e.target.value.toUpperCase()); setError(""); }}
-        onKeyDown={e => e.key === "Enter" && handleValidar()}
-      />
+      <input className="gate-input" placeholder="CZ-XXXX-XXXX" value={codigo}
+        onChange={e=>{setCodigo(e.target.value.toUpperCase());setError("");}}
+        onKeyDown={e=>e.key==="Enter"&&handleValidar()}/>
       {error && <div className="gate-error">{error}</div>}
-      <button className="gate-btn" onClick={handleValidar} disabled={loading || !codigo.trim()}>
-        {loading ? "Verificando..." : "✦ Ingresar"}
+      <button className="gate-btn" onClick={handleValidar} disabled={loading||!codigo.trim()}>
+        {loading?"Verificando...":"✦ Ingresar con mi código"}
       </button>
-      <div className="gate-link">
-        ¿No tienes código? <a href="https://mpago.la/1PnezC6" target="_blank" rel="noopener noreferrer">Obtener acceso →</a>
-      </div>
+      <div className="gate-divider">¿No tienes código?</div>
+      <a href={linkCompra} target="_blank" rel="noopener noreferrer" className="gate-buy">
+        <div className="gate-buy-label">Comprar acceso</div>
+        <div className="gate-buy-price">{precio}</div>
+        <div className="gate-buy-sub">Pago único · Mercado Pago →</div>
+      </a>
+      <a href={LINKS.combo} target="_blank" rel="noopener noreferrer" className="gate-combo">
+        <div className="gate-combo-label">✦ Combo completo · Todos los productos</div>
+        <div className="gate-combo-price">$59.990 CLP</div>
+        <div className="gate-combo-sub">Año Cósmico + Lectura Cósmica + Oráculo + 21 Días →</div>
+      </a>
     </div>
+  );
+}
+
+// ── REPORT VIEWER ────────────────────────────────────────────────
+function ReportView({ nombre, fecha, ciudad, hora, lp, exp, py, sections, onReset, glyph }) {
+  return (
+    <>
+      <div className="report-hdr">
+        <span className="rh-glyph">{glyph}</span>
+        <div className="rh-name">{nombre.split(' ')[0]}</div>
+        <div className="rh-data">{fecha} · {ciudad}{hora?` · ${hora}`:""}</div>
+        <div className="rh-badges">
+          {lp&&<span className="rh-badge">Camino {lp}</span>}
+          {exp&&<span className="rh-badge">Expresión {exp}</span>}
+          {py&&<span className="rh-badge">Año {py}</span>}
+        </div>
+      </div>
+      {sections.map((sec,i) => {
+        const meta = SECTION_META[sec.title]||{icon:"✨",lbl:"Lectura"};
+        return (
+          <div key={i} className="rs">
+            <div className="rs-hdr">
+              <span className="rs-icon">{meta.icon}</span>
+              <div><div className="rs-label">{meta.lbl}</div><div className="rs-title">{sec.title}</div></div>
+            </div>
+            <div className="rs-content">{sec.content}</div>
+          </div>
+        );
+      })}
+      <button className="restart-btn" style={{background:"linear-gradient(135deg,#2d7a4a,#3a9a5c)",color:"#e8f5ec",border:"none"}} onClick={()=>window.print()}>✦ Descargar en PDF</button>
+      <button className="restart-btn" onClick={onReset}>↩ Nueva lectura</button>
+      <div className="powered">Cicatriz · IA · by Nanette Vezanka</div>
+    </>
   );
 }
 
@@ -465,7 +523,7 @@ export default function Cicatriz() {
 
   const tieneAcceso = (prod) => accesos[prod] || accesos["all"];
   const darAcceso = (prod) => {
-    const nuevo = { ...accesos, [prod]: true };
+    const nuevo = {...accesos, [prod]:true};
     setAccesos(nuevo);
     localStorage.setItem("cicatriz_accesos", JSON.stringify(nuevo));
   };
@@ -480,15 +538,21 @@ export default function Cicatriz() {
   const [streak, setStreak] = useState(3);
   const [drawnToday, setDrawnToday] = useState(false);
   const [orHistory, setOrHistory] = useState([
-    {date:"Ayer",card:ALL_CARDS[4],note:"Me recordó que puedo pedir ayuda."},
+    {date:"Ayer",card:ALL_CARDS[4],note:""},
     {date:"Hace 2 días",card:ALL_CARDS[11],note:""},
   ]);
 
-  // Cosmic state
+  // Año Cósmico state
   const [cyScreen, setCyScreen] = useState("form");
   const [cyForm, setCyForm] = useState({nombre:"",fecha:"",hora:"",ciudad:""});
-  const [loadStep, setLoadStep] = useState(0);
-  const [report, setReport] = useState("");
+  const [cyLoadStep, setCyLoadStep] = useState(0);
+  const [cyReport, setCyReport] = useState("");
+
+  // Lectura Cósmica state
+  const [lcScreen, setLcScreen] = useState("form");
+  const [lcForm, setLcForm] = useState({nombre:"",fecha:"",hora:"",ciudad:"",tipo:"",autoridad:"",perfil:"",centros:""});
+  const [lcLoadStep, setLcLoadStep] = useState(0);
+  const [lcReport, setLcReport] = useState("");
 
   // Programa state
   const [currentDay, setCurrentDay] = useState(1);
@@ -506,6 +570,10 @@ export default function Cicatriz() {
   const lp = lifePathNum(cyForm.fecha);
   const exp = expressionNum(cyForm.nombre);
   const py = personalYear(cyForm.fecha);
+  const lcLp = lifePathNum(lcForm.fecha);
+  const lcExp = expressionNum(lcForm.nombre);
+  const lcPy = personalYear(lcForm.fecha);
+
   const completedDays = Object.keys(done).filter(k => done[k]?.min || done[k]?.full).length;
   const progress = Math.round((completedDays/21)*100);
   const isDone = d => done[d]?.min || done[d]?.full;
@@ -528,71 +596,62 @@ export default function Cicatriz() {
   };
 
   const submitCosmic = async () => {
-    if (!cyForm.nombre || !cyForm.fecha || !cyForm.ciudad) return;
-    setCyScreen("loading"); setLoadStep(0);
-
-    // Buscar si ya existe lectura guardada
-    const lecturaGuardada = await buscarLectura(cyForm.nombre, cyForm.fecha);
-    if (lecturaGuardada) {
-      setReport(lecturaGuardada);
-      setCyScreen("report");
-      return;
-    }
-
-    // No existe — generar con IA
-    for (let i = 0; i < LOADING_STEPS.length; i++) {
-      await new Promise(r => setTimeout(r, 850));
-      setLoadStep(i+1);
-    }
+    if (!cyForm.nombre||!cyForm.fecha||!cyForm.ciudad) return;
+    setCyScreen("loading"); setCyLoadStep(0);
+    const guardada = await buscarLectura("lecturas", cyForm.nombre, cyForm.fecha);
+    if (guardada) { setCyReport(guardada); setCyScreen("report"); return; }
+    for (let i=0;i<LOADING_STEPS.length;i++) { await new Promise(r=>setTimeout(r,850)); setCyLoadStep(i+1); }
     try {
       const prompt = `Eres un astrólogo experto en sistemas esotéricos. Genera una lectura COMPLETA y personalizada para 2026.
-
 DATOS: Nombre: ${cyForm.nombre} | Fecha: ${cyForm.fecha} | Hora: ${cyForm.hora||"desconocida"} | Ciudad: ${cyForm.ciudad}
 Camino de Vida: ${lp} | Expresión: ${exp} | Año Personal 2026: ${py}
-
-Genera el informe dividido exactamente con estos encabezados entre corchetes:
-
-[PERFIL NUMEROLÓGICO]
-Análisis profundo del Camino de Vida ${lp}, Expresión ${exp} y Año Personal ${py}. Usa el nombre de pila. 2-3 párrafos ricos y personalizados.
-
-[EL AÑO 2026 EN SÍNTESIS]
-Los 3 tránsitos planetarios más importantes de 2026 para esta persona nacida el ${cyForm.fecha}. Menciona Júpiter, Saturno o Plutón según corresponda. 2-3 párrafos.
-
-[EL MENSAJE DEL I CHING]
-El hexagrama más relevante para esta persona en 2026 y su mensaje profundo. 1-2 párrafos.
-
-[LECTURA DE LAS 12 CASAS]
-Las casas astrológicas más activadas en 2026 y su significado específico para esta persona. 2-3 párrafos.
-
-[LENORMAND Y TAROT]
-Las cartas Lenormand y el arcano mayor que rigen el año 2026 para esta persona. 1-2 párrafos.
-
-[PROPÓSITO Y MISIÓN DE VIDA]
-El propósito profundo según todos los sistemas esotéricos combinados. 2 párrafos.
-
-[GUÍA DE ACCIÓN 2026]
-Recomendaciones concretas por trimestre para 2026. Formato: Q1, Q2, Q3, Q4.
-
+Genera el informe con estos encabezados exactos entre corchetes:
+[PERFIL NUMEROLÓGICO] Análisis del Camino de Vida ${lp}, Expresión ${exp} y Año Personal ${py}. 2-3 párrafos.
+[EL AÑO 2026 EN SÍNTESIS] Los 3 tránsitos más importantes de 2026. 2-3 párrafos.
+[EL MENSAJE DEL I CHING] El hexagrama más relevante. 1-2 párrafos.
+[LECTURA DE LAS 12 CASAS] Las casas más activadas en 2026. 2-3 párrafos.
+[LENORMAND Y TAROT] Las cartas que rigen el año. 1-2 párrafos.
+[PROPÓSITO Y MISIÓN DE VIDA] El propósito profundo. 2 párrafos.
+[GUÍA DE ACCIÓN 2026] Recomendaciones por trimestre Q1, Q2, Q3, Q4.
 Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
-
-      const res = await fetch("/api/lectura-cosmica", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
-      });
+      const res = await fetch("/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
       const data = await res.json();
-      const texto = data.lectura || "Error al generar la lectura.";
-
-      // Guardar en Supabase para coherencia futura
-      await guardarLectura(cyForm.nombre, cyForm.fecha, cyForm.ciudad, texto);
-      setReport(texto);
-    } catch {
-      setReport("Error de conexión. Por favor intenta nuevamente.");
-    }
+      const texto = data.lectura||"Error al generar la lectura.";
+      await guardarLectura("lecturas", cyForm.nombre, cyForm.fecha, cyForm.ciudad, texto);
+      setCyReport(texto);
+    } catch { setCyReport("Error de conexión. Por favor intenta nuevamente."); }
     setCyScreen("report");
   };
 
-  const sections = parseSections(report);
+  const submitCosmica = async () => {
+    if (!lcForm.nombre||!lcForm.fecha||!lcForm.ciudad) return;
+    setLcScreen("loading"); setLcLoadStep(0);
+    const guardada = await buscarLectura("lecturas_cosmicas", lcForm.nombre, lcForm.fecha);
+    if (guardada) { setLcReport(guardada); setLcScreen("report"); return; }
+    for (let i=0;i<LOADING_STEPS_COSMICA.length;i++) { await new Promise(r=>setTimeout(r,900)); setLcLoadStep(i+1); }
+    try {
+      const prompt = `Eres un astrólogo y analista de Diseño Humano experto. Genera una Lectura Cósmica Completa profunda y personalizada.
+DATOS PERSONALES: Nombre: ${lcForm.nombre} | Fecha: ${lcForm.fecha} | Hora: ${lcForm.hora||"desconocida"} | Ciudad: ${lcForm.ciudad}
+DISEÑO HUMANO: Tipo: ${lcForm.tipo||"no especificado"} | Autoridad: ${lcForm.autoridad||"no especificada"} | Perfil: ${lcForm.perfil||"no especificado"} | Centros abiertos/definidos: ${lcForm.centros||"no especificados"}
+Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal: ${lcPy}
+Genera el informe con estos encabezados exactos entre corchetes:
+[CARTA NATAL COMPLETA] Análisis profundo de la carta natal: Sol, Luna, Ascendente (si hay hora), planetas en casas, aspectos principales. 3-4 párrafos.
+[DISEÑO HUMANO] Análisis del tipo ${lcForm.tipo}, estrategia, autoridad ${lcForm.autoridad}, perfil ${lcForm.perfil}, centros definidos y abiertos. Cómo operar correctamente según el diseño. 3-4 párrafos.
+[INTEGRACIÓN CÓSMICA] Cómo la carta natal y el Diseño Humano se complementan. Los temas principales de vida que emergen de la combinación de ambos sistemas. 2-3 párrafos.
+[PROPÓSITO Y MISIÓN DE VIDA] El propósito profundo según todos los sistemas combinados: numerología, astrología y Diseño Humano. 2 párrafos.
+[GUÍA DE ACCIÓN 2026] Recomendaciones concretas considerando el Diseño Humano y los tránsitos. Por trimestre Q1, Q2, Q3, Q4.
+Lenguaje poético pero concreto y profundo. Máximo 250 palabras por sección.`;
+      const res = await fetch("/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
+      const data = await res.json();
+      const texto = data.lectura||"Error al generar la lectura.";
+      await guardarLectura("lecturas_cosmicas", lcForm.nombre, lcForm.fecha, lcForm.ciudad, texto);
+      setLcReport(texto);
+    } catch { setLcReport("Error de conexión. Por favor intenta nuevamente."); }
+    setLcScreen("report");
+  };
+
+  const cySections = parseSections(cyReport);
+  const lcSections = parseSections(lcReport);
 
   return (
     <>
@@ -600,31 +659,39 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
       <div className="app">
 
         {/* ════ HOME ════ */}
-        {tab === "home" && (
+        {tab==="home" && (
           <div className="z1 pb80">
             <div className="home-hero">
               <span className="home-glyph">🪷</span>
               <div className="home-eyebrow">Herramientas de acompañamiento emocional</div>
               <h1 className="home-title">Cicatriz</h1>
               <div className="home-sub">by Nanette Vezanka</div>
-              <p className="home-desc">Herramientas simples y reales para personas en duelo, crisis y pérdida — especialmente para quienes nunca tuvieron permiso de sentir.</p>
+              <p className="home-desc">Herramientas simples y reales para personas en duelo, crisis y pérdida.</p>
             </div>
             <div style={{padding:"24px 20px 0"}}>
               {[
-                {icon:"🌌",tag:"Lectura Esotérica · IA",title:"Tu Año Cósmico",desc:"Carta natal · Numerología · I Ching · Lenormand · Cábala",go:()=>setTab("cosmico")},
-                {icon:"🌸",tag:"Oráculo · Ritual Diario",title:"Oráculo Kintsugi",desc:"52 cartas · Una por día · Ritual de presencia",go:()=>{setTab("oraculo");setOrPhase("home");}},
-                {icon:"🌿",tag:"Programa · 21 Días",title:"Bajar el Ruido",desc:"5 minutos al día para recuperar tu centro",go:()=>{setTab("programa");setProgView("home");}},
-              ].map((t,i) => (
+                {icon:"🌌",tag:"Lectura Esotérica · IA",title:"Tu Año Cósmico",desc:"Numerología · I Ching · Lenormand · Tránsitos",price:"$24.990 CLP",go:()=>setTab("cosmico")},
+                {icon:"🔮",tag:"Lectura Premium · IA",title:"Lectura Cósmica Completa",desc:"Carta Natal + Diseño Humano integrados",price:"$39.990 CLP",go:()=>setTab("cosmica")},
+                {icon:"🌸",tag:"Oráculo · Ritual Diario",title:"Oráculo Kintsugi",desc:"52 cartas · Una por día · Ritual de presencia",price:"$9.990 CLP",go:()=>{setTab("oraculo");setOrPhase("home");}},
+                {icon:"🌿",tag:"Programa · 21 Días",title:"Bajar el Ruido",desc:"5 minutos al día para recuperar tu centro",price:"$19.990 CLP",go:()=>{setTab("programa");setProgView("home");}},
+              ].map((t,i)=>(
                 <div key={i} className="tool-card" onClick={t.go}>
                   <span className="tc-icon">{t.icon}</span>
                   <div className="tc-body">
                     <div className="tc-tag">{t.tag}</div>
                     <div className="tc-title">{t.title}</div>
                     <div className="tc-desc">{t.desc}</div>
+                    <div className="tc-price">{t.price}</div>
                   </div>
                   <span className="tc-arrow">›</span>
                 </div>
               ))}
+              <div style={{background:"linear-gradient(135deg,rgba(140,80,200,.12),rgba(80,40,140,.08))",border:"1px solid rgba(160,90,220,.2)",borderRadius:14,padding:"18px 20px",marginTop:4,cursor:"pointer",textAlign:"center"}} onClick={()=>window.open(LINKS.combo,"_blank")}>
+                <div style={{fontSize:9,fontWeight:700,letterSpacing:3,color:"rgba(160,100,220,.6)",textTransform:"uppercase",marginBottom:6}}>✦ Mejor valor · Combo completo</div>
+                <div style={{fontFamily:"'Fraunces',serif",fontSize:20,color:"#d4a8f8",marginBottom:2}}>Todos los productos</div>
+                <div style={{fontFamily:"'Fraunces',serif",fontSize:24,color:"#d4a8f8",marginBottom:4}}>$59.990 CLP</div>
+                <div style={{fontSize:11,color:"rgba(160,100,220,.4)"}}>Año Cósmico + Lectura Cósmica + Oráculo + 21 Días →</div>
+              </div>
               <div className="hl" style={{marginTop:16}}>
                 <p>"Lo que ofrezco no viene de libros.<br/>Viene de haber caminado el duelo, la pérdida, y haberme reconstruido desde cero."</p>
               </div>
@@ -633,115 +700,150 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
           </div>
         )}
 
-        {/* ════ CÓSMICO ════ */}
-        {tab === "cosmico" && (
+        {/* ════ AÑO CÓSMICO ════ */}
+        {tab==="cosmico" && (
           <div className="z1 pb80">
             <div className="header">
               <button className="hbk" onClick={()=>setTab("home")}>‹</button>
               <div className="htitle">Tu Año Cósmico</div>
             </div>
-            <div className="cy-hero">
-              <span className="cy-glyph">🌌</span>
-              <div className="cy-title">Año Cósmico 2026</div>
-              <div className="cy-sub">Lectura esotérica integrada · IA</div>
-              <p className="cy-desc">Carta natal, numerología, I Ching, Lenormand — sintetizados en tu informe personalizado y permanente.</p>
-            </div>
-            <div style={{padding:"28px 20px 0"}}>
-              {cyScreen === "form" && (
-                <>
-                  <div className="field">
-                    <label className="flabel">Nombre completo</label>
-                    <input className="finput" placeholder="Como aparece en tu documento" value={cyForm.nombre} onChange={e=>setCyForm({...cyForm,nombre:e.target.value})}/>
-                  </div>
-                  <div className="frow">
-                    <div className="field">
-                      <label className="flabel">Fecha de nacimiento</label>
-                      <input className="finput" type="date" value={cyForm.fecha} onChange={e=>setCyForm({...cyForm,fecha:e.target.value})}/>
-                    </div>
-                    <div className="field">
-                      <label className="flabel">Hora (opcional)</label>
-                      <input className="finput" type="time" value={cyForm.hora} onChange={e=>setCyForm({...cyForm,hora:e.target.value})}/>
-                    </div>
-                  </div>
-                  <div className="field">
-                    <label className="flabel">Ciudad y país de nacimiento</label>
-                    <input className="finput" placeholder="Ej: Santiago, Chile" value={cyForm.ciudad} onChange={e=>setCyForm({...cyForm,ciudad:e.target.value})}/>
-                  </div>
-                  {lp && (
-                    <div className="num-preview">
-                      <div className="np-title">Tus números calculados</div>
-                      <div className="np-item"><span className="np-k">Camino de Vida</span><span className="np-v">{lp}</span></div>
-                      <div className="np-item"><span className="np-k">Expresión</span><span className="np-v">{exp||"—"}</span></div>
-                      <div className="np-item"><span className="np-k">Año Personal 2026</span><span className="np-v">{py}</span></div>
+            {!tieneAcceso("cosmico") ? (
+              <Gate producto="cosmico" emoji="🌌" titulo="Tu Año Cósmico" precio="$24.990 CLP"
+                subtitulo="Ingresa tu código de acceso para recibir tu lectura personalizada."
+                linkCompra={LINKS.cosmico} onAccess={()=>darAcceso("cosmico")}/>
+            ) : (
+              <>
+                <div className="cy-hero">
+                  <span className="cy-glyph">🌌</span>
+                  <div className="cy-title">Año Cósmico 2026</div>
+                  <div className="cy-sub">Numerología · I Ching · Lenormand · Astrología</div>
+                  <p className="cy-desc">Tu informe queda guardado permanentemente — siempre verás el mismo.</p>
+                </div>
+                <div style={{padding:"28px 20px 0"}}>
+                  {cyScreen==="form" && (
+                    <>
+                      <div className="field"><label className="flabel">Nombre completo</label>
+                        <input className="finput" placeholder="Como aparece en tu documento" value={cyForm.nombre} onChange={e=>setCyForm({...cyForm,nombre:e.target.value})}/></div>
+                      <div className="frow">
+                        <div className="field"><label className="flabel">Fecha de nacimiento</label>
+                          <input className="finput" type="date" value={cyForm.fecha} onChange={e=>setCyForm({...cyForm,fecha:e.target.value})}/></div>
+                        <div className="field"><label className="flabel">Hora (opcional)</label>
+                          <input className="finput" type="time" value={cyForm.hora} onChange={e=>setCyForm({...cyForm,hora:e.target.value})}/></div>
+                      </div>
+                      <div className="field"><label className="flabel">Ciudad y país de nacimiento</label>
+                        <input className="finput" placeholder="Ej: Santiago, Chile" value={cyForm.ciudad} onChange={e=>setCyForm({...cyForm,ciudad:e.target.value})}/></div>
+                      {lp && <div className="num-preview">
+                        <div className="np-title">Tus números</div>
+                        <div className="np-item"><span className="np-k">Camino de Vida</span><span className="np-v">{lp}</span></div>
+                        <div className="np-item"><span className="np-k">Expresión</span><span className="np-v">{exp||"—"}</span></div>
+                        <div className="np-item"><span className="np-k">Año Personal 2026</span><span className="np-v">{py}</span></div>
+                      </div>}
+                      <button className="btn-primary" onClick={submitCosmic} disabled={!cyForm.nombre||!cyForm.fecha||!cyForm.ciudad}>✦ Generar mi lectura</button>
+                    </>
+                  )}
+                  {cyScreen==="loading" && (
+                    <div className="loading">
+                      <span className="spin">🔮</span>
+                      <div style={{fontFamily:"'Fraunces',serif",fontSize:20,color:"#e8c060",marginBottom:6}}>Consultando los astros</div>
+                      <div className="ls-items">{LOADING_STEPS.map((s,i)=>(
+                        <div key={i} className={`ls-item ${i<cyLoadStep?"done":i===cyLoadStep?"on":""}`}><div className="ls-dot"/>{s}</div>
+                      ))}</div>
                     </div>
                   )}
-                  <button className="btn-primary" onClick={submitCosmic} disabled={!cyForm.nombre||!cyForm.fecha||!cyForm.ciudad} style={{marginBottom:10}}>
-                    ✦ Generar mi lectura completa
-                  </button>
-                  <div style={{fontSize:11,color:"rgba(140,110,40,.3)",textAlign:"center",fontStyle:"italic",lineHeight:1.6}}>Tu lectura queda guardada permanentemente — siempre verás el mismo informe.</div>
-                </>
-              )}
-              {cyScreen === "loading" && (
-                <div className="loading">
-                  <span className="spin">🔮</span>
-                  <div style={{fontFamily:"'Fraunces',serif",fontSize:20,color:"#e8c060",marginBottom:6}}>Consultando los astros</div>
-                  <div style={{fontSize:13,color:"rgba(180,150,80,.45)",fontStyle:"italic",marginBottom:4}}>Esto toma unos segundos...</div>
-                  <div className="ls-items">
-                    {LOADING_STEPS.map((s,i) => (
-                      <div key={i} className={`ls-item ${i<loadStep?"done":i===loadStep?"on":""}`}>
-                        <div className="ls-dot"/>{s}
-                      </div>
-                    ))}
-                  </div>
+                  {cyScreen==="report" && (
+                    <ReportView nombre={cyForm.nombre} fecha={cyForm.fecha} ciudad={cyForm.ciudad} hora={cyForm.hora}
+                      lp={lp} exp={exp} py={py} sections={cySections} glyph="🌟"
+                      onReset={()=>{setCyScreen("form");setCyReport("");setCyForm({nombre:"",fecha:"",hora:"",ciudad:""});}}/>
+                  )}
                 </div>
-              )}
-              {cyScreen === "report" && (
-                <>
-                  <div className="report-hdr">
-                    <span className="rh-glyph">🌟</span>
-                    <div className="rh-name">{cyForm.nombre.split(' ')[0]}</div>
-                    <div className="rh-data">{cyForm.fecha} · {cyForm.ciudad}{cyForm.hora?` · ${cyForm.hora}`:""}</div>
-                    <div className="rh-badges">
-                      <span className="rh-badge">Camino {lp}</span>
-                      <span className="rh-badge">Expresión {exp}</span>
-                      <span className="rh-badge">Año {py}</span>
-                    </div>
-                  </div>
-                  {sections.map((sec,i) => {
-                    const meta = SECTION_META[sec.title]||{icon:"✨",lbl:"Lectura"};
-                    return (
-                      <div key={i} className="rs">
-                        <div className="rs-hdr">
-                          <span className="rs-icon">{meta.icon}</span>
-                          <div><div className="rs-label">{meta.lbl}</div><div className="rs-title">{sec.title}</div></div>
-                        </div>
-                        <div className="rs-content">{sec.content}</div>
-                      </div>
-                    );
-                  })}
-                  <button className="restart-btn" style={{background:"linear-gradient(135deg,#2d7a4a,#3a9a5c)",color:"#e8f5ec",border:"none"}} onClick={()=>window.print()}>✦ Descargar en PDF</button>
-                  <button className="restart-btn" onClick={()=>{setCyScreen("form");setReport("");setCyForm({nombre:"",fecha:"",hora:"",ciudad:""});}}>↩ Nueva lectura</button>
-                  <div className="powered">Cicatriz · IA · by Nanette Vezanka</div>
-                </>
-              )}
+              </>
+            )}
+          </div>
+        )}
+
+        {/* ════ LECTURA CÓSMICA COMPLETA ════ */}
+        {tab==="cosmica" && (
+          <div className="z1 pb80">
+            <div className="header">
+              <button className="hbk" onClick={()=>setTab("home")}>‹</button>
+              <div className="htitle">Lectura Cósmica</div>
             </div>
+            {!tieneAcceso("cosmica") ? (
+              <Gate producto="cosmica" emoji="🔮" titulo="Lectura Cósmica Completa" precio="$39.990 CLP"
+                subtitulo="Carta Natal + Diseño Humano integrados en una lectura profunda."
+                linkCompra={LINKS.cosmica} onAccess={()=>darAcceso("cosmica")}/>
+            ) : (
+              <>
+                <div className="cy-hero" style={{background:"radial-gradient(ellipse at 50% 30%,rgba(20,80,160,.15) 0%,transparent 60%),linear-gradient(170deg,#080e1a 0%,var(--bg) 70%)"}}>
+                  <span className="cy-glyph">🔮</span>
+                  <div className="cy-title" style={{color:"#a8d4f8"}}>Lectura Cósmica Completa</div>
+                  <div className="cy-sub" style={{color:"rgba(130,180,220,.4)"}}>Carta Natal · Diseño Humano · Integración profunda</div>
+                  <p className="cy-desc">Para esta lectura necesitas tu hora exacta de nacimiento y tu Diseño Humano.</p>
+                </div>
+                <div style={{padding:"28px 20px 0"}}>
+                  {lcScreen==="form" && (
+                    <>
+                      <div className="sec-label">Datos personales</div>
+                      <div className="field"><label className="flabel">Nombre completo</label>
+                        <input className="finput" placeholder="Como aparece en tu documento" value={lcForm.nombre} onChange={e=>setLcForm({...lcForm,nombre:e.target.value})}/></div>
+                      <div className="frow">
+                        <div className="field"><label className="flabel">Fecha de nacimiento</label>
+                          <input className="finput" type="date" value={lcForm.fecha} onChange={e=>setLcForm({...lcForm,fecha:e.target.value})}/></div>
+                        <div className="field"><label className="flabel">Hora exacta</label>
+                          <input className="finput" type="time" value={lcForm.hora} onChange={e=>setLcForm({...lcForm,hora:e.target.value})}/></div>
+                      </div>
+                      <div className="field"><label className="flabel">Ciudad y país de nacimiento</label>
+                        <input className="finput" placeholder="Ej: Santiago, Chile" value={lcForm.ciudad} onChange={e=>setLcForm({...lcForm,ciudad:e.target.value})}/></div>
+
+                      <div className="sec-label" style={{marginTop:20}}>Tu Diseño Humano</div>
+                      <div style={{background:"rgba(20,60,100,.12)",border:"1px solid rgba(80,140,200,.15)",borderRadius:10,padding:"12px 14px",marginBottom:16,fontSize:12,color:"rgba(160,200,240,.5)",lineHeight:1.6}}>
+                        ¿No conoces tu Diseño Humano? Puedes calcularlo gratis en <span style={{color:"rgba(120,180,240,.7)"}}>mybodygraph.com</span> con tu fecha, hora y lugar de nacimiento.
+                      </div>
+                      <div className="frow">
+                        <div className="field"><label className="flabel">Tipo</label>
+                          <input className="finput" placeholder="Ej: Generadora" value={lcForm.tipo} onChange={e=>setLcForm({...lcForm,tipo:e.target.value})}/></div>
+                        <div className="field"><label className="flabel">Autoridad</label>
+                          <input className="finput" placeholder="Ej: Sacral" value={lcForm.autoridad} onChange={e=>setLcForm({...lcForm,autoridad:e.target.value})}/></div>
+                      </div>
+                      <div className="frow">
+                        <div className="field"><label className="flabel">Perfil</label>
+                          <input className="finput" placeholder="Ej: 5/1" value={lcForm.perfil} onChange={e=>setLcForm({...lcForm,perfil:e.target.value})}/></div>
+                        <div className="field"><label className="flabel">Centros definidos</label>
+                          <input className="finput" placeholder="Ej: Sacral, G, Garganta" value={lcForm.centros} onChange={e=>setLcForm({...lcForm,centros:e.target.value})}/></div>
+                      </div>
+                      <button className="btn-primary" style={{background:"linear-gradient(135deg,#1a4a7a,#2a6aaa)"}} onClick={submitCosmica} disabled={!lcForm.nombre||!lcForm.fecha||!lcForm.ciudad}>✦ Generar mi lectura cósmica</button>
+                    </>
+                  )}
+                  {lcScreen==="loading" && (
+                    <div className="loading">
+                      <span className="spin">🔮</span>
+                      <div style={{fontFamily:"'Fraunces',serif",fontSize:20,color:"#a8d4f8",marginBottom:6}}>Integrando los sistemas</div>
+                      <div className="ls-items">{LOADING_STEPS_COSMICA.map((s,i)=>(
+                        <div key={i} className={`ls-item ${i<lcLoadStep?"done":i===lcLoadStep?"on":""}`}><div className="ls-dot"/>{s}</div>
+                      ))}</div>
+                    </div>
+                  )}
+                  {lcScreen==="report" && (
+                    <ReportView nombre={lcForm.nombre} fecha={lcForm.fecha} ciudad={lcForm.ciudad} hora={lcForm.hora}
+                      lp={lcLp} exp={lcExp} py={lcPy} sections={lcSections} glyph="🔮"
+                      onReset={()=>{setLcScreen("form");setLcReport("");setLcForm({nombre:"",fecha:"",hora:"",ciudad:"",tipo:"",autoridad:"",perfil:"",centros:""});}}/>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         )}
 
         {/* ════ ORÁCULO ════ */}
-        {tab === "oraculo" && (
+        {tab==="oraculo" && (
           <div className="z1">
             {!tieneAcceso("oraculo") ? (
-              <Gate
-                producto="oraculo"
-                emoji="🌸"
-                titulo="Oráculo Kintsugi"
-                subtitulo={"Ingresa tu código de acceso\npara comenzar tu ritual diario."}
-                onAccess={() => darAcceso("oraculo")}
-              />
+              <Gate producto="oraculo" emoji="🌸" titulo="Oráculo Kintsugi" precio="$9.990 CLP"
+                subtitulo="Una carta al día. Un ritual de presencia."
+                linkCompra={LINKS.oraculo} onAccess={()=>darAcceso("oraculo")}/>
             ) : (
               <>
-                {orPhase === "home" && (
+                {orPhase==="home" && (
                   <div className="pb80">
                     <div className="or-hero">
                       <div className="or-title">🌸 Oráculo Kintsugi</div>
@@ -752,11 +854,9 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
                         <span style={{fontSize:18}}>🔥</span>
                         <div><div className="streak-n">{streak}</div><div className="streak-lbl">días seguidos</div></div>
                       </div>
-                      <div className="streak-dots">
-                        {[0,1,2,3,4,5,6].map(i=>(
-                          <div key={i} className={`sd ${i<streak?"done":i===streak?"today":""}`}/>
-                        ))}
-                      </div>
+                      <div className="streak-dots">{[0,1,2,3,4,5,6].map(i=>(
+                        <div key={i} className={`sd ${i<streak?"done":i===streak?"today":""}`}/>
+                      ))}</div>
                     </div>
                     <div style={{padding:"20px 20px 0"}}>
                       {drawnToday ? (
@@ -774,38 +874,34 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
                           <button className="tc-go">Comenzar el ritual →</button>
                         </div>
                       )}
-                      {orHistory.length > 0 && (
-                        <div style={{marginTop:20}}>
-                          <div className="sec-label">Cartas recientes</div>
-                          {orHistory.slice(0,4).map((h,i) => (
-                            <div key={i} className="past-c" onClick={()=>{setCurrentCard(h.card);setFlipped(true);setJournalText(h.note||"");setCardSaved(true);setOrPhase("card");}}>
-                              <div className="pc-date">{h.date}</div>
-                              <div><div className="pc-n">{h.card.name}</div><div className="pc-p">"{h.card.phrase.slice(0,48)}..."</div></div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      {orHistory.length>0 && <div style={{marginTop:20}}>
+                        <div className="sec-label">Cartas recientes</div>
+                        {orHistory.slice(0,4).map((h,i)=>(
+                          <div key={i} className="past-c" onClick={()=>{setCurrentCard(h.card);setFlipped(true);setJournalText(h.note||"");setCardSaved(true);setOrPhase("card");}}>
+                            <div className="pc-date">{h.date}</div>
+                            <div><div className="pc-n">{h.card.name}</div><div className="pc-p">"{h.card.phrase.slice(0,48)}..."</div></div>
+                          </div>
+                        ))}
+                      </div>}
                     </div>
                   </div>
                 )}
-                {orPhase === "breathe" && (
+                {orPhase==="breathe" && (
                   <div style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
                     <div className="ritual-wrap">
                       <span className="rg">🌬️</span>
                       <div className="rt">Antes de recibir</div>
                       <div className="rs2">un momento de presencia</div>
-                      <p style={{fontSize:14,color:"rgba(200,175,240,.55)",marginBottom:28,maxWidth:280,textAlign:"center",lineHeight:1.7}}>El oráculo habla cuando estamos quietas.<br/>Toma tres respiraciones contigo.</p>
+                      <p style={{fontSize:14,color:"rgba(200,175,240,.55)",marginBottom:28,maxWidth:280,textAlign:"center",lineHeight:1.7}}>Toma tres respiraciones contigo.</p>
                       <div className="breathe-c">{breathCount%2===0?"↑":"↓"}</div>
                       <div className="breathe-lbl">{breathCount%2===0?"Inhala...":"Exhala..."}</div>
                       <button className="draw-btn" onClick={()=>setOrPhase("intention")}>
-                        <span className="db-icon">✦</span>
-                        <span className="db-lbl">Estoy presente</span>
-                        <span className="db-sub">continuar</span>
+                        <span className="db-icon">✦</span><span className="db-lbl">Estoy presente</span><span className="db-sub">continuar</span>
                       </button>
                     </div>
                   </div>
                 )}
-                {orPhase === "intention" && (
+                {orPhase==="intention" && (
                   <div style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
                     <div className="ritual-wrap">
                       <span className="rg">🌸</span>
@@ -816,14 +912,12 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
                         <input className="int-input" placeholder="confusión, cansancio, esperanza..." value={intention} onChange={e=>setIntention(e.target.value)}/>
                       </div>
                       <button className="draw-btn" onClick={drawCard}>
-                        <span className="db-icon">🃏</span>
-                        <span className="db-lbl">Recibir carta</span>
-                        <span className="db-sub">toca para revelar</span>
+                        <span className="db-icon">🃏</span><span className="db-lbl">Recibir carta</span><span className="db-sub">toca para revelar</span>
                       </button>
                     </div>
                   </div>
                 )}
-                {orPhase === "card" && currentCard && cat && (
+                {orPhase==="card" && currentCard && cat && (
                   <div className="z1">
                     <div className="header" style={{background:"rgba(8,5,14,.95)",borderBottom:"1px solid rgba(140,80,200,.08)"}}>
                       <button className="hbk" onClick={()=>setOrPhase("home")}>‹</button>
@@ -849,18 +943,16 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
                           </div>
                         </div>
                       </div>
-                      {intention && (
-                        <div className="int-display" style={{width:"100%",maxWidth:300}}>
-                          <div className="id-lbl">Lo que trajiste hoy</div>
-                          <div className="id-t">"{intention}"</div>
-                        </div>
-                      )}
+                      {intention && <div className="int-display" style={{width:"100%",maxWidth:300}}>
+                        <div className="id-lbl">Lo que trajiste hoy</div>
+                        <div className="id-t">"{intention}"</div>
+                      </div>}
                     </div>
                     {flipped && (
                       <div className="below-card">
                         <div className="journal">
                           <div className="jlbl">Tu reflexión</div>
-                          <div className="jq">{JQ[currentCard.id % JQ.length]}</div>
+                          <div className="jq">{JQ[currentCard.id%JQ.length]}</div>
                           <textarea className="jta" placeholder="Escribe lo que resuena..." value={journalText} onChange={e=>setJournalText(e.target.value)} rows={3} readOnly={cardSaved}/>
                         </div>
                         {!cardSaved ? (
@@ -889,34 +981,27 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
         )}
 
         {/* ════ PROGRAMA ════ */}
-        {tab === "programa" && (
+        {tab==="programa" && (
           <div className="z1">
             {!tieneAcceso("programa") ? (
-              <Gate
-                producto="programa"
-                emoji="🌿"
-                titulo="21 Días para Bajar el Ruido"
-                subtitulo={"Ingresa tu código de acceso\npara comenzar el programa."}
-                onAccess={() => darAcceso("programa")}
-              />
+              <Gate producto="programa" emoji="🌿" titulo="21 Días para Bajar el Ruido" precio="$19.990 CLP"
+                subtitulo="5 minutos al día para recuperar tu centro."
+                linkCompra={LINKS.programa} onAccess={()=>darAcceso("programa")}/>
             ) : (
               <>
-                {progView === "home" && (
+                {progView==="home" && (
                   <div className="pb80">
                     <div className="prog-hero">
                       <div className="prog-t">🌿 Bajar el Ruido</div>
                       <div className="prog-s">21 días · 5 minutos al día</div>
                     </div>
                     <div className="prog-bar-wrap">
-                      <div className="prog-bar-row">
-                        <span>Día {currentDay} de 21</span>
-                        <span>{progress}% completado</span>
-                      </div>
+                      <div className="prog-bar-row"><span>Día {currentDay} de 21</span><span>{progress}% completado</span></div>
                       <div className="prog-bar"><div className="prog-fill" style={{width:`${progress}%`}}/></div>
                     </div>
                     <div style={{padding:"20px 20px 0"}}>
                       <div className="day-scroll">
-                        {Array.from({length:21},(_,i)=>i+1).map(d => (
+                        {Array.from({length:21},(_,i)=>i+1).map(d=>(
                           <button key={d} className={`day-b ${isDone(d)?"done":""} ${d===currentDay?"active":""} ${!isActive(d)?"locked":""}`}
                             onClick={()=>{if(isActive(d)){setActiveDay(d);setProgView("day");}}}>
                             {isDone(d)?"✓":d}
@@ -931,7 +1016,7 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
                       </div>
                       <div style={{marginTop:20}}>
                         <div className="sec-label">Los 3 bloques</div>
-                        {[1,2,3].map(b => (
+                        {[1,2,3].map(b=>(
                           <div key={b} style={{background:b===1?"rgba(60,120,60,.1)":b===2?"rgba(80,100,160,.1)":"rgba(140,100,60,.1)",border:`1px solid ${b===1?"rgba(80,160,80,.12)":b===2?"rgba(100,130,200,.12)":"rgba(160,120,60,.12)"}`,borderRadius:12,padding:"14px 16px",marginBottom:10,cursor:"pointer",display:"flex",alignItems:"center",gap:12}} onClick={()=>{setActiveDay(BLOQUES[b].days[0]);setProgView("day");}}>
                             <span style={{fontSize:24}}>{b===1?"🌬️":b===2?"🌊":"🌱"}</span>
                             <div style={{flex:1}}>
@@ -945,7 +1030,7 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
                     </div>
                   </div>
                 )}
-                {progView === "day" && dia && bloque && (
+                {progView==="day" && dia && bloque && (
                   <div className="pb80">
                     <div className="header" style={{background:"rgba(8,14,10,.95)",borderBottom:"1px solid rgba(80,160,80,.07)"}}>
                       <button className="hbk" style={{color:"rgba(120,200,130,.45)"}} onClick={()=>setProgView("home")}>‹</button>
@@ -1003,6 +1088,7 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
           {[
             {id:"home",icon:"🪷",lbl:"Inicio"},
             {id:"cosmico",icon:"🌌",lbl:"Cósmico"},
+            {id:"cosmica",icon:"🔮",lbl:"Lectura"},
             {id:"oraculo",icon:"🌸",lbl:"Oráculo"},
             {id:"programa",icon:"🌿",lbl:"21 Días"},
           ].map(n=>(
