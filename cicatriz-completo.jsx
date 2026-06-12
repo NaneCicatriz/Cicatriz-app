@@ -658,13 +658,30 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
     setLcScreen("loading"); setLcLoadStep(0);
     const guardada = await buscarLectura("lecturas_cosmicas", lcForm.nombre, lcForm.fecha);
     if (guardada) { setLcReport(guardada); setLcScreen("report"); return; }
+
+    // Paso 1: Calcular el Diseño Humano real con la API
+    let dh = null;
+    try {
+      const dhRes = await fetch("/api/diseno-humano",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({fecha:lcForm.fecha,hora:lcForm.hora,ciudad:lcForm.ciudad})});
+      const dhData = await dhRes.json();
+      if (dhData.diseno) dh = dhData.diseno;
+    } catch { dh = null; }
+
     for (let i=0;i<LOADING_STEPS_COSMICA.length;i++) { await new Promise(r=>setTimeout(r,900)); setLcLoadStep(i+1); }
+
+    // Construir el bloque de Diseño Humano para el prompt
+    const dhTexto = dh
+      ? `DISEÑO HUMANO (calculado con precisión astronómica): Tipo: ${dh.tipo} | Estrategia: ${dh.estrategia} | Autoridad: ${dh.autoridad} | Perfil: ${dh.perfil} | Definición: ${dh.definicion} | Cruz de Encarnación: ${dh.cruz} | Centros definidos: ${(dh.centros_definidos||[]).join(", ")} | Canales: ${(dh.canales||[]).join(", ")} | Tema No-Self: ${dh.tema_no_self} | Firma: ${dh.firma}`
+      : `DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.`;
+
     try {
       const prompt = `Eres un astrólogo y analista de Diseño Humano experto. Genera una Lectura Cósmica Completa profunda y personalizada. Esta es la lectura más completa que existe — integra numerología, astrología, I Ching, Lenormand, carta natal y Diseño Humano en un solo informe.
 
 DATOS PERSONALES: Nombre: ${lcForm.nombre} | Fecha: ${lcForm.fecha} | Hora: ${lcForm.hora||"desconocida"} | Ciudad: ${lcForm.ciudad}
-DISEÑO HUMANO: Tipo: ${lcForm.tipo||"no especificado"} | Autoridad: ${lcForm.autoridad||"no especificada"} | Perfil: ${lcForm.perfil||"no especificado"} | Centros definidos: ${lcForm.centros||"no especificados"}
+${dhTexto}
 Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal 2026: ${lcPy}
+
+IMPORTANTE: Los datos de Diseño Humano arriba son REALES y calculados astronómicamente. Interprétalos con precisión y autoridad — NO digas "probablemente" ni "intuyo" respecto al Diseño Humano, porque son datos exactos. Traduce los términos al español de forma natural.
 
 Genera el informe con estos encabezados exactos entre corchetes:
 
@@ -687,7 +704,7 @@ Las cartas Lenormand y el arcano mayor que rigen el año 2026 para esta persona.
 Análisis profundo de la carta natal: Sol, Luna, Ascendente (si hay hora exacta), planetas en casas principales, aspectos más relevantes. Cómo esta carta define la personalidad y el destino de ${lcForm.nombre.split(' ')[0]}. 3-4 párrafos.
 
 [DISEÑO HUMANO]
-Análisis del tipo ${lcForm.tipo||"no especificado"}, su estrategia de vida y autoridad ${lcForm.autoridad||"no especificada"}. Perfil ${lcForm.perfil||"no especificado"} y lo que significa para su propósito. Centros definidos (${lcForm.centros||"no especificados"}) y cómo condicionan su energía. Cómo operar correctamente según este diseño único. 3-4 párrafos.
+Análisis preciso del Diseño Humano calculado: su tipo, estrategia y autoridad, qué significan para tomar decisiones correctamente. Su perfil y propósito. Los centros definidos y canales activos, y cómo condicionan su energía. El tema no-self y la firma como brújula de alineación. Cómo operar correctamente según este diseño exacto. 3-4 párrafos. Habla con certeza, son datos reales.
 
 [INTEGRACIÓN CÓSMICA]
 Cómo la carta natal y el Diseño Humano se complementan y confirman mutuamente. Los grandes temas de vida que emergen cuando ambos sistemas se leen juntos. Lo que la numerología agrega a esta imagen. 2-3 párrafos profundos.
@@ -696,9 +713,9 @@ Cómo la carta natal y el Diseño Humano se complementan y confirman mutuamente.
 El propósito profundo de ${lcForm.nombre.split(' ')[0]} según todos los sistemas combinados: numerología, astrología, I Ching y Diseño Humano. Lo que vino a hacer en esta vida. 2 párrafos.
 
 [GUÍA DE ACCIÓN 2026]
-Recomendaciones concretas por trimestre considerando los tránsitos Y el Diseño Humano de esta persona. Q1, Q2, Q3, Q4 — cada uno con foco específico.
+Recomendaciones concretas por trimestre considerando los tránsitos Y la estrategia/autoridad del Diseño Humano de esta persona. Q1, Q2, Q3, Q4 — cada uno con foco específico.
 
-Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. Usa el nombre de pila en todo el informe.`;
+Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. Usa el nombre de pila en todo el informe. No uses asteriscos ni markdown.`;
       const res = await fetch("/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
       const data = await res.json();
       const texto = data.lectura||"Error al generar la lectura.";
@@ -853,21 +870,8 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                       <div className="field"><label className="flabel">Ciudad y país de nacimiento</label>
                         <input className="finput" placeholder="Ej: Santiago, Chile" value={lcForm.ciudad} onChange={e=>setLcForm({...lcForm,ciudad:e.target.value})}/></div>
 
-                      <div className="sec-label" style={{marginTop:20}}>Tu Diseño Humano</div>
-                      <div style={{background:"rgba(20,60,100,.12)",border:"1px solid rgba(80,140,200,.15)",borderRadius:10,padding:"12px 14px",marginBottom:16,fontSize:12,color:"rgba(160,200,240,.5)",lineHeight:1.6}}>
-                        ¿No conoces tu Diseño Humano? Puedes calcularlo gratis en <span style={{color:"rgba(120,180,240,.7)"}}>mybodygraph.com</span> con tu fecha, hora y lugar de nacimiento.
-                      </div>
-                      <div className="frow">
-                        <div className="field"><label className="flabel">Tipo</label>
-                          <input className="finput" placeholder="Ej: Generadora" value={lcForm.tipo} onChange={e=>setLcForm({...lcForm,tipo:e.target.value})}/></div>
-                        <div className="field"><label className="flabel">Autoridad</label>
-                          <input className="finput" placeholder="Ej: Sacral" value={lcForm.autoridad} onChange={e=>setLcForm({...lcForm,autoridad:e.target.value})}/></div>
-                      </div>
-                      <div className="frow">
-                        <div className="field"><label className="flabel">Perfil</label>
-                          <input className="finput" placeholder="Ej: 5/1" value={lcForm.perfil} onChange={e=>setLcForm({...lcForm,perfil:e.target.value})}/></div>
-                        <div className="field"><label className="flabel">Centros definidos</label>
-                          <input className="finput" placeholder="Ej: Sacral, G, Garganta" value={lcForm.centros} onChange={e=>setLcForm({...lcForm,centros:e.target.value})}/></div>
+                      <div style={{background:"rgba(20,60,100,.12)",border:"1px solid rgba(80,140,200,.15)",borderRadius:10,padding:"14px 16px",marginTop:8,marginBottom:18,fontSize:12.5,color:"rgba(160,200,240,.6)",lineHeight:1.7}}>
+                        ⬡ Tu Diseño Humano se calcula automáticamente a partir de tu fecha, hora exacta y ciudad de nacimiento. Mientras más exacta la hora, más preciso el resultado.
                       </div>
                       <button className="btn-primary" style={{background:"linear-gradient(135deg,#1a4a7a,#2a6aaa)"}} onClick={submitCosmica} disabled={!lcForm.nombre||!lcForm.fecha||!lcForm.ciudad}>✦ Generar mi lectura cósmica</button>
                     </>
