@@ -91,8 +91,8 @@ export default async function handler(req, res) {
     const horaFinal = hora && hora.length >= 4 ? hora : '12:00';
     const datetime = `${fecha}T${horaFinal}${offsetStr}`;
 
-    // 3. Llamar al bodygraph
-    const hdResult = await hdRequest('/v1/bodygraph', { datetime, verbose: true });
+    // 3. Llamar al simple-bodygraph (incluido en plan Free)
+    const hdResult = await hdRequest('/v1/simple-bodygraph', { datetime, verbose: true });
 
     if (hdResult.status !== 200) {
       return res.status(200).json({ error: 'Error al calcular el diseño', detalle: hdResult.body });
@@ -100,18 +100,28 @@ export default async function handler(req, res) {
 
     const d = hdResult.body;
 
+    // Inferir estrategia, tema no-self y firma desde el tipo (son fijos por tipo en Diseño Humano)
+    const porTipo = {
+      'Generator':            { estrategia: 'Responder',                     tema_no_self: 'Frustración', firma: 'Satisfacción' },
+      'Manifesting Generator':{ estrategia: 'Responder, luego informar',     tema_no_self: 'Frustración', firma: 'Satisfacción' },
+      'Manifestor':           { estrategia: 'Informar antes de actuar',      tema_no_self: 'Rabia',       firma: 'Paz' },
+      'Projector':            { estrategia: 'Esperar la invitación',         tema_no_self: 'Amargura',    firma: 'Éxito' },
+      'Reflector':            { estrategia: 'Esperar un ciclo lunar',        tema_no_self: 'Decepción',   firma: 'Sorpresa' },
+    };
+    const inf = porTipo[d.type] || { estrategia: null, tema_no_self: null, firma: null };
+
     // 4. Extraer solo lo relevante para la lectura
     const resumen = {
       tipo: d.type || null,
-      estrategia: d.strategy || null,
+      estrategia: inf.estrategia,
       autoridad: d.authority || null,
       perfil: d.profile || null,
       definicion: d.definition || null,
       cruz: d.incarnation_cross || null,
       centros_definidos: d.centers || [],
-      canales: (d.channels || []).map(c => c.name).filter(Boolean),
-      tema_no_self: d.not_self_theme || null,
-      firma: d.signature || null,
+      canales: d.channels_short || d.channels || [],
+      tema_no_self: inf.tema_no_self,
+      firma: inf.firma,
     };
 
     return res.status(200).json({ diseno: resumen, ciudad_encontrada: loc.name || ciudad, timezone: offsetStr });
