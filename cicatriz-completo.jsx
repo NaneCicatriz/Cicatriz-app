@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 
+// Año actual dinámico — cambia solo cada año (2026, 2027, 2028...)
+const ANIO = new Date().getFullYear();
+
 const SUPABASE_URL = "https://deejemkhchkxupqnxakr.supabase.co";
 const SUPABASE_KEY = "sb_publishable_yoMN4BHw6Tv_ndSvJ6Zzjg_7qFTFlD4";
 
@@ -150,7 +153,7 @@ const BLOQUES = {1:{name:"Bajar ruido interno",color:"#5a9a6a",days:[1,2,3,4,5,6
 const reduce = n => { while(n>9&&n!==11&&n!==22&&n!==33){n=String(n).split('').map(Number).reduce((a,b)=>a+b,0);} return n; };
 const lifePathNum = d => { if(!d)return null; return reduce(d.replace(/-/g,'').split('').map(Number).reduce((a,b)=>a+b,0)); };
 const expressionNum = n => { if(!n)return null; const m={a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,j:1,k:2,l:3,m:4,n:5,o:6,p:7,q:8,r:9,s:1,t:2,u:3,v:4,w:5,x:6,y:7,z:8}; return reduce(n.toLowerCase().replace(/[^a-z]/g,'').split('').reduce((a,c)=>a+(m[c]||0),0)); };
-const personalYear = d => { if(!d)return null; const p=d.match(/(\d{4})-(\d{2})-(\d{2})/); if(!p)return null; return reduce([...String(p[3]),...String(p[2]),...'2026'].map(Number).reduce((a,b)=>a+b,0)); };
+const personalYear = d => { if(!d)return null; const p=d.match(/(\d{4})-(\d{2})-(\d{2})/); if(!p)return null; return reduce([...String(p[3]),...String(p[2]),...String(ANIO)].map(Number).reduce((a,b)=>a+b,0)); };
 
 const S = `
 ${FONTS}
@@ -407,16 +410,16 @@ body{background:var(--bg);}
 `;
 
 const JQ = ["¿Qué resuena de esta carta en lo que vives hoy?","¿Qué parte de ti necesitaba escuchar esto?","¿Qué harás diferente después de esta carta?","¿Qué emoción se mueve en ti al leerla?"];
-const LOADING_STEPS = ["Calculando camino de vida y expresión...","Analizando tránsitos planetarios 2026...","Consultando el I Ching...","Leyendo el Lenormand...","Interpretando las 12 casas...","Sintetizando todos los sistemas...","Preparando tu informe personalizado..."];
-const LOADING_STEPS_COSMICA = ["Calculando perfil numerológico...","Analizando tránsitos 2026...","Consultando I Ching y Lenormand...","Calculando carta natal completa...","Analizando Diseño Humano...","Integrando todos los sistemas...","Preparando tu lectura cósmica completa..."];
+const LOADING_STEPS = ["Calculando camino de vida y expresión...","Analizando tránsitos planetarios...","Consultando el I Ching...","Leyendo el Lenormand...","Interpretando las 12 casas...","Sintetizando todos los sistemas...","Preparando tu informe personalizado..."];
+const LOADING_STEPS_COSMICA = ["Calculando perfil numerológico...","Analizando tránsitos...","Consultando I Ching y Lenormand...","Calculando carta natal completa...","Analizando Diseño Humano...","Integrando todos los sistemas...","Preparando tu lectura cósmica completa..."];
 const SECTION_META = {
   "PERFIL NUMEROLÓGICO":{icon:"🔢",lbl:"Numerología"},
-  "EL AÑO 2026 EN SÍNTESIS":{icon:"🪐",lbl:"Astrología"},
+  "EL AÑO EN SÍNTESIS":{icon:"🪐",lbl:"Astrología"},
   "EL MENSAJE DEL I CHING":{icon:"☯️",lbl:"I Ching"},
   "LECTURA DE LAS 12 CASAS":{icon:"🏛️",lbl:"Casas"},
   "LENORMAND Y TAROT":{icon:"🃏",lbl:"Oráculos"},
   "PROPÓSITO Y MISIÓN DE VIDA":{icon:"🔱",lbl:"Propósito"},
-  "GUÍA DE ACCIÓN 2026":{icon:"🗓️",lbl:"Acción"},
+  "GUÍA DE ACCIÓN":{icon:"🗓️",lbl:"Acción"},
   "DISEÑO HUMANO":{icon:"⬡",lbl:"Diseño Humano"},
   "CARTA NATAL COMPLETA":{icon:"🌟",lbl:"Carta Natal"},
   "INTEGRACIÓN CÓSMICA":{icon:"🔮",lbl:"Integración"},
@@ -632,18 +635,18 @@ export default function Cicatriz() {
     if (guardada) { setCyReport(guardada); setCyScreen("report"); return; }
     for (let i=0;i<LOADING_STEPS.length;i++) { await new Promise(r=>setTimeout(r,850)); setCyLoadStep(i+1); }
     try {
-      const prompt = `Eres un astrólogo experto en sistemas esotéricos. Genera una lectura COMPLETA y personalizada para 2026.
+      const prompt = `Eres un astrólogo experto en sistemas esotéricos. Genera una lectura COMPLETA y personalizada para el año ${ANIO}.
 DATOS: Nombre: ${cyForm.nombre} | Fecha: ${cyForm.fecha} | Hora: ${cyForm.hora||"desconocida"} | Ciudad: ${cyForm.ciudad}
-Camino de Vida: ${lp} | Expresión: ${exp} | Año Personal 2026: ${py}
+Camino de Vida: ${lp} | Expresión: ${exp} | Año Personal ${ANIO}: ${py}
 Genera el informe con estos encabezados exactos entre corchetes:
 [PERFIL NUMEROLÓGICO] Análisis del Camino de Vida ${lp}, Expresión ${exp} y Año Personal ${py}. 2-3 párrafos.
-[EL AÑO 2026 EN SÍNTESIS] Los 3 tránsitos más importantes de 2026. 2-3 párrafos.
+[EL AÑO EN SÍNTESIS] Los 3 tránsitos más importantes de ${ANIO}. 2-3 párrafos.
 [EL MENSAJE DEL I CHING] El hexagrama más relevante. 1-2 párrafos.
-[LECTURA DE LAS 12 CASAS] Las casas más activadas en 2026. 2-3 párrafos.
-[LENORMAND Y TAROT] Las cartas que rigen el año. 1-2 párrafos.
+[LECTURA DE LAS 12 CASAS] Las casas más activadas en ${ANIO}. 2-3 párrafos.
+[LENORMAND Y TAROT] Las cartas que rigen el año ${ANIO}. 1-2 párrafos.
 [PROPÓSITO Y MISIÓN DE VIDA] El propósito profundo. 2 párrafos.
-[GUÍA DE ACCIÓN 2026] Recomendaciones por trimestre Q1, Q2, Q3, Q4.
-Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
+[GUÍA DE ACCIÓN] Recomendaciones por trimestre Q1, Q2, Q3, Q4 del año ${ANIO}.
+Lenguaje poético pero concreto. Máximo 200 palabras por sección. No uses asteriscos ni markdown.`;
       const res = await fetch("/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
       const data = await res.json();
       const texto = data.lectura||"Error al generar la lectura.";
@@ -679,7 +682,7 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
 
 DATOS PERSONALES: Nombre: ${lcForm.nombre} | Fecha: ${lcForm.fecha} | Hora: ${lcForm.hora||"desconocida"} | Ciudad: ${lcForm.ciudad}
 ${dhTexto}
-Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal 2026: ${lcPy}
+Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy}
 
 IMPORTANTE: Los datos de Diseño Humano arriba son REALES y calculados astronómicamente. Interprétalos con precisión y autoridad — NO digas "probablemente" ni "intuyo" respecto al Diseño Humano, porque son datos exactos. Traduce los términos al español de forma natural.
 
@@ -688,17 +691,17 @@ Genera el informe con estos encabezados exactos entre corchetes:
 [PERFIL NUMEROLÓGICO]
 Análisis profundo del Camino de Vida ${lcLp}, Expresión ${lcExp} y Año Personal ${lcPy}. Usa el nombre de pila. 2-3 párrafos ricos y personalizados.
 
-[EL AÑO 2026 EN SÍNTESIS]
-Los 3 tránsitos planetarios más importantes de 2026 para esta persona nacida el ${lcForm.fecha}. Menciona Júpiter, Saturno o Plutón según corresponda. 2-3 párrafos.
+[EL AÑO EN SÍNTESIS]
+Los 3 tránsitos planetarios más importantes de ${ANIO} para esta persona nacida el ${lcForm.fecha}. Menciona Júpiter, Saturno o Plutón según corresponda. 2-3 párrafos.
 
 [EL MENSAJE DEL I CHING]
-El hexagrama más relevante para esta persona en 2026 y su mensaje profundo. 1-2 párrafos.
+El hexagrama más relevante para esta persona en ${ANIO} y su mensaje profundo. 1-2 párrafos.
 
 [LECTURA DE LAS 12 CASAS]
-Las casas astrológicas más activadas en 2026 y su significado específico. 2-3 párrafos.
+Las casas astrológicas más activadas en ${ANIO} y su significado específico. 2-3 párrafos.
 
 [LENORMAND Y TAROT]
-Las cartas Lenormand y el arcano mayor que rigen el año 2026 para esta persona. 1-2 párrafos.
+Las cartas Lenormand y el arcano mayor que rigen el año ${ANIO} para esta persona. 1-2 párrafos.
 
 [CARTA NATAL COMPLETA]
 Análisis profundo de la carta natal: Sol, Luna, Ascendente (si hay hora exacta), planetas en casas principales, aspectos más relevantes. Cómo esta carta define la personalidad y el destino de ${lcForm.nombre.split(' ')[0]}. 3-4 párrafos.
@@ -712,8 +715,8 @@ Cómo la carta natal y el Diseño Humano se complementan y confirman mutuamente.
 [PROPÓSITO Y MISIÓN DE VIDA]
 El propósito profundo de ${lcForm.nombre.split(' ')[0]} según todos los sistemas combinados: numerología, astrología, I Ching y Diseño Humano. Lo que vino a hacer en esta vida. 2 párrafos.
 
-[GUÍA DE ACCIÓN 2026]
-Recomendaciones concretas por trimestre considerando los tránsitos Y la estrategia/autoridad del Diseño Humano de esta persona. Q1, Q2, Q3, Q4 — cada uno con foco específico.
+[GUÍA DE ACCIÓN]
+Recomendaciones concretas por trimestre del año ${ANIO} considerando los tránsitos Y la estrategia/autoridad del Diseño Humano de esta persona. Q1, Q2, Q3, Q4 — cada uno con foco específico.
 
 Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. Usa el nombre de pila en todo el informe. No uses asteriscos ni markdown.`;
       const res = await fetch("/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
@@ -771,7 +774,7 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                 <p>"Lo que ofrezco no viene de libros.<br/>Viene de haber caminado el duelo, la pérdida, y haberme reconstruido desde cero."</p>
               </div>
             </div>
-            <div className="home-by">Antofagasta, Chile · 2026</div>
+            <div className="home-by">Antofagasta, Chile · {ANIO}</div>
           </div>
         )}
 
@@ -790,7 +793,7 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                 </div>
                 <div className="cy-hero">
                   <span className="cy-glyph">🌌</span>
-                  <div className="cy-title">Año Cósmico 2026</div>
+                  <div className="cy-title">Año Cósmico {ANIO}</div>
                   <div className="cy-sub">Numerología · I Ching · Lenormand · Astrología</div>
                   <p className="cy-desc">Tu informe queda guardado permanentemente — siempre verás el mismo.</p>
                 </div>
@@ -811,7 +814,7 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                         <div className="np-title">Tus números</div>
                         <div className="np-item"><span className="np-k">Camino de Vida</span><span className="np-v">{lp}</span></div>
                         <div className="np-item"><span className="np-k">Expresión</span><span className="np-v">{exp||"—"}</span></div>
-                        <div className="np-item"><span className="np-k">Año Personal 2026</span><span className="np-v">{py}</span></div>
+                        <div className="np-item"><span className="np-k">Año Personal {ANIO}</span><span className="np-v">{py}</span></div>
                       </div>}
                       <button className="btn-primary" onClick={submitCosmic} disabled={!cyForm.nombre||!cyForm.fecha||!cyForm.ciudad}>✦ Generar mi lectura</button>
                     </>
