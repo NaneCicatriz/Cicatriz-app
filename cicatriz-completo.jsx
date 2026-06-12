@@ -709,16 +709,16 @@ Lenguaje poético pero concreto y profundo. Máximo 250 palabras por sección.`;
         {/* ════ AÑO CÓSMICO ════ */}
         {tab==="cosmico" && (
           <div className="z1 pb80">
-            <div className="header">
-              <button className="hbk" onClick={()=>setTab("home")}>‹</button>
-              <div className="htitle">Tu Año Cósmico</div>
-            </div>
             {!tieneAcceso("cosmico") ? (
               <Gate producto="cosmico" emoji="🌌" titulo="Tu Año Cósmico" precio="$24.990 CLP"
                 subtitulo="Ingresa tu código de acceso para recibir tu lectura personalizada."
                 linkCompra={LINKS.cosmico} onAccess={()=>darAcceso("cosmico")} onBack={()=>setTab("home")}/>
             ) : (
               <>
+                <div className="header">
+                  <button className="hbk" onClick={()=>setTab("home")}>‹</button>
+                  <div className="htitle">Tu Año Cósmico</div>
+                </div>
                 <div className="cy-hero">
                   <span className="cy-glyph">🌌</span>
                   <div className="cy-title">Año Cósmico 2026</div>
@@ -770,16 +770,16 @@ Lenguaje poético pero concreto y profundo. Máximo 250 palabras por sección.`;
         {/* ════ LECTURA CÓSMICA COMPLETA ════ */}
         {tab==="cosmica" && (
           <div className="z1 pb80">
-            <div className="header">
-              <button className="hbk" onClick={()=>setTab("home")}>‹</button>
-              <div className="htitle">Lectura Cósmica</div>
-            </div>
             {!tieneAcceso("cosmica") ? (
               <Gate producto="cosmica" emoji="🔮" titulo="Lectura Cósmica Completa" precio="$39.990 CLP"
                 subtitulo="Carta Natal + Diseño Humano integrados en una lectura profunda."
                 linkCompra={LINKS.cosmica} onAccess={()=>darAcceso("cosmica")} onBack={()=>setTab("home")}/>
             ) : (
               <>
+                <div className="header">
+                  <button className="hbk" onClick={()=>setTab("home")}>‹</button>
+                  <div className="htitle">Lectura Cósmica</div>
+                </div>
                 <div className="cy-hero" style={{background:"radial-gradient(ellipse at 50% 30%,rgba(20,80,160,.15) 0%,transparent 60%),linear-gradient(170deg,#080e1a 0%,var(--bg) 70%)"}}>
                   <span className="cy-glyph">🔮</span>
                   <div className="cy-title" style={{color:"#a8d4f8"}}>Lectura Cósmica Completa</div>
