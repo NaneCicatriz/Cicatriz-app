@@ -422,7 +422,7 @@ function parseSections(text) {
 }
 
 // ── GATE ────────────────────────────────────────────────────────
-function Gate({ producto, emoji, titulo, precio, subtitulo, linkCompra, onAccess }) {
+function Gate({ producto, emoji, titulo, precio, subtitulo, linkCompra, onAccess, onBack }) {
   const [codigo, setCodigo] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -450,7 +450,12 @@ function Gate({ producto, emoji, titulo, precio, subtitulo, linkCompra, onAccess
   };
 
   return (
-    <div className="gate-wrap z1">
+    <div className="z1" style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
+      <div className="header">
+        <button className="hbk" onClick={onBack}>‹</button>
+        <div className="htitle">{titulo}</div>
+      </div>
+      <div className="gate-wrap" style={{minHeight:"calc(100vh - 57px)"}}>
       <span className="gate-glyph">{emoji}</span>
       <div className="gate-title">{titulo}</div>
       <div className="gate-price">{precio}</div>
@@ -473,6 +478,7 @@ function Gate({ producto, emoji, titulo, precio, subtitulo, linkCompra, onAccess
         <div className="gate-combo-price">$59.990 CLP</div>
         <div className="gate-combo-sub">Año Cósmico + Lectura Cósmica + Oráculo + 21 Días →</div>
       </a>
+      </div>
     </div>
   );
 }
@@ -710,7 +716,7 @@ Lenguaje poético pero concreto y profundo. Máximo 250 palabras por sección.`;
             {!tieneAcceso("cosmico") ? (
               <Gate producto="cosmico" emoji="🌌" titulo="Tu Año Cósmico" precio="$24.990 CLP"
                 subtitulo="Ingresa tu código de acceso para recibir tu lectura personalizada."
-                linkCompra={LINKS.cosmico} onAccess={()=>darAcceso("cosmico")}/>
+                linkCompra={LINKS.cosmico} onAccess={()=>darAcceso("cosmico")} onBack={()=>setTab("home")}/>
             ) : (
               <>
                 <div className="cy-hero">
@@ -771,7 +777,7 @@ Lenguaje poético pero concreto y profundo. Máximo 250 palabras por sección.`;
             {!tieneAcceso("cosmica") ? (
               <Gate producto="cosmica" emoji="🔮" titulo="Lectura Cósmica Completa" precio="$39.990 CLP"
                 subtitulo="Carta Natal + Diseño Humano integrados en una lectura profunda."
-                linkCompra={LINKS.cosmica} onAccess={()=>darAcceso("cosmica")}/>
+                linkCompra={LINKS.cosmica} onAccess={()=>darAcceso("cosmica")} onBack={()=>setTab("home")}/>
             ) : (
               <>
                 <div className="cy-hero" style={{background:"radial-gradient(ellipse at 50% 30%,rgba(20,80,160,.15) 0%,transparent 60%),linear-gradient(170deg,#080e1a 0%,var(--bg) 70%)"}}>
@@ -840,7 +846,7 @@ Lenguaje poético pero concreto y profundo. Máximo 250 palabras por sección.`;
             {!tieneAcceso("oraculo") ? (
               <Gate producto="oraculo" emoji="🌸" titulo="Oráculo Kintsugi" precio="$9.990 CLP"
                 subtitulo="Una carta al día. Un ritual de presencia."
-                linkCompra={LINKS.oraculo} onAccess={()=>darAcceso("oraculo")}/>
+                linkCompra={LINKS.oraculo} onAccess={()=>darAcceso("oraculo")} onBack={()=>setTab("home")}/>
             ) : (
               <>
                 {orPhase==="home" && (
@@ -986,7 +992,7 @@ Lenguaje poético pero concreto y profundo. Máximo 250 palabras por sección.`;
             {!tieneAcceso("programa") ? (
               <Gate producto="programa" emoji="🌿" titulo="21 Días para Bajar el Ruido" precio="$19.990 CLP"
                 subtitulo="5 minutos al día para recuperar tu centro."
-                linkCompra={LINKS.programa} onAccess={()=>darAcceso("programa")}/>
+                linkCompra={LINKS.programa} onAccess={()=>darAcceso("programa")} onBack={()=>setTab("home")}/>
             ) : (
               <>
                 {progView==="home" && (
