@@ -396,7 +396,7 @@ body{background:var(--bg);}
 
 const JQ = ["¿Qué resuena de esta carta en lo que vives hoy?","¿Qué parte de ti necesitaba escuchar esto?","¿Qué harás diferente después de esta carta?","¿Qué emoción se mueve en ti al leerla?"];
 const LOADING_STEPS = ["Calculando camino de vida y expresión...","Analizando tránsitos planetarios 2026...","Consultando el I Ching...","Leyendo el Lenormand...","Interpretando las 12 casas...","Sintetizando todos los sistemas...","Preparando tu informe personalizado..."];
-const LOADING_STEPS_COSMICA = ["Calculando carta natal completa...","Analizando Diseño Humano...","Cruzando sistemas esotéricos...","Interpretando centros y canales...","Sintetizando propósito profundo...","Preparando tu lectura cósmica..."];
+const LOADING_STEPS_COSMICA = ["Calculando perfil numerológico...","Analizando tránsitos 2026...","Consultando I Ching y Lenormand...","Calculando carta natal completa...","Analizando Diseño Humano...","Integrando todos los sistemas...","Preparando tu lectura cósmica completa..."];
 const SECTION_META = {
   "PERFIL NUMEROLÓGICO":{icon:"🔢",lbl:"Numerología"},
   "EL AÑO 2026 EN SÍNTESIS":{icon:"🪐",lbl:"Astrología"},
@@ -636,17 +636,45 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección.`;
     if (guardada) { setLcReport(guardada); setLcScreen("report"); return; }
     for (let i=0;i<LOADING_STEPS_COSMICA.length;i++) { await new Promise(r=>setTimeout(r,900)); setLcLoadStep(i+1); }
     try {
-      const prompt = `Eres un astrólogo y analista de Diseño Humano experto. Genera una Lectura Cósmica Completa profunda y personalizada.
+      const prompt = `Eres un astrólogo y analista de Diseño Humano experto. Genera una Lectura Cósmica Completa profunda y personalizada. Esta es la lectura más completa que existe — integra numerología, astrología, I Ching, Lenormand, carta natal y Diseño Humano en un solo informe.
+
 DATOS PERSONALES: Nombre: ${lcForm.nombre} | Fecha: ${lcForm.fecha} | Hora: ${lcForm.hora||"desconocida"} | Ciudad: ${lcForm.ciudad}
-DISEÑO HUMANO: Tipo: ${lcForm.tipo||"no especificado"} | Autoridad: ${lcForm.autoridad||"no especificada"} | Perfil: ${lcForm.perfil||"no especificado"} | Centros abiertos/definidos: ${lcForm.centros||"no especificados"}
-Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal: ${lcPy}
+DISEÑO HUMANO: Tipo: ${lcForm.tipo||"no especificado"} | Autoridad: ${lcForm.autoridad||"no especificada"} | Perfil: ${lcForm.perfil||"no especificado"} | Centros definidos: ${lcForm.centros||"no especificados"}
+Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal 2026: ${lcPy}
+
 Genera el informe con estos encabezados exactos entre corchetes:
-[CARTA NATAL COMPLETA] Análisis profundo de la carta natal: Sol, Luna, Ascendente (si hay hora), planetas en casas, aspectos principales. 3-4 párrafos.
-[DISEÑO HUMANO] Análisis del tipo ${lcForm.tipo}, estrategia, autoridad ${lcForm.autoridad}, perfil ${lcForm.perfil}, centros definidos y abiertos. Cómo operar correctamente según el diseño. 3-4 párrafos.
-[INTEGRACIÓN CÓSMICA] Cómo la carta natal y el Diseño Humano se complementan. Los temas principales de vida que emergen de la combinación de ambos sistemas. 2-3 párrafos.
-[PROPÓSITO Y MISIÓN DE VIDA] El propósito profundo según todos los sistemas combinados: numerología, astrología y Diseño Humano. 2 párrafos.
-[GUÍA DE ACCIÓN 2026] Recomendaciones concretas considerando el Diseño Humano y los tránsitos. Por trimestre Q1, Q2, Q3, Q4.
-Lenguaje poético pero concreto y profundo. Máximo 250 palabras por sección.`;
+
+[PERFIL NUMEROLÓGICO]
+Análisis profundo del Camino de Vida ${lcLp}, Expresión ${lcExp} y Año Personal ${lcPy}. Usa el nombre de pila. 2-3 párrafos ricos y personalizados.
+
+[EL AÑO 2026 EN SÍNTESIS]
+Los 3 tránsitos planetarios más importantes de 2026 para esta persona nacida el ${lcForm.fecha}. Menciona Júpiter, Saturno o Plutón según corresponda. 2-3 párrafos.
+
+[EL MENSAJE DEL I CHING]
+El hexagrama más relevante para esta persona en 2026 y su mensaje profundo. 1-2 párrafos.
+
+[LECTURA DE LAS 12 CASAS]
+Las casas astrológicas más activadas en 2026 y su significado específico. 2-3 párrafos.
+
+[LENORMAND Y TAROT]
+Las cartas Lenormand y el arcano mayor que rigen el año 2026 para esta persona. 1-2 párrafos.
+
+[CARTA NATAL COMPLETA]
+Análisis profundo de la carta natal: Sol, Luna, Ascendente (si hay hora exacta), planetas en casas principales, aspectos más relevantes. Cómo esta carta define la personalidad y el destino de ${lcForm.nombre.split(' ')[0]}. 3-4 párrafos.
+
+[DISEÑO HUMANO]
+Análisis del tipo ${lcForm.tipo||"no especificado"}, su estrategia de vida y autoridad ${lcForm.autoridad||"no especificada"}. Perfil ${lcForm.perfil||"no especificado"} y lo que significa para su propósito. Centros definidos (${lcForm.centros||"no especificados"}) y cómo condicionan su energía. Cómo operar correctamente según este diseño único. 3-4 párrafos.
+
+[INTEGRACIÓN CÓSMICA]
+Cómo la carta natal y el Diseño Humano se complementan y confirman mutuamente. Los grandes temas de vida que emergen cuando ambos sistemas se leen juntos. Lo que la numerología agrega a esta imagen. 2-3 párrafos profundos.
+
+[PROPÓSITO Y MISIÓN DE VIDA]
+El propósito profundo de ${lcForm.nombre.split(' ')[0]} según todos los sistemas combinados: numerología, astrología, I Ching y Diseño Humano. Lo que vino a hacer en esta vida. 2 párrafos.
+
+[GUÍA DE ACCIÓN 2026]
+Recomendaciones concretas por trimestre considerando los tránsitos Y el Diseño Humano de esta persona. Q1, Q2, Q3, Q4 — cada uno con foco específico.
+
+Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. Usa el nombre de pila en todo el informe.`;
       const res = await fetch("/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
       const data = await res.json();
       const texto = data.lectura||"Error al generar la lectura.";
