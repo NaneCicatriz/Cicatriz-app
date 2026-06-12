@@ -392,6 +392,18 @@ body{background:var(--bg);}
 .dn-btn{flex:1;border-radius:9px;border:1px solid rgba(80,160,80,.15);padding:11px;background:transparent;color:rgba(120,180,130,.5);font-size:13px;cursor:pointer;}
 .dn-btn:hover{border-color:rgba(80,160,80,.3);color:#7ecf94;}
 .dn-btn.fwd{background:linear-gradient(135deg,#2d7a4a,#3a9a5c);border-color:#3a9a5c;color:#e8f5ec;font-weight:600;}
+
+/* ── PRINT / PDF ── */
+@media print {
+  .bnav,.header,.restart-btn,.powered{display:none !important;}
+  .app{max-width:100%;}
+  .rs,.report-hdr{break-inside:avoid;page-break-inside:avoid;}
+  .rs{border:1px solid #ddd;background:#fff;}
+  .rs-content{color:#333;}
+  .rs-title{color:#8a6010;}
+  .rh-name{color:#8a6010;}
+  body,.app{background:#fff;color:#333;}
+}
 `;
 
 const JQ = ["¿Qué resuena de esta carta en lo que vives hoy?","¿Qué parte de ti necesitaba escuchar esto?","¿Qué harás diferente después de esta carta?","¿Qué emoción se mueve en ti al leerla?"];
@@ -411,13 +423,25 @@ const SECTION_META = {
   "Tu Lectura":{icon:"✨",lbl:"Lectura"},
 };
 
+function cleanText(text) {
+  return text
+    .replace(/\*\*([^*]+)\*\*/g, '$1')  // quita **negritas**
+    .replace(/\*([^*]+)\*/g, '$1')       // quita *itálicas*
+    .replace(/---/g, '')                  // quita separadores
+    .replace(/#{1,6}\s/g, '')            // quita headers markdown
+    .trim();
+}
+
 function parseSections(text) {
   if (!text) return [];
   const sections = [];
   const rx = /\[([^\]]+)\]([\s\S]*?)(?=\[|$)/g;
   let m;
-  while ((m = rx.exec(text)) !== null) sections.push({title:m[1].trim(),content:m[2].trim()});
-  if (!sections.length && text.trim()) sections.push({title:"Tu Lectura",content:text});
+  while ((m = rx.exec(text)) !== null) {
+    const content = cleanText(m[2]);
+    if (content) sections.push({title:m[1].trim(), content});
+  }
+  if (!sections.length && text.trim()) sections.push({title:"Tu Lectura", content:cleanText(text)});
   return sections;
 }
 
