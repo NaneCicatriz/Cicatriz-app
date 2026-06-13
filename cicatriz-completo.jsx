@@ -352,16 +352,17 @@ body{background:var(--bg);}
 .sc-btn{background:transparent;border:1px solid rgba(140,80,200,.2);border-radius:7px;padding:8px 18px;color:rgba(180,120,230,.55);font-size:12px;cursor:pointer;}
 
 /* ── CATS & GRID ── */
-.cats-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;}
-.cats-title{font-family:'Fraunces',serif;font-size:24px;color:#d4a8f0;margin-bottom:6px;}
-.cats-sub{font-size:13px;color:rgba(180,130,220,.4);font-style:italic;margin-bottom:8px;}
-.cats-int{font-family:'Fraunces',serif;font-style:italic;font-size:15px;color:rgba(200,160,240,.55);background:rgba(140,80,200,.06);border:1px solid rgba(140,80,200,.12);border-radius:10px;padding:10px 16px;margin-bottom:28px;max-width:300px;}
-.cat-cards{display:flex;flex-direction:column;gap:12px;width:100%;max-width:320px;}
-.cat-card{border-radius:16px;padding:20px 22px;cursor:pointer;transition:all .25s;text-align:left;border:1px solid;}
+.cats-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;text-align:center;}
+.cats-title{font-family:'Fraunces',serif;font-size:22px;color:#d4a8f0;margin-bottom:4px;}
+.cats-sub{font-size:12px;color:rgba(180,130,220,.4);font-style:italic;margin-bottom:6px;}
+.cats-int{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:rgba(200,160,240,.55);background:rgba(140,80,200,.06);border:1px solid rgba(140,80,200,.12);border-radius:10px;padding:8px 14px;margin-bottom:24px;max-width:280px;}
+.cat-cards{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;}
+.cat-card{border-radius:14px;padding:16px 18px;cursor:pointer;transition:all .25s;text-align:left;border:1px solid;display:flex;align-items:center;gap:14px;}
 .cat-card:hover{transform:translateY(-2px);filter:brightness(1.1);}
-.cat-card-emoji{font-size:28px;margin-bottom:8px;display:block;}
-.cat-card-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:4px;}
-.cat-card-desc{font-size:12px;opacity:.6;line-height:1.5;}
+.cat-card-emoji{font-size:32px;flex-shrink:0;}
+.cat-card-body{flex:1;}
+.cat-card-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:2px;}
+.cat-card-desc{font-size:11px;opacity:.55;}
 .grid-wrap{padding:20px 16px 90px;}
 .grid-header{text-align:center;margin-bottom:20px;}
 .grid-title{font-family:'Fraunces',serif;font-size:20px;margin-bottom:4px;}
@@ -1071,11 +1072,13 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                       <div className="cat-cards">
                         {orCats.map(c => (
                           <div key={c.id} className="cat-card"
-                            style={{background:`rgba(${c.id===1?"232,144,144":c.id===2?"232,200,128":c.id===3?"144,216,160":"144,184,232"},.08)`,borderColor:`rgba(${c.id===1?"220,100,100":c.id===2?"220,180,80":c.id===3?"100,200,120":"100,140,220"},.2)`}}
+                            style={{background:`rgba(${c.id===1?"232,144,144":c.id===2?"232,200,128":c.id===3?"144,216,160":"144,184,232"},.08)`,borderColor:`rgba(${c.id===1?"220,100,100":c.id===2?"220,180,80":c.id===3?"100,200,120":"100,140,220"},.22)`}}
                             onClick={()=>selectCat(c)}>
                             <span className="cat-card-emoji">{c.emoji}</span>
-                            <div className="cat-card-name" style={{color:c.color}}>{c.name}</div>
-                            <div className="cat-card-desc" style={{color:c.color}}>{c.cards.length} cartas disponibles</div>
+                            <div className="cat-card-body">
+                              <div className="cat-card-name" style={{color:c.color}}>{c.name}</div>
+                              <div className="cat-card-desc" style={{color:c.color}}>{c.cards.length} cartas · toca para elegir →</div>
+                            </div>
                           </div>
                         ))}
                       </div>
