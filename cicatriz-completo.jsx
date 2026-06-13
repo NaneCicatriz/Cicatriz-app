@@ -679,8 +679,8 @@ export default function Cicatriz() {
   };
 
   const selectCardFromGrid = (card) => {
-    const fullCard = ALL_CARDS.find(c => c.id === card.id);
-    setCurrentCard(fullCard); setFlipped(false); setJournalText(""); setCardSaved(false);
+    setCurrentCard({...card, cat: selectedCat});
+    setFlipped(false); setJournalText(""); setCardSaved(false);
     setOrPhase("card");
     setTimeout(() => setFlipped(true), 500);
   };
@@ -1114,11 +1114,11 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                 )}
 
                 {/* CARTA REVELADA */}
-                {orPhase==="card" && currentCard && cat && (
+                {orPhase==="card" && currentCard && currentCard.cat && (
                   <div className="z1">
                     <div className="header" style={{background:"rgba(8,5,14,.95)",borderBottom:"1px solid rgba(140,80,200,.08)"}}>
                       <button className="hbk" onClick={()=>setOrPhase("grid")}>‹</button>
-                      <div className="htitle" style={{color:cat.color}}>{cat.emoji} {cat.name}</div>
+                      <div className="htitle" style={{color:currentCard.cat.color}}>{currentCard.cat.emoji} {currentCard.cat.name}</div>
                     </div>
                     <div className="card-stage">
                       <div className="oracle-card">
@@ -1129,15 +1129,15 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                             <div className="cb-t">Kintsugi</div>
                             <div className="cb-h">Toca para revelar</div>
                           </div>
-                          <div className="card-face card-front" style={{background:cat.bg,borderColor:cat.border}}>
-                            <div className="cf-cat" style={{color:cat.color}}>{cat.emoji} {cat.name}</div>
-                            <div className="cf-name" style={{color:cat.color}}>{currentCard.name}</div>
-                            <div className="cf-emo" style={{color:cat.color}}>{currentCard.emocion}</div>
-                            <div className="cf-canal" style={{color:cat.color}}>Canal · {currentCard.canal}</div>
-                            <div className="cf-div" style={{background:cat.color}}/>
-                            <div className="cf-phrase" style={{color:cat.color}}>"{currentCard.phrase}"</div>
-                            <div className="cf-al" style={{color:cat.color}}>Acción</div>
-                            <div className="cf-a" style={{color:cat.color}}>{currentCard.accion}</div>
+                          <div className="card-face card-front" style={{background:currentCard.cat.bg,borderColor:currentCard.cat.border}}>
+                            <div className="cf-cat" style={{color:currentCard.cat.color}}>{currentCard.cat.emoji} {currentCard.cat.name}</div>
+                            <div className="cf-name" style={{color:currentCard.cat.color}}>{currentCard.name}</div>
+                            <div className="cf-emo" style={{color:currentCard.cat.color}}>{currentCard.emocion}</div>
+                            <div className="cf-canal" style={{color:currentCard.cat.color}}>Canal · {currentCard.canal}</div>
+                            <div className="cf-div" style={{background:currentCard.cat.color}}/>
+                            <div className="cf-phrase" style={{color:currentCard.cat.color}}>"{currentCard.phrase}"</div>
+                            <div className="cf-al" style={{color:currentCard.cat.color}}>Acción</div>
+                            <div className="cf-a" style={{color:currentCard.cat.color}}>{currentCard.accion}</div>
                           </div>
                         </div>
                       </div>
