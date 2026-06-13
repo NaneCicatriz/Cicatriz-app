@@ -351,6 +351,27 @@ body{background:var(--bg);}
 .sc-s{font-size:11px;color:rgba(160,110,220,.35);font-style:italic;margin-bottom:12px;}
 .sc-btn{background:transparent;border:1px solid rgba(140,80,200,.2);border-radius:7px;padding:8px 18px;color:rgba(180,120,230,.55);font-size:12px;cursor:pointer;}
 
+/* ── CATS & GRID ── */
+.cats-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;}
+.cats-title{font-family:'Fraunces',serif;font-size:24px;color:#d4a8f0;margin-bottom:6px;}
+.cats-sub{font-size:13px;color:rgba(180,130,220,.4);font-style:italic;margin-bottom:8px;}
+.cats-int{font-family:'Fraunces',serif;font-style:italic;font-size:15px;color:rgba(200,160,240,.55);background:rgba(140,80,200,.06);border:1px solid rgba(140,80,200,.12);border-radius:10px;padding:10px 16px;margin-bottom:28px;max-width:300px;}
+.cat-cards{display:flex;flex-direction:column;gap:12px;width:100%;max-width:320px;}
+.cat-card{border-radius:16px;padding:20px 22px;cursor:pointer;transition:all .25s;text-align:left;border:1px solid;}
+.cat-card:hover{transform:translateY(-2px);filter:brightness(1.1);}
+.cat-card-emoji{font-size:28px;margin-bottom:8px;display:block;}
+.cat-card-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:4px;}
+.cat-card-desc{font-size:12px;opacity:.6;line-height:1.5;}
+.grid-wrap{padding:20px 16px 90px;}
+.grid-header{text-align:center;margin-bottom:20px;}
+.grid-title{font-family:'Fraunces',serif;font-size:20px;margin-bottom:4px;}
+.grid-sub{font-size:12px;opacity:.5;font-style:italic;}
+.cards-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.grid-card{aspect-ratio:2/3;border-radius:12px;border:1px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;}
+.grid-card:hover{transform:scale(1.05);}
+.grid-card-back{font-size:20px;opacity:.45;}
+.grid-card-num{font-size:8px;letter-spacing:1px;opacity:.2;margin-top:3px;text-transform:uppercase;}
+
 /* ── 21 DIAS ── */
 .prog-hero{background:linear-gradient(170deg,#0c1a14 0%,var(--bg) 70%);padding:30px 20px 22px;text-align:center;border-bottom:1px solid rgba(80,160,80,.07);}
 .prog-t{font-family:'Fraunces',serif;font-size:24px;color:#7ecf94;margin-bottom:3px;}
@@ -565,16 +586,20 @@ export default function Cicatriz() {
   // Oracle state
   const [orPhase, setOrPhase] = useState("home");
   const [intention, setIntention] = useState("");
+  const [orCats, setOrCats] = useState([]); // categorías sugeridas según emoción
+  const [selectedCat, setSelectedCat] = useState(null); // categoría elegida
   const [currentCard, setCurrentCard] = useState(null);
   const [flipped, setFlipped] = useState(false);
   const [journalText, setJournalText] = useState("");
   const [cardSaved, setCardSaved] = useState(false);
-  const [streak, setStreak] = useState(3);
-  const [drawnToday, setDrawnToday] = useState(false);
-  const [orHistory, setOrHistory] = useState([
-    {date:"Ayer",card:ALL_CARDS[4],note:""},
-    {date:"Hace 2 días",card:ALL_CARDS[11],note:""},
-  ]);
+  const [streak, setStreak] = useState(() => {
+    try { const s = localStorage.getItem("or_streak"); return s ? parseInt(s) : 0; } catch { return 0; }
+  });
+  const [orHistory, setOrHistory] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("or_history") || "[]"); } catch { return []; }
+  });
+  const todayKey = new Date().toISOString().slice(0,10);
+  const drawnToday = orHistory.length > 0 && orHistory[0].date === todayKey;
 
   // Año Cósmico state
   const [cyScreen, setCyScreen] = useState("form");
@@ -616,17 +641,58 @@ export default function Cicatriz() {
   const bloque = BLOQUES[dia?.bloque];
   const cat = currentCard?.cat;
 
-  const drawCard = () => {
-    const r = ALL_CARDS[Math.floor(Math.random()*ALL_CARDS.length)];
-    setCurrentCard(r); setFlipped(false); setJournalText(""); setCardSaved(false);
+  // Mapeo emoción → categorías (por id de CATS: 1=Dolor, 2=Amor, 3=Esperanza, 4=Resiliencia)
+  const mapearEmocion = (texto) => {
+    const t = texto.toLowerCase();
+    const dolor = ["trist","llor","dolor","pérdida","perdida","sufr","culpa","vacío","vacio","roto","rota"];
+    const amor = ["soled","abandon","desamor","extraño","amor","querer","relacion","vínculo","vinculo","familia"];
+    const esperanza = ["espera","esperanza","luz","posible","confío","confio","fe","alegría","alegria","gratitud","gracias","paz","bien"];
+    const resiliencia = ["rabia","enojo","frustrac","cansad","agotad","miedo","ansied","angustia","confusión","confusion","perdida","no sé","no se","fuerza","seguir","cambio"];
+    const match = (palabras) => palabras.some(p => t.includes(p));
+    let ids = [];
+    if (match(dolor)) ids.push(1);
+    if (match(amor)) ids.push(2);
+    if (match(esperanza)) ids.push(3);
+    if (match(resiliencia)) ids.push(4);
+    // Si no matchea nada o texto muy corto → mostrar las 4
+    if (ids.length === 0) ids = [1,2,3,4];
+    // Si matchea 1 sola → agrega una complementaria al azar
+    if (ids.length === 1) {
+      const resto = [1,2,3,4].filter(x=>!ids.includes(x));
+      ids.push(resto[Math.floor(Math.random()*resto.length)]);
+    }
+    // Máximo 3 categorías
+    if (ids.length > 3) ids = ids.slice(0,3);
+    return ids.map(id => CATS.find(c=>c.id===id));
+  };
+
+  const handleIntention = () => {
+    const sugeridas = mapearEmocion(intention);
+    setOrCats(sugeridas);
+    setOrPhase("cats");
+  };
+
+  const selectCat = (cat) => {
+    setSelectedCat(cat);
+    setOrPhase("grid");
+  };
+
+  const selectCardFromGrid = (card) => {
+    setCurrentCard(card); setFlipped(false); setJournalText(""); setCardSaved(false);
     setOrPhase("card");
-    setTimeout(() => setFlipped(true), 400);
+    setTimeout(() => setFlipped(true), 500);
   };
 
   const saveCard = () => {
     if (!currentCard) return;
-    setOrHistory(prev => [{date:"Hoy",card:currentCard,note:journalText},...prev]);
-    setDrawnToday(true); setStreak(s=>s+1); setCardSaved(true);
+    const entry = {date: todayKey, card: currentCard, note: journalText};
+    const newHistory = [entry, ...orHistory].slice(0, 30);
+    setOrHistory(newHistory);
+    localStorage.setItem("or_history", JSON.stringify(newHistory));
+    const newStreak = streak + 1;
+    setStreak(newStreak);
+    localStorage.setItem("or_streak", String(newStreak));
+    setCardSaved(true);
   };
 
   const submitCosmic = async () => {
@@ -909,6 +975,7 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                 linkCompra={LINKS.oraculo} onAccess={()=>darAcceso("oraculo")} onBack={()=>setTab("home")}/>
             ) : (
               <>
+                {/* HOME */}
                 {orPhase==="home" && (
                   <div className="pb80">
                     <div className="or-hero">
@@ -929,7 +996,7 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                         <div style={{background:"rgba(140,80,200,.06)",border:"1px solid rgba(140,80,200,.12)",borderRadius:16,padding:28,textAlign:"center",marginBottom:14}}>
                           <div style={{fontSize:36,marginBottom:10,opacity:.6}}>🌙</div>
                           <div style={{fontFamily:"'Fraunces',serif",fontSize:17,color:"rgba(200,160,240,.55)",marginBottom:6}}>Ya recibiste tu carta de hoy</div>
-                          <div style={{fontSize:13,color:"rgba(160,120,220,.35)",fontStyle:"italic"}}>El oráculo habla una vez al día. Vuelve mañana.</div>
+                          <div style={{fontSize:13,color:"rgba(160,120,220,.35)",fontStyle:"italic"}}>Vuelve mañana para una nueva.</div>
                         </div>
                       ) : (
                         <div className="today-card" onClick={()=>setOrPhase("breathe")}>
@@ -944,7 +1011,7 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                         <div className="sec-label">Cartas recientes</div>
                         {orHistory.slice(0,4).map((h,i)=>(
                           <div key={i} className="past-c" onClick={()=>{setCurrentCard(h.card);setFlipped(true);setJournalText(h.note||"");setCardSaved(true);setOrPhase("card");}}>
-                            <div className="pc-date">{h.date}</div>
+                            <div className="pc-date">{h.date===todayKey?"Hoy":h.date}</div>
                             <div><div className="pc-n">{h.card.name}</div><div className="pc-p">"{h.card.phrase.slice(0,48)}..."</div></div>
                           </div>
                         ))}
@@ -952,6 +1019,8 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                     </div>
                   </div>
                 )}
+
+                {/* RESPIRACIÓN */}
                 {orPhase==="breathe" && (
                   <div style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
                     <div className="ritual-wrap">
@@ -967,26 +1036,84 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                     </div>
                   </div>
                 )}
+
+                {/* INTENCIÓN */}
                 {orPhase==="intention" && (
                   <div style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
                     <div className="ritual-wrap">
                       <span className="rg">🌸</span>
-                      <div className="rt">Tu intención</div>
-                      <div className="rs2">¿qué traes hoy al ritual?</div>
+                      <div className="rt">¿Qué sientes hoy?</div>
+                      <div className="rs2">nombra tu emoción con una palabra</div>
                       <div className="int-wrap">
-                        <div className="int-lbl">Lo que traigo hoy es...</div>
-                        <input className="int-input" placeholder="confusión, cansancio, esperanza..." value={intention} onChange={e=>setIntention(e.target.value)}/>
+                        <div className="int-lbl">Hoy siento...</div>
+                        <input className="int-input" placeholder="tristeza, miedo, gratitud..."
+                          value={intention} onChange={e=>setIntention(e.target.value)}
+                          onKeyDown={e=>e.key==="Enter"&&intention.trim()&&handleIntention()}/>
                       </div>
-                      <button className="draw-btn" onClick={drawCard}>
-                        <span className="db-icon">🃏</span><span className="db-lbl">Recibir carta</span><span className="db-sub">toca para revelar</span>
+                      <button className="draw-btn" onClick={handleIntention} style={{opacity:intention.trim()?1:.4,pointerEvents:intention.trim()?"auto":"none"}}>
+                        <span className="db-icon">→</span><span className="db-lbl">Ver mis cartas</span><span className="db-sub">según lo que siento</span>
                       </button>
                     </div>
                   </div>
                 )}
+
+                {/* SELECCIÓN DE CATEGORÍA */}
+                {orPhase==="cats" && (
+                  <div style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
+                    <div className="header" style={{background:"rgba(8,5,14,.95)",borderBottom:"1px solid rgba(140,80,200,.08)"}}>
+                      <button className="hbk" onClick={()=>setOrPhase("intention")}>‹</button>
+                      <div className="htitle" style={{color:"#d4a8f0"}}>Elige tu camino</div>
+                    </div>
+                    <div className="cats-wrap">
+                      <div className="cats-title">Para lo que traes hoy</div>
+                      <div className="cats-sub">¿desde dónde quieres trabajarlo?</div>
+                      {intention && <div className="cats-int">"{intention}"</div>}
+                      <div className="cat-cards">
+                        {orCats.map(c => (
+                          <div key={c.id} className="cat-card"
+                            style={{background:`rgba(${c.id===1?"232,144,144":c.id===2?"232,200,128":c.id===3?"144,216,160":"144,184,232"},.08)`,borderColor:`rgba(${c.id===1?"220,100,100":c.id===2?"220,180,80":c.id===3?"100,200,120":"100,140,220"},.2)`}}
+                            onClick={()=>selectCat(c)}>
+                            <span className="cat-card-emoji">{c.emoji}</span>
+                            <div className="cat-card-name" style={{color:c.color}}>{c.name}</div>
+                            <div className="cat-card-desc" style={{color:c.color}}>{c.cards.length} cartas disponibles</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* GRILLA DE CARTAS */}
+                {orPhase==="grid" && selectedCat && (
+                  <div className="z1">
+                    <div className="header" style={{background:"rgba(8,5,14,.95)",borderBottom:`1px solid ${selectedCat.border}`}}>
+                      <button className="hbk" onClick={()=>setOrPhase("cats")}>‹</button>
+                      <div className="htitle" style={{color:selectedCat.color}}>{selectedCat.emoji} {selectedCat.name}</div>
+                    </div>
+                    <div className="grid-wrap">
+                      <div className="grid-header">
+                        <div className="grid-title" style={{color:selectedCat.color}}>Elige tu carta</div>
+                        <div className="grid-sub">Toca la que te llame</div>
+                      </div>
+                      <div className="cards-grid">
+                        {selectedCat.cards.map((card,i) => (
+                          <div key={card.id} className="grid-card"
+                            style={{background:`rgba(${selectedCat.id===1?"232,144,144":selectedCat.id===2?"232,200,128":selectedCat.id===3?"144,216,160":"144,184,232"},.07)`,borderColor:`rgba(${selectedCat.id===1?"220,100,100":selectedCat.id===2?"220,180,80":selectedCat.id===3?"100,200,120":"100,140,220"},.18)`}}
+                            onClick={()=>selectCardFromGrid(card)}>
+                            <span className="grid-card-back">{selectedCat.emoji}</span>
+                            <span className="grid-card-num" style={{color:selectedCat.color}}>carta {i+1}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* CARTA REVELADA */}
                 {orPhase==="card" && currentCard && cat && (
                   <div className="z1">
                     <div className="header" style={{background:"rgba(8,5,14,.95)",borderBottom:"1px solid rgba(140,80,200,.08)"}}>
-                      <button className="hbk" onClick={()=>setOrPhase("home")}>‹</button>
+                      <button className="hbk" onClick={()=>setOrPhase("grid")}>‹</button>
                       <div className="htitle" style={{color:cat.color}}>{cat.emoji} {cat.name}</div>
                     </div>
                     <div className="card-stage">
@@ -1023,13 +1150,7 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                           <textarea className="jta" placeholder="Escribe lo que resuena..." value={journalText} onChange={e=>setJournalText(e.target.value)} rows={3} readOnly={cardSaved}/>
                         </div>
                         {!cardSaved ? (
-                          <>
-                            <div className="act-row">
-                              <button className="act-btn act-s" onClick={drawCard}>🔄 Otra carta</button>
-                              <button className="act-btn act-p">↗ Compartir</button>
-                            </div>
-                            <button className="save-btn" onClick={saveCard}>✦ Guardar en mi diario</button>
-                          </>
+                          <button className="save-btn" onClick={saveCard}>✦ Guardar en mi diario</button>
                         ) : (
                           <div className="saved-conf">
                             <div className="sc-ico">✨</div>
