@@ -679,7 +679,8 @@ export default function Cicatriz() {
   };
 
   const selectCardFromGrid = (card) => {
-    setCurrentCard(card); setFlipped(false); setJournalText(""); setCardSaved(false);
+    const fullCard = ALL_CARDS.find(c => c.id === card.id);
+    setCurrentCard(fullCard); setFlipped(false); setJournalText(""); setCardSaved(false);
     setOrPhase("card");
     setTimeout(() => setFlipped(true), 500);
   };
