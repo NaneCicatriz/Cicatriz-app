@@ -363,7 +363,14 @@ body{background:var(--bg);}
 .cat-card-body{flex:1;}
 .cat-card-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:2px;}
 .cat-card-desc{font-size:11px;opacity:.55;}
-.grid-wrap{padding:20px 16px 90px;}
+.emo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;width:100%;max-width:320px;margin-bottom:10px;}
+.emo-btn{border-radius:12px;padding:13px 10px;cursor:pointer;transition:all .2s;text-align:center;border:1px solid rgba(140,80,200,.18);background:rgba(140,80,200,.06);display:flex;flex-direction:column;align-items:center;gap:4px;}
+.emo-btn:hover{background:rgba(140,80,200,.14);border-color:rgba(140,80,200,.35);transform:scale(1.03);}
+.emo-emoji{font-size:22px;line-height:1;}
+.emo-label{font-family:'Fraunces',serif;font-size:13px;color:rgba(200,155,240,.8);}
+.emo-otra{width:100%;max-width:320px;border-radius:12px;padding:13px;cursor:pointer;transition:all .2s;text-align:center;border:1px dashed rgba(140,80,200,.25);background:transparent;font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:rgba(160,110,220,.45);}
+.emo-otra:hover{border-color:rgba(140,80,200,.45);color:rgba(200,155,240,.7);}
+
 .grid-header{text-align:center;margin-bottom:20px;}
 .grid-title{font-family:'Fraunces',serif;font-size:20px;margin-bottom:4px;}
 .grid-sub{font-size:12px;opacity:.5;font-style:italic;}
@@ -642,34 +649,35 @@ export default function Cicatriz() {
   const bloque = BLOQUES[dia?.bloque];
   const cat = currentCard?.cat;
 
-  // Mapeo emoción → categorías (por id de CATS: 1=Dolor, 2=Amor, 3=Esperanza, 4=Resiliencia)
-  const mapearEmocion = (texto) => {
-    const t = texto.toLowerCase();
-    const dolor = ["trist","llor","dolor","pérdida","perdida","sufr","culpa","vacío","vacio","roto","rota"];
-    const amor = ["soled","abandon","desamor","extraño","amor","querer","relacion","vínculo","vinculo","familia"];
-    const esperanza = ["espera","esperanza","luz","posible","confío","confio","fe","alegría","alegria","gratitud","gracias","paz","bien"];
-    const resiliencia = ["rabia","enojo","frustrac","cansad","agotad","miedo","ansied","angustia","confusión","confusion","perdida","no sé","no se","fuerza","seguir","cambio"];
-    const match = (palabras) => palabras.some(p => t.includes(p));
-    let ids = [];
-    if (match(dolor)) ids.push(1);
-    if (match(amor)) ids.push(2);
-    if (match(esperanza)) ids.push(3);
-    if (match(resiliencia)) ids.push(4);
-    // Si no matchea nada o texto muy corto → mostrar las 4
-    if (ids.length === 0) ids = [1,2,3,4];
-    // Si matchea 1 sola → agrega una complementaria al azar
-    if (ids.length === 1) {
-      const resto = [1,2,3,4].filter(x=>!ids.includes(x));
-      ids.push(resto[Math.floor(Math.random()*resto.length)]);
-    }
-    // Máximo 3 categorías
-    if (ids.length > 3) ids = ids.slice(0,3);
-    return ids.map(id => CATS.find(c=>c.id===id));
+
+  // Emociones predefinidas con mapeo exacto a categorías
+  const EMOCIONES = [
+    {label:"Tristeza",     emoji:"💧", cats:[1,3]},
+    {label:"Vacío",        emoji:"🕳️", cats:[1,2]},
+    {label:"Angustia",     emoji:"🌀", cats:[1,4]},
+    {label:"Llanto",       emoji:"😢", cats:[1,2]},
+    {label:"Rabia",        emoji:"🔥", cats:[1,4]},
+    {label:"Frustración",  emoji:"😤", cats:[4,1]},
+    {label:"Miedo",        emoji:"🫧", cats:[4,1]},
+    {label:"Soledad",      emoji:"🌑", cats:[2,1]},
+    {label:"Culpa",        emoji:"🪢", cats:[1,2]},
+    {label:"Confusión",    emoji:"🌫️", cats:[2,4]},
+    {label:"Nostalgia",    emoji:"🍂", cats:[2,1]},
+    {label:"Cansancio",    emoji:"🌿", cats:[4,2]},
+    {label:"Esperanza",    emoji:"🌱", cats:[3,4]},
+    {label:"Gratitud",     emoji:"🌸", cats:[2,3]},
+  ];
+
+  const handleEmocion = (emocion) => {
+    setIntention(emocion.label);
+    const sugeridas = emocion.cats.map(id => CATS.find(c=>c.id===id));
+    setOrCats(sugeridas);
+    setOrPhase("cats");
   };
 
-  const handleIntention = () => {
-    const sugeridas = mapearEmocion(intention);
-    setOrCats(sugeridas);
+  const handleOtra = () => {
+    setIntention("otra");
+    setOrCats(CATS); // las 4 categorías completas
     setOrPhase("cats");
   };
 
@@ -1039,21 +1047,25 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                   </div>
                 )}
 
-                {/* INTENCIÓN */}
+                {/* GRILLA DE EMOCIONES */}
                 {orPhase==="intention" && (
                   <div style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
-                    <div className="ritual-wrap">
-                      <span className="rg">🌸</span>
-                      <div className="rt">¿Qué sientes hoy?</div>
-                      <div className="rs2">nombra tu emoción con una palabra</div>
-                      <div className="int-wrap">
-                        <div className="int-lbl">Hoy siento...</div>
-                        <input className="int-input" placeholder="tristeza, miedo, gratitud..."
-                          value={intention} onChange={e=>setIntention(e.target.value)}
-                          onKeyDown={e=>e.key==="Enter"&&intention.trim()&&handleIntention()}/>
+                    <div className="header" style={{background:"rgba(8,5,14,.95)",borderBottom:"1px solid rgba(140,80,200,.08)"}}>
+                      <button className="hbk" onClick={()=>setOrPhase("breathe")}>‹</button>
+                      <div className="htitle" style={{color:"#d4a8f0"}}>¿Cómo estás hoy?</div>
+                    </div>
+                    <div style={{padding:"28px 20px 90px",display:"flex",flexDirection:"column",alignItems:"center"}}>
+                      <p style={{fontSize:13,color:"rgba(180,130,220,.45)",fontStyle:"italic",marginBottom:22,textAlign:"center"}}>Toca lo que más se acerca a lo que sientes</p>
+                      <div className="emo-grid">
+                        {EMOCIONES.map((e,i) => (
+                          <button key={i} className="emo-btn" onClick={()=>handleEmocion(e)}>
+                            <span className="emo-emoji">{e.emoji}</span>
+                            <span className="emo-label">{e.label}</span>
+                          </button>
+                        ))}
                       </div>
-                      <button className="draw-btn" onClick={handleIntention} style={{opacity:intention.trim()?1:.4,pointerEvents:intention.trim()?"auto":"none"}}>
-                        <span className="db-icon">→</span><span className="db-lbl">Ver mis cartas</span><span className="db-sub">según lo que siento</span>
+                      <button className="emo-otra" onClick={handleOtra}>
+                        Otra cosa que no veo aquí...
                       </button>
                     </div>
                   </div>
@@ -1067,9 +1079,9 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                       <div className="htitle" style={{color:"#d4a8f0"}}>Elige tu camino</div>
                     </div>
                     <div className="cats-wrap">
-                      <div className="cats-title">Para lo que traes hoy</div>
+                      <div className="cats-title">Para lo que sientes</div>
                       <div className="cats-sub">¿desde dónde quieres trabajarlo?</div>
-                      {intention && <div className="cats-int">"{intention}"</div>}
+                      {intention && intention !== "otra" && <div className="cats-int">"{intention}"</div>}
                       <div className="cat-cards">
                         {orCats.map(c => (
                           <div key={c.id} className="cat-card"
