@@ -933,7 +933,7 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                   <span className="cy-glyph">🔮</span>
                   <div className="cy-title" style={{color:"#a8d4f8"}}>Lectura Cósmica Completa</div>
                   <div className="cy-sub" style={{color:"rgba(130,180,220,.4)"}}>Carta Natal · Diseño Humano · Integración profunda</div>
-                  <p className="cy-desc">Para esta lectura necesitas tu hora exacta de nacimiento y tu Diseño Humano.</p>
+                  <p className="cy-desc">Tu carta natal y Diseño Humano se calculan automáticamente. Solo necesitas tu fecha, hora y ciudad de nacimiento.</p>
                 </div>
                 <div style={{padding:"28px 20px 0"}}>
                   {lcScreen==="form" && (
