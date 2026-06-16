@@ -23,7 +23,7 @@ const sbFetch = async (path, options = {}) => {
 };
 
 const validarCodigo = async (codigo, producto) => {
-  const data = await sbFetch(`CODIGOS?codigo=eq.${encodeURIComponent(codigo)}&usado=eq.false&select=*`);
+  const data = await sbFetch(`CODIGOS?codigo=eq.${encodeURIComponent(codigo)}&usado=eq.FALSE&select=*`);
   if (!data || data.length === 0) return null;
   const row = data[0];
   if (row.producto !== "all" && row.producto !== producto) return null;
@@ -458,10 +458,10 @@ const SECTION_META = {
 
 function cleanText(text) {
   return text
-    .replace(/\*\*([^*]+)\*\*/g, '$1')  // quita **negritas**
-    .replace(/\*([^*]+)\*/g, '$1')       // quita *itálicas*
-    .replace(/---/g, '')                  // quita separadores
-    .replace(/#{1,6}\s/g, '')            // quita headers markdown
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/---/g, '')
+    .replace(/#{1,6}\s/g, '')
     .trim();
 }
 
@@ -594,8 +594,8 @@ export default function Cicatriz() {
   // Oracle state
   const [orPhase, setOrPhase] = useState("home");
   const [intention, setIntention] = useState("");
-  const [orCats, setOrCats] = useState([]); // categorías sugeridas según emoción
-  const [selectedCat, setSelectedCat] = useState(null); // categoría elegida
+  const [orCats, setOrCats] = useState([]);
+  const [selectedCat, setSelectedCat] = useState(null);
   const [currentCard, setCurrentCard] = useState(null);
   const [flipped, setFlipped] = useState(false);
   const [journalText, setJournalText] = useState("");
@@ -649,8 +649,6 @@ export default function Cicatriz() {
   const bloque = BLOQUES[dia?.bloque];
   const cat = currentCard?.cat;
 
-
-  // Emociones predefinidas con mapeo exacto a categorías
   const EMOCIONES = [
     {label:"Tristeza",     emoji:"💧", cats:[1,3]},
     {label:"Vacío",        emoji:"🕳️", cats:[1,2]},
@@ -677,7 +675,7 @@ export default function Cicatriz() {
 
   const handleOtra = () => {
     setIntention("otra");
-    setOrCats(CATS); // las 4 categorías completas
+    setOrCats(CATS);
     setOrPhase("cats");
   };
 
@@ -739,7 +737,6 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección. No uses aste
     const guardada = await buscarLectura("lecturas_cosmicas", lcForm.nombre, lcForm.fecha);
     if (guardada) { setLcReport(guardada); setLcScreen("report"); return; }
 
-    // Paso 1: Calcular el Diseño Humano real con la API
     let dh = null;
     try {
       const dhRes = await fetch("/api/diseno-humano",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({fecha:lcForm.fecha,hora:lcForm.hora,ciudad:lcForm.ciudad})});
@@ -749,7 +746,6 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección. No uses aste
 
     for (let i=0;i<LOADING_STEPS_COSMICA.length;i++) { await new Promise(r=>setTimeout(r,900)); setLcLoadStep(i+1); }
 
-    // Construir el bloque de Diseño Humano para el prompt
     const dhTexto = dh
       ? `DISEÑO HUMANO (calculado con precisión astronómica): Tipo: ${dh.tipo} | Estrategia: ${dh.estrategia} | Autoridad: ${dh.autoridad} | Perfil: ${dh.perfil} | Definición: ${dh.definicion} | Cruz de Encarnación: ${dh.cruz} | Centros definidos: ${(dh.centros_definidos||[]).join(", ")} | Canales: ${(dh.canales||[]).join(", ")} | Tema No-Self: ${dh.tema_no_self} | Firma: ${dh.firma}`
       : `DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.`;
@@ -985,7 +981,6 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                 linkCompra={LINKS.oraculo} onAccess={()=>darAcceso("oraculo")} onBack={()=>setTab("home")}/>
             ) : (
               <>
-                {/* HOME */}
                 {orPhase==="home" && (
                   <div className="pb80">
                     <div className="or-hero">
@@ -1030,7 +1025,6 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                   </div>
                 )}
 
-                {/* RESPIRACIÓN */}
                 {orPhase==="breathe" && (
                   <div style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
                     <div className="ritual-wrap">
@@ -1047,7 +1041,6 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                   </div>
                 )}
 
-                {/* GRILLA DE EMOCIONES */}
                 {orPhase==="intention" && (
                   <div style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
                     <div className="header" style={{background:"rgba(8,5,14,.95)",borderBottom:"1px solid rgba(140,80,200,.08)"}}>
@@ -1071,7 +1064,6 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                   </div>
                 )}
 
-                {/* SELECCIÓN DE CATEGORÍA */}
                 {orPhase==="cats" && (
                   <div style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
                     <div className="header" style={{background:"rgba(8,5,14,.95)",borderBottom:"1px solid rgba(140,80,200,.08)"}}>
@@ -1099,7 +1091,6 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                   </div>
                 )}
 
-                {/* GRILLA DE CARTAS */}
                 {orPhase==="grid" && selectedCat && (
                   <div className="z1">
                     <div className="header" style={{background:"rgba(8,5,14,.95)",borderBottom:`1px solid ${selectedCat.border}`}}>
@@ -1125,7 +1116,6 @@ Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. U
                   </div>
                 )}
 
-                {/* CARTA REVELADA */}
                 {orPhase==="card" && currentCard && currentCard.cat && (
                   <div className="z1">
                     <div className="header" style={{background:"rgba(8,5,14,.95)",borderBottom:"1px solid rgba(140,80,200,.08)"}}>
