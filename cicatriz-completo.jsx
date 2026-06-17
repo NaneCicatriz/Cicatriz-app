@@ -944,6 +944,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                       <div className="sec-label">Datos personales</div>
                       <div className="field"><label className="flabel">Nombre completo</label>
                         <input className="finput" placeholder="Como aparece en tu documento" value={lcForm.nombre} onChange={e=>setLcForm({...lcForm,nombre:e.target.value})}/></div>
+                        <div className="field"><label className="flabel">Correo electrónico</label><input className="finput" type="email" placeholder="tu@correo.com" value={lcForm.email} onChange={(e)=>setLcForm({...lcForm,email:e.target.value})} required/></div>
                       <div className="frow">
                         <div className="field"><label className="flabel">Fecha de nacimiento</label>
                           <input className="finput" type="date" value={lcForm.fecha} onChange={e=>setLcForm({...lcForm,fecha:e.target.value})}/></div>
@@ -956,7 +957,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                       <div style={{background:"rgba(20,60,100,.12)",border:"1px solid rgba(80,140,200,.15)",borderRadius:10,padding:"14px 16px",marginTop:8,marginBottom:18,fontSize:12.5,color:"rgba(160,200,240,.6)",lineHeight:1.7}}>
                         ⬡ Tu Diseño Humano se calcula automáticamente a partir de tu fecha, hora exacta y ciudad de nacimiento. Mientras más exacta la hora, más preciso el resultado.
                       </div>
-                      <button className="btn-primary" style={{background:"linear-gradient(135deg,#1a4a7a,#2a6aaa)"}} onClick={submitCosmica} disabled={!lcForm.nombre||!lcForm.fecha||!lcForm.ciudad}>✦ Generar mi lectura cósmica</button>
+                      <button className="btn-primary" style={{background:"linear-gradient(135deg,#1a4a7a,#2a6aaa)"}} onClick={submitCosmica} disabled={!lcForm.nombre||!lcForm.fecha||!lcForm.ciudad||!lcForm.email}>✦ Generar mi lectura cósmica</button>
                     </>
                   )}
                   {lcScreen==="loading" && (
