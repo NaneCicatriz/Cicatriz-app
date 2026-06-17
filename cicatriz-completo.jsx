@@ -734,7 +734,7 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección. No uses aste
   const submitCosmica = async () => {
     if (!lcForm.nombre||!lcForm.fecha||!lcForm.ciudad) return;
     setLcScreen("loading"); setLcLoadStep(0);
-    const guardada = await buscarLectura("lecturas_cosmicas", lcForm.nombre, lcForm.fecha);
+    const guardada = null;
     if (guardada) { setLcReport(guardada); setLcScreen("report"); return; }
 
     let dh = null;
