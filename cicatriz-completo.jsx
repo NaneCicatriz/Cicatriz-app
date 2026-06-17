@@ -751,47 +751,54 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección. No uses aste
       : `DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.`;
 
     try {
-      const prompt = `Eres un astrólogo y analista de Diseño Humano experto. Genera una Lectura Cósmica Completa profunda y personalizada. Esta es la lectura más completa que existe — integra numerología, astrología, I Ching, Lenormand, carta natal y Diseño Humano en un solo informe.
+      Eres un astrólogo y analista de Diseño Humano experto. Genera una Lectura Cósmica Completa profunda y personalizada. Esta es la lectura más completa que existe — integra numerología, astrología, I Ching, Lenormand, carta natal y Diseño Humano en un solo informe.
 
 DATOS PERSONALES: Nombre: ${lcForm.nombre} | Fecha: ${lcForm.fecha} | Hora: ${lcForm.hora||"desconocida"} | Ciudad: ${lcForm.ciudad}
-${dhTexto}
-Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy}
+Camino de Vida: ${lclp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy}
 
-IMPORTANTE: Los datos de Diseño Humano arriba son REALES y calculados astronómicamente. Interprétalos con precisión y autoridad — NO digas "probablemente" ni "intuyo" respecto al Diseño Humano, porque son datos exactos. Traduce los términos al español de forma natural.
+DISEÑO HUMANO (calculado con precisión astronómica): Tipo: ${dh.tipo} | Estrategia: ${dh.estrategia} | Autoridad: ${dh.autoridad} | Perfil: ${dh.perfil} | Definición: ${dh.definicion} | Cruz de Encarnación: ${dh.cruz} | Centros definidos: ${(dh.centros_definidos||[]).join(", ")} | Canales: ${(dh.canales||[]).join(", ")} | Tema No-Self: ${dh.tema_no_self} | Firma: ${dh.firma}
+: 'DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.'
+
+IMPORTANTE: Los datos de Diseño Humano son REALES y calculados astronómicamente. Interprétalos con precisión y autoridad — NO digas "probablemente" ni "intuyo" respecto al Diseño Humano, porque son datos exactos. Traduce los términos al español de forma natural.
 
 Genera el informe con estos encabezados exactos entre corchetes:
 
 [PERFIL NUMEROLÓGICO]
-Análisis profundo del Camino de Vida ${lcLp}, Expresión ${lcExp} y Año Personal ${lcPy}. Usa el nombre de pila. 2-3 párrafos ricos y personalizados.
+Análisis técnico del Camino de Vida ${lclp}, Expresión ${lcExp} y Año Personal ${lcPy}. Qué significa cada número, cómo interactúan y qué define a esta persona según la numerología. Usa el nombre de pila. 2-3 párrafos informativos.
 
 [EL AÑO EN SÍNTESIS]
-Los 3 tránsitos planetarios más importantes de ${ANIO} para esta persona nacida el ${lcForm.fecha}. Menciona Júpiter, Saturno o Plutón según corresponda. 2-3 párrafos.
+Los 3 tránsitos planetarios más importantes para esta persona nacida el ${lcForm.fecha} durante ${ANIO}. Para cada tránsito indica: qué planeta, en qué signo, qué área de vida afecta, y la fecha exacta aproximada de inicio y término (día y mes). Menciona Júpiter, Saturno o Plutón según corresponda. 2-3 párrafos concretos.
 
 [EL MENSAJE DEL I CHING]
-El hexagrama más relevante para esta persona en ${ANIO} y su mensaje profundo. 1-2 párrafos.
+El hexagrama más relevante para esta persona en ${ANIO} y su mensaje práctico. Qué acción o actitud recomienda. 1-2 párrafos.
 
 [LECTURA DE LAS 12 CASAS]
-Las casas astrológicas más activadas en ${ANIO} y su significado específico. 2-3 párrafos.
+Las casas astrológicas más activadas en ${ANIO} y qué área concreta de vida impactan. 2-3 párrafos.
 
 [LENORMAND Y TAROT]
-Las cartas Lenormand y el arcano mayor que rigen el año ${ANIO} para esta persona. 1-2 párrafos.
+Las cartas Lenormand y el arcano mayor que rigen el año ${ANIO} para esta persona. Qué mensaje concreto entregan. 1-2 párrafos.
 
 [CARTA NATAL COMPLETA]
-Análisis profundo de la carta natal: Sol, Luna, Ascendente (si hay hora exacta), planetas en casas principales, aspectos más relevantes. Cómo esta carta define la personalidad y el destino de ${lcForm.nombre.split(' ')[0]}. 3-4 párrafos.
+Análisis técnico de la carta natal: Sol, Luna, Ascendente (si hay hora exacta), planetas en casas principales, aspectos más relevantes. Cómo esta carta define la personalidad y el destino de ${lcForm.nombre.split(' ')[0]}. 3-4 párrafos informativos y precisos.
 
 [DISEÑO HUMANO]
-Análisis preciso del Diseño Humano calculado: su tipo, estrategia y autoridad, qué significan para tomar decisiones correctamente. Su perfil y propósito. Los centros definidos y canales activos, y cómo condicionan su energía. El tema no-self y la firma como brújula de alineación. Cómo operar correctamente según este diseño exacto. 3-4 párrafos. Habla con certeza, son datos reales.
+Análisis preciso del Diseño Humano calculado: tipo y lo que significa en la práctica diaria, estrategia y cómo aplicarla, autoridad y cómo tomar decisiones con ella. Perfil y propósito. Centros definidos y abiertos: qué significa cada uno para esta persona específica. Canales activos y cómo condicionan su energía. Tema no-self y firma como indicadores de alineación. Cómo operar correctamente según este diseño. 3-4 párrafos técnicos y directos.
 
 [INTEGRACIÓN CÓSMICA]
-Cómo la carta natal y el Diseño Humano se complementan y confirman mutuamente. Los grandes temas de vida que emergen cuando ambos sistemas se leen juntos. Lo que la numerología agrega a esta imagen. 2-3 párrafos profundos.
+Cómo la carta natal y el Diseño Humano se confirman mutuamente. Los patrones de vida que emergen cuando ambos sistemas se leen juntos. Lo que la numerología agrega. 2-3 párrafos.
 
 [PROPÓSITO Y MISIÓN DE VIDA]
 El propósito profundo de ${lcForm.nombre.split(' ')[0]} según todos los sistemas combinados: numerología, astrología, I Ching y Diseño Humano. Lo que vino a hacer en esta vida. 2 párrafos.
 
 [GUÍA DE ACCIÓN]
-Recomendaciones concretas por trimestre del año ${ANIO} considerando los tránsitos Y la estrategia/autoridad del Diseño Humano de esta persona. Q1, Q2, Q3, Q4 — cada uno con foco específico.
+Recomendaciones concretas por trimestre del año ${ANIO} considerando los tránsitos Y la estrategia/autoridad del Diseño Humano:
+Q1 (enero-marzo): acción principal + señal de alerta si se va al extremo + cómo volver al centro.
+Q2 (abril-junio): acción principal + señal de alerta si se va al extremo + cómo volver al centro.
+Q3 (julio-septiembre): acción principal + señal de alerta si se va al extremo + cómo volver al centro.
+Q4 (octubre-diciembre): acción principal + señal de alerta si se va al extremo + cómo volver al centro.
 
-Lenguaje poético pero concreto y profundo. Máximo 220 palabras por sección. Usa el nombre de pila en todo el informe. No uses asteriscos ni markdown.`;
+Tono del informe: profesional, directo e informativo. Como un informe técnico experto. Sin metáforas poéticas, sin lenguaje emocional, sin frases tipo "cierra los ojos" o "escúchame desde adentro". Usa el nombre de pila en todo el informe. Máximo 220 palabras por sección.
+`;
       const res = await fetch("/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
       const data = await res.json();
       const texto = data.lectura||"Error al generar la lectura.";
