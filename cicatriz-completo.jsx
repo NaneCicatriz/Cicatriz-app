@@ -734,7 +734,7 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección. No uses aste
   const submitCosmica = async () => {
     if (!lcForm.nombre||!lcForm.fecha||!lcForm.ciudad) return;
     setLcScreen("loading"); setLcLoadStep(0);
-    const guardada = null;
+    const guardada = await buscarLectura("lecturas_cosmicas", lcForm.nombre, lcForm.fecha);
     if (guardada) { setLcReport(guardada); setLcScreen("report"); return; }
 
     let dh = null;
@@ -747,24 +747,21 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección. No uses aste
     for (let i=0;i<LOADING_STEPS_COSMICA.length;i++) { await new Promise(r=>setTimeout(r,900)); setLcLoadStep(i+1); }
 
     const dhTexto = dh
-      ? 'DISEÑO HUMANO (calculado con precisión astronómica): Tipo: ${dh.tipo} | Estrategia: ${dh.estrategia} | Autoridad: ${dh.autoridad} | Perfil: ${dh.perfil} | Definición: ${dh.definicion} | Cruz de Encarnación: ${dh.cruz} | Centros definidos: ${(dh.centros_definidos||[]).join(", ")} | Canales: ${(dh.canales||[]).join(", ")} | Tema No-Self: ${dh.tema_no_self} | Firma: ${dh.firma}`
-      : 'DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.';
-console.log("Iniciando submitCosmica, dh:", dh, "dhTexto:", dhTexto);
+      ? `DISEÑO HUMANO (calculado con precisión astronómica): Tipo: ${dh.tipo} | Estrategia: ${dh.estrategia} | Autoridad: ${dh.autoridad} | Perfil: ${dh.perfil} | Definición: ${dh.definicion} | Cruz de Encarnación: ${dh.cruz} | Centros definidos: ${(dh.centros_definidos||[]).join(", ")} | Canales: ${(dh.canales||[]).join(", ")} | Tema No-Self: ${dh.tema_no_self} | Firma: ${dh.firma}`
+      : "DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.";
     try {
       const prompt = `Eres un astrólogo y analista de Diseño Humano experto. Genera una Lectura Cósmica Completa profunda y personalizada. Esta es la lectura más completa que existe — integra numerología, astrología, I Ching, Lenormand, carta natal y Diseño Humano en un solo informe.
 
 DATOS PERSONALES: Nombre: ${lcForm.nombre} | Fecha: ${lcForm.fecha} | Hora: ${lcForm.hora||"desconocida"} | Ciudad: ${lcForm.ciudad}
-Camino de Vida: ${lclp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy}
+Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy}
 
 DISEÑO HUMANO (calculado con precisión astronómica): Tipo: ${dh.tipo} | Estrategia: ${dh.estrategia} | Autoridad: ${dh.autoridad} | Perfil: ${dh.perfil} | Definición: ${dh.definicion} | Cruz de Encarnación: ${dh.cruz} | Centros definidos: ${(dh.centros_definidos||[]).join(", ")} | Canales: ${(dh.canales||[]).join(", ")} | Tema No-Self: ${dh.tema_no_self} | Firma: ${dh.firma}
-: 'DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.'
-
 IMPORTANTE: Los datos de Diseño Humano son REALES y calculados astronómicamente. Interprétalos con precisión y autoridad — NO digas "probablemente" ni "intuyo" respecto al Diseño Humano, porque son datos exactos. Traduce los términos al español de forma natural.
 
 Genera el informe con estos encabezados exactos entre corchetes:
 
 [PERFIL NUMEROLÓGICO]
-Análisis técnico del Camino de Vida ${lclp}, Expresión ${lcExp} y Año Personal ${lcPy}. Qué significa cada número, cómo interactúan y qué define a esta persona según la numerología. Usa el nombre de pila. 2-3 párrafos informativos.
+Análisis técnico del Camino de Vida ${lcLp}, Expresión ${lcExp} y Año Personal ${lcPy}. Qué significa cada número, cómo interactúan y qué define a esta persona según la numerología. Usa el nombre de pila. 2-3 párrafos informativos.
 
 [EL AÑO EN SÍNTESIS]
 Los 3 tránsitos planetarios más importantes para esta persona nacida el ${lcForm.fecha} durante ${ANIO}. Para cada tránsito indica: qué planeta, en qué signo, qué área de vida afecta, y la fecha exacta aproximada de inicio y término (día y mes). Menciona Júpiter, Saturno o Plutón según corresponda. 2-3 párrafos concretos.
@@ -798,7 +795,6 @@ Q3 (julio-septiembre): acción principal + señal de alerta si se va al extremo 
 Q4 (octubre-diciembre): acción principal + señal de alerta si se va al extremo + cómo volver al centro.
 
 Tono del informe: profesional, directo e informativo. Como un informe técnico experto. Sin metáforas poéticas, sin lenguaje emocional, sin frases tipo "cierra los ojos" o "escúchame desde adentro". Usa el nombre de pila en todo el informe. Máximo 220 palabras por sección.
-console.log("Llegando al fetch, prompt length:", prompt.length);
 `;
       const res = await fetch("/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
       const data = await res.json();
