@@ -1,5 +1,6 @@
 import https from 'https';
 
+export const config = { maxDuration: 60 };
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
@@ -11,7 +12,7 @@ export default async function handler(req, res) {
   }
 
   const postData = JSON.stringify({
-   model: 'claude-opus-4-7',
+   model: 'claude-sonnet-4-6',
     max_tokens: 8000,
     messages: [{ role: 'user', content: prompt }],
   });
