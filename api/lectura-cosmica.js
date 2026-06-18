@@ -12,8 +12,8 @@ export default async function handler(req, res) {
   }
 
   const postData = JSON.stringify({
-   model: 'claude-sonnet-4-6',
-    max_tokens: 8000,
+    model: 'claude-sonnet-4-6',
+    max_tokens: 4500,
     messages: [{ role: 'user', content: prompt }],
   });
 
