@@ -1,1 +1,7 @@
-{}
+{
+  "functions": {
+    "api/lectura-cosmica.js": {
+      "maxDuration": 60
+    }
+  }
+}
