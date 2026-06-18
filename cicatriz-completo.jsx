@@ -558,7 +558,7 @@ function Gate({ producto, emoji, titulo, precio, subtitulo, linkCompra, onAccess
         <input className="gate-input" placeholder="tu@correo.com" type="email" value={emailInput}
           onChange={e=>{setEmailInput(e.target.value);setError("");}}
           style={{marginBottom:8}}/>
-        <input className="gate-input" placeholder="CZ-XXXX-XXXX" value={codigo}
+        <input className="gate-input" placeholder="CZXX-XXXX-XXXX" value={codigo}
           onChange={e=>{setCodigo(e.target.value.toUpperCase());setError("");}}
           onKeyDown={e=>e.key==="Enter"&&handleValidar()}/>
         {error && <div className="gate-error">{error}</div>}
@@ -780,7 +780,7 @@ Genera el informe con estos encabezados exactos entre corchetes:
 [LENORMAND Y TAROT] Las cartas que rigen el año ${ANIO}. 1-2 párrafos.
 [PROPÓSITO Y MISIÓN DE VIDA] El propósito profundo. 2 párrafos.
 [GUÍA DE ACCIÓN] Recomendaciones por trimestre Q1, Q2, Q3, Q4 del año ${ANIO}.
-Lenguaje poético pero concreto. Máximo 200 palabras por sección. No uses asteriscos ni markdown.`;
+Tono: profesional, directo e informativo. Sin metáforas poéticas, sin frases tipo "eres el río" o "busca el mar". Usa el nombre de pila. Máximo 200 palabras por sección. No uses asteriscos ni markdown.`;
       const res = await fetch("https://function-bun-production-0725.up.railway.app/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
       const data = await res.json();
       const texto = data.lectura||"Error al generar la lectura.";
@@ -807,7 +807,7 @@ Lenguaje poético pero concreto. Máximo 200 palabras por sección. No uses aste
 
     const dhTexto = dh
       ? `DISEÑO HUMANO (calculado con precisión astronómica): Tipo: ${dh.tipo} | Estrategia: ${dh.estrategia} | Autoridad: ${dh.autoridad} | Perfil: ${dh.perfil} | Definición: ${dh.definicion} | Cruz de Encarnación: ${dh.cruz} | Centros definidos: ${(dh.centros_definidos||[]).join(", ")} | Canales: ${(dh.canales||[]).join(", ")} | Tema No-Self: ${dh.tema_no_self} | Firma: ${dh.firma}`
-      : "DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.";
+      : 'DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.';
     try {
       const prompt = `Eres un astrólogo y analista de Diseño Humano experto. Genera una Lectura Cósmica Completa profunda y personalizada. Esta es la lectura más completa que existe — integra numerología, astrología, I Ching, Lenormand, carta natal y Diseño Humano en un solo informe.
 
@@ -815,6 +815,8 @@ DATOS PERSONALES: Nombre: ${lcForm.nombre} | Fecha: ${lcForm.fecha} | Hora: ${lc
 Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy}
 
 DISEÑO HUMANO (calculado con precisión astronómica): Tipo: ${dh.tipo} | Estrategia: ${dh.estrategia} | Autoridad: ${dh.autoridad} | Perfil: ${dh.perfil} | Definición: ${dh.definicion} | Cruz de Encarnación: ${dh.cruz} | Centros definidos: ${(dh.centros_definidos||[]).join(", ")} | Canales: ${(dh.canales||[]).join(", ")} | Tema No-Self: ${dh.tema_no_self} | Firma: ${dh.firma}
+: 'DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.'
+
 IMPORTANTE: Los datos de Diseño Humano son REALES y calculados astronómicamente. Interprétalos con precisión y autoridad — NO digas "probablemente" ni "intuyo" respecto al Diseño Humano, porque son datos exactos. Traduce los términos al español de forma natural.
 
 Genera el informe con estos encabezados exactos entre corchetes:
