@@ -9,15 +9,22 @@
   body { background: #08060e; font-family: system-ui, sans-serif; color: #e8e0d0; min-height: 100vh; padding: 32px 20px; }
   h1 { font-size: 22px; color: #c8a040; margin-bottom: 4px; }
   .sub { font-size: 13px; color: rgba(180,150,80,.45); margin-bottom: 32px; }
-  .card { background: #110f1a; border: 1px solid rgba(200,150,40,.12); border-radius: 14px; padding: 24px; margin-bottom: 16px; max-width: 520px; }
+  .card { background: #110f1a; border: 1px solid rgba(200,150,40,.12); border-radius: 14px; padding: 24px; margin-bottom: 16px; max-width: 560px; }
+  .card-title { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(180,140,60,.6); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .card-title::after { content:''; flex:1; height:1px; background:rgba(180,140,30,.12); }
   label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(180,140,60,.6); display: block; margin-bottom: 8px; }
   input[type=number], input[type=password] { width: 100%; background: rgba(180,140,30,.06); border: 1px solid rgba(180,140,30,.18); border-radius: 10px; padding: 12px 14px; color: #e8e0d0; font-size: 15px; outline: none; margin-bottom: 16px; }
   .btn { background: linear-gradient(135deg,#7a5010,#c07820); color: #f5e8c0; border: none; border-radius: 12px; padding: 14px 28px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 12px; }
   .btn:disabled { opacity: .4; cursor: not-allowed; }
   .btn-sec { background: transparent; border: 1px solid rgba(180,140,30,.25); color: rgba(200,160,80,.6); border-radius: 12px; padding: 12px; font-size: 13px; cursor: pointer; width: 100%; }
+  .btn-outline { background: transparent; border: 1px solid rgba(180,140,30,.25); color: rgba(200,160,80,.7); border-radius: 8px; padding: 8px 14px; font-size: 12px; cursor: pointer; margin-bottom: 12px; }
   .preview { background: rgba(180,140,20,.06); border: 1px solid rgba(180,140,20,.15); border-radius: 10px; padding: 14px; margin-bottom: 14px; max-height: 220px; overflow-y: auto; }
-  .code-item { font-family: monospace; font-size: 13px; color: #c8a040; padding: 4px 0; border-bottom: 1px solid rgba(180,140,20,.07); }
-  .code-item:last-child { border-bottom: none; }
+  .code-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(180,140,20,.07); gap: 10px; }
+  .code-row:last-child { border-bottom: none; }
+  .code-text { font-family: monospace; font-size: 14px; color: #c8a040; letter-spacing: 1px; }
+  .copy-btn { background: rgba(180,140,20,.12); border: 1px solid rgba(180,140,20,.25); border-radius: 6px; padding: 4px 10px; font-size: 11px; color: rgba(200,160,60,.7); cursor: pointer; flex-shrink: 0; transition: all .2s; white-space: nowrap; }
+  .copy-btn:hover { background: rgba(180,140,20,.25); color: #c8a040; }
+  .copy-btn.copied { background: rgba(60,120,60,.2); border-color: rgba(80,160,80,.3); color: #7ecf94; }
   .status { font-size: 13px; padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; }
   .status.ok { background: rgba(60,120,60,.2); border: 1px solid rgba(80,160,80,.3); color: #7ecf94; }
   .status.err { background: rgba(120,40,40,.2); border: 1px solid rgba(180,60,60,.3); color: #e08080; }
@@ -31,9 +38,35 @@
   .warn { background: rgba(140,80,20,.2); border: 1px solid rgba(200,120,40,.3); color: #e0a060; border-radius: 8px; padding: 12px 14px; font-size: 13px; margin-bottom: 14px; line-height: 1.6; }
   .counter { font-size: 12px; color: rgba(180,150,80,.5); text-align: right; margin-top: -12px; margin-bottom: 14px; }
   #appContent { display: none; }
-  #loginBox { max-width: 520px; }
+  #loginBox { max-width: 560px; }
   .lock { font-size: 48px; text-align: center; display: block; margin-bottom: 16px; }
   .err-msg { color: #e08080; font-size: 13px; margin-top: -12px; margin-bottom: 14px; font-style: italic; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; max-width: 560px; }
+  .tab { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid rgba(180,140,30,.2); background: transparent; color: rgba(200,160,80,.5); font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s; text-align: center; }
+  .tab.active { border-color: #c8a040; background: rgba(180,140,20,.12); color: #c8a040; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Panel de disponibles */
+  .prod-section { margin-bottom: 20px; }
+  .prod-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .prod-label { font-family: monospace; font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 6px; }
+  .prod-count { font-size: 11px; color: rgba(180,150,80,.5); }
+  .codes-list { background: rgba(180,140,20,.04); border: 1px solid rgba(180,140,20,.1); border-radius: 10px; padding: 10px 14px; max-height: 200px; overflow-y: auto; }
+  .empty-msg { font-size: 13px; color: rgba(180,140,60,.3); font-style: italic; text-align: center; padding: 12px; }
+  .loading-msg { font-size: 13px; color: rgba(180,140,60,.4); text-align: center; padding: 12px; }
+
+  /* Colores por producto */
+  .czlc { color: #a8d4f8; border-color: rgba(100,160,220,.3); background: rgba(20,60,120,.15); }
+  .czac { color: #d4a8f8; border-color: rgba(160,100,220,.3); background: rgba(80,20,140,.15); }
+  .czok { color: #f8c8a8; border-color: rgba(220,140,80,.3); background: rgba(120,60,20,.15); }
+  .czpbr { color: #a8f8c8; border-color: rgba(80,200,120,.3); background: rgba(20,100,60,.15); }
+  .czall { color: #f8e8a8; border-color: rgba(220,200,80,.3); background: rgba(100,80,20,.15); }
+  .code-text.czlc { color: #a8d4f8; }
+  .code-text.czac { color: #d4a8f8; }
+  .code-text.czok { color: #f8c8a8; }
+  .code-text.czpbr { color: #a8f8c8; }
+  .code-text.czall { color: #f8e8a8; }
 </style>
 </head>
 <body>
@@ -42,7 +75,7 @@
 <div id="loginBox">
   <span class="lock">🔐</span>
   <h1 style="text-align:center">Cicatriz · Admin</h1>
-  <p class="sub" style="text-align:center;margin-bottom:24px">Generador de códigos de acceso</p>
+  <p class="sub" style="text-align:center;margin-bottom:24px">Generador y panel de códigos</p>
   <div class="card">
     <label>Clave de acceso</label>
     <input type="password" id="claveInput" placeholder="••••••••••••••" onkeydown="if(event.key==='Enter')verificar()"/>
@@ -53,52 +86,69 @@
 
 <!-- APP -->
 <div id="appContent">
-  <h1>⬡ Generador de Códigos · Cicatriz</h1>
-  <p class="sub">Genera e inserta códigos directamente en Supabase</p>
+  <h1>⬡ Cicatriz · Admin</h1>
+  <p class="sub">Generador y panel de códigos de acceso</p>
 
-  <div class="card">
-    <label>1. Selecciona el producto</label>
-    <div id="productos">
-      <div class="prod-opt" data-producto="cosmico" data-prefix="CZAC" onclick="seleccionar(this)">
-        <div class="prod-prefix">CZAC-XXXX-XXXX</div>
-        <div class="prod-name">Tu Año Cósmico</div>
-        <div class="prod-desc">$34.990 CLP</div>
-      </div>
-      <div class="prod-opt" data-producto="cosmica" data-prefix="CZLC" onclick="seleccionar(this)">
-        <div class="prod-prefix">CZLC-XXXX-XXXX</div>
-        <div class="prod-name">Lectura Cósmica Completa</div>
-        <div class="prod-desc">$59.990 CLP</div>
-      </div>
-      <div class="prod-opt" data-producto="oraculo" data-prefix="CZOK" onclick="seleccionar(this)">
-        <div class="prod-prefix">CZOK-XXXX-XXXX</div>
-        <div class="prod-name">Oráculo Kintsugi</div>
-        <div class="prod-desc">$9.990 CLP</div>
-      </div>
-      <div class="prod-opt" data-producto="programa" data-prefix="CZPBR" onclick="seleccionar(this)">
-        <div class="prod-prefix">CZPBR-XXXX-XXXX</div>
-        <div class="prod-name">Programa Bajar el Ruido</div>
-        <div class="prod-desc">$24.990 CLP</div>
-      </div>
-      <div class="prod-opt" data-producto="all" data-prefix="CZALL" onclick="seleccionar(this)">
-        <div class="prod-prefix">CZALL-XXXX-XXXX</div>
-        <div class="prod-name">Combo Completo</div>
-        <div class="prod-desc">$79.990 CLP · Acceso a todos los productos</div>
-      </div>
-    </div>
-
-    <label>2. ¿Cuántos códigos?</label>
-    <input type="number" id="cantidad" min="1" max="50" value="5" oninput="actualizarCounter()"/>
-    <div class="counter" id="counter">5 códigos</div>
-    <button class="btn" id="btnGenerar" onclick="generar()" disabled>✦ Generar códigos</button>
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('panel')">📋 Códigos disponibles</button>
+    <button class="tab" onclick="showTab('generador')">✦ Generar nuevos</button>
   </div>
 
-  <div class="card" id="cardPreview" style="display:none">
-    <label>3. Previsualización</label>
-    <div class="preview" id="preview"></div>
-    <div class="warn">⚠️ Revisa producto y cantidad antes de insertar. Esta acción no se puede deshacer.</div>
-    <div id="statusMsg"></div>
-    <button class="btn" id="btnInsertar" onclick="insertar()">✦ Insertar en Supabase</button>
-    <button class="btn-sec" onclick="generar()">↩ Regenerar</button>
+  <!-- PANEL DE DISPONIBLES -->
+  <div class="panel active" id="panel">
+    <div class="card">
+      <div class="card-title">Códigos disponibles por producto</div>
+      <button class="btn-outline" onclick="cargarDisponibles()">↻ Actualizar</button>
+      <div id="disponiblesContent"><div class="loading-msg">Cargando...</div></div>
+    </div>
+  </div>
+
+  <!-- GENERADOR -->
+  <div class="panel" id="generador">
+    <div class="card">
+      <div class="card-title">1. Selecciona el producto</div>
+      <div id="productos">
+        <div class="prod-opt" data-producto="cosmico" data-prefix="CZAC" onclick="seleccionar(this)">
+          <div class="prod-prefix czac" style="display:inline-block;padding:2px 8px;border-radius:5px;margin-bottom:4px">CZAC-XXXX-XXXX</div>
+          <div class="prod-name">Tu Año Cósmico</div>
+          <div class="prod-desc">$34.990 CLP</div>
+        </div>
+        <div class="prod-opt" data-producto="cosmica" data-prefix="CZLC" onclick="seleccionar(this)">
+          <div class="prod-prefix czlc" style="display:inline-block;padding:2px 8px;border-radius:5px;margin-bottom:4px">CZLC-XXXX-XXXX</div>
+          <div class="prod-name">Lectura Cósmica Completa</div>
+          <div class="prod-desc">$59.990 CLP</div>
+        </div>
+        <div class="prod-opt" data-producto="oraculo" data-prefix="CZOK" onclick="seleccionar(this)">
+          <div class="prod-prefix czok" style="display:inline-block;padding:2px 8px;border-radius:5px;margin-bottom:4px">CZOK-XXXX-XXXX</div>
+          <div class="prod-name">Oráculo Kintsugi</div>
+          <div class="prod-desc">$9.990 CLP</div>
+        </div>
+        <div class="prod-opt" data-producto="programa" data-prefix="CZPBR" onclick="seleccionar(this)">
+          <div class="prod-prefix czpbr" style="display:inline-block;padding:2px 8px;border-radius:5px;margin-bottom:4px">CZPBR-XXXX-XXXX</div>
+          <div class="prod-name">Programa Bajar el Ruido</div>
+          <div class="prod-desc">$24.990 CLP</div>
+        </div>
+        <div class="prod-opt" data-producto="all" data-prefix="CZALL" onclick="seleccionar(this)">
+          <div class="prod-prefix czall" style="display:inline-block;padding:2px 8px;border-radius:5px;margin-bottom:4px">CZALL-XXXX-XXXX</div>
+          <div class="prod-name">Combo Completo</div>
+          <div class="prod-desc">$79.990 CLP · Acceso a todos los productos</div>
+        </div>
+      </div>
+
+      <label>2. ¿Cuántos códigos?</label>
+      <input type="number" id="cantidad" min="1" max="50" value="5" oninput="actualizarCounter()"/>
+      <div class="counter" id="counter">5 códigos</div>
+      <button class="btn" id="btnGenerar" onclick="generar()" disabled>✦ Generar códigos</button>
+    </div>
+
+    <div class="card" id="cardPreview" style="display:none">
+      <div class="card-title">3. Previsualización</div>
+      <div class="preview" id="preview"></div>
+      <div class="warn">⚠️ Revisa producto y cantidad antes de insertar. Esta acción no se puede deshacer.</div>
+      <div id="statusMsg"></div>
+      <button class="btn" id="btnInsertar" onclick="insertar()">✦ Insertar en Supabase</button>
+      <button class="btn-sec" onclick="generar()">↩ Regenerar</button>
+    </div>
   </div>
 </div>
 
@@ -106,6 +156,14 @@
 const SUPABASE_URL = "https://deejemkhchkxupqnxakr.supabase.co";
 const SUPABASE_KEY = "sb_publishable_yoMN4BHw6Tv_ndSvJ6Zzjg_7qFTFlD4";
 const CLAVE = "CZACLCOKPBRALL";
+
+const PRODUCTOS = [
+  { producto: "cosmica",  prefix: "CZLC",  nombre: "Lectura Cósmica Completa", clase: "czlc" },
+  { producto: "cosmico",  prefix: "CZAC",  nombre: "Tu Año Cósmico",           clase: "czac" },
+  { producto: "oraculo",  prefix: "CZOK",  nombre: "Oráculo Kintsugi",         clase: "czok" },
+  { producto: "programa", prefix: "CZPBR", nombre: "Programa Bajar el Ruido",  clase: "czpbr" },
+  { producto: "all",      prefix: "CZALL", nombre: "Combo Completo",           clase: "czall" },
+];
 
 let selectedProducto = null;
 let selectedPrefix = null;
@@ -116,11 +174,72 @@ function verificar() {
   if (input === CLAVE) {
     document.getElementById('loginBox').style.display = 'none';
     document.getElementById('appContent').style.display = 'block';
+    cargarDisponibles();
   } else {
     document.getElementById('errLogin').style.display = 'block';
     document.getElementById('claveInput').value = '';
     document.getElementById('claveInput').focus();
   }
+}
+
+function showTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='panel')||(i===1&&tab==='generador')));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(tab).classList.add('active');
+  if (tab === 'panel') cargarDisponibles();
+}
+
+async function cargarDisponibles() {
+  const container = document.getElementById('disponiblesContent');
+  container.innerHTML = '<div class="loading-msg">⟳ Cargando códigos...</div>';
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/CODIGOS?usado=eq.FALSE&select=codigo,producto&order=producto.asc`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const data = await res.json();
+    if (!data || !data.length) {
+      container.innerHTML = '<div class="empty-msg">No hay códigos disponibles.</div>';
+      return;
+    }
+    // Agrupar por producto
+    const grupos = {};
+    PRODUCTOS.forEach(p => grupos[p.producto] = []);
+    data.forEach(row => { if (grupos[row.producto]) grupos[row.producto].push(row.codigo); });
+
+    let html = '';
+    PRODUCTOS.forEach(p => {
+      const codigos = grupos[p.producto] || [];
+      html += `<div class="prod-section">
+        <div class="prod-header">
+          <span class="prod-label ${p.clase}">${p.prefix} · ${p.nombre}</span>
+          <span class="prod-count">${codigos.length} disponible${codigos.length!==1?'s':''}</span>
+        </div>`;
+      if (!codigos.length) {
+        html += `<div class="codes-list"><div class="empty-msg">Sin códigos disponibles</div></div>`;
+      } else {
+        html += `<div class="codes-list">`;
+        codigos.forEach(c => {
+          html += `<div class="code-row">
+            <span class="code-text ${p.clase}">${c}</span>
+            <button class="copy-btn" onclick="copiar(this,'${c}')">📋 Copiar</button>
+          </div>`;
+        });
+        html += `</div>`;
+      }
+      html += `</div>`;
+    });
+    container.innerHTML = html;
+  } catch(e) {
+    container.innerHTML = `<div class="status err">Error al cargar: ${e.message}</div>`;
+  }
+}
+
+function copiar(btn, codigo) {
+  navigator.clipboard.writeText(codigo).then(() => {
+    btn.textContent = '✓ Copiado';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copiar'; btn.classList.remove('copied'); }, 2000);
+  });
 }
 
 function seleccionar(el) {
@@ -139,9 +258,7 @@ function actualizarCounter() {
 function randomSegment(len) {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let result = '';
-  for (let i = 0; i < len; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
+  for (let i = 0; i < len; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
   return result;
 }
 
@@ -154,7 +271,13 @@ function generar() {
     const codigo = `${selectedPrefix}-${randomSegment(4)}-${randomSegment(4)}`;
     if (!usados.has(codigo)) { usados.add(codigo); codigosGenerados.push(codigo); }
   }
-  document.getElementById('preview').innerHTML = codigosGenerados.map(c => `<div class="code-item">${c}</div>`).join('');
+  const clase = PRODUCTOS.find(p=>p.prefix===selectedPrefix)?.clase||'';
+  document.getElementById('preview').innerHTML = codigosGenerados.map(c =>
+    `<div class="code-row">
+      <span class="code-text ${clase}">${c}</span>
+      <button class="copy-btn" onclick="copiar(this,'${c}')">📋 Copiar</button>
+    </div>`
+  ).join('');
   document.getElementById('cardPreview').style.display = 'block';
   document.getElementById('statusMsg').innerHTML = '';
   document.getElementById('btnInsertar').disabled = false;
@@ -165,35 +288,27 @@ function generar() {
 async function insertar() {
   if (!codigosGenerados.length || !selectedProducto) return;
   const btn = document.getElementById('btnInsertar');
-  btn.disabled = true;
-  btn.textContent = 'Insertando...';
+  btn.disabled = true; btn.textContent = 'Insertando...';
   const statusMsg = document.getElementById('statusMsg');
   statusMsg.innerHTML = '<div class="status info">Insertando en Supabase...</div>';
   try {
     const rows = codigosGenerados.map(codigo => ({ codigo, producto: selectedProducto, usado: false }));
     const res = await fetch(`${SUPABASE_URL}/rest/v1/CODIGOS`, {
       method: 'POST',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
-      },
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
       body: JSON.stringify(rows)
     });
     if (res.ok) {
-      statusMsg.innerHTML = `<div class="status ok">✓ ${codigosGenerados.length} código${codigosGenerados.length !== 1 ? 's' : ''} insertado${codigosGenerados.length !== 1 ? 's' : ''} correctamente.</div>`;
+      statusMsg.innerHTML = `<div class="status ok">✓ ${codigosGenerados.length} código${codigosGenerados.length!==1?'s':''} insertado${codigosGenerados.length!==1?'s':''}.</div>`;
       btn.textContent = '✓ Insertados';
     } else {
       const err = await res.text();
       statusMsg.innerHTML = `<div class="status err">Error: ${err}</div>`;
-      btn.disabled = false;
-      btn.textContent = '✦ Insertar en Supabase';
+      btn.disabled = false; btn.textContent = '✦ Insertar en Supabase';
     }
   } catch(e) {
-    statusMsg.innerHTML = `<div class="status err">Error de conexión: ${e.message}</div>`;
-    btn.disabled = false;
-    btn.textContent = '✦ Insertar en Supabase';
+    statusMsg.innerHTML = `<div class="status err">Error: ${e.message}</div>`;
+    btn.disabled = false; btn.textContent = '✦ Insertar en Supabase';
   }
 }
 </script>
