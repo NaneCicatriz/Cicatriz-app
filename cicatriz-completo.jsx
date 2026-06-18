@@ -500,7 +500,7 @@ function Gate({ producto, emoji, titulo, precio, subtitulo, linkCompra, onAccess
   const [emailInput, setEmailInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [modo, setModo] = useState("codigo"); // "codigo" | "email"
+  const [modo, setModo] = useState("codigo");
 
   const darAccesoLocal = (productoRow) => {
     const accesos = JSON.parse(localStorage.getItem("cicatriz_accesos") || "{}");
@@ -781,7 +781,7 @@ Genera el informe con estos encabezados exactos entre corchetes:
 [PROPÓSITO Y MISIÓN DE VIDA] El propósito profundo. 2 párrafos.
 [GUÍA DE ACCIÓN] Recomendaciones por trimestre Q1, Q2, Q3, Q4 del año ${ANIO}.
 Lenguaje poético pero concreto. Máximo 200 palabras por sección. No uses asteriscos ni markdown.`;
-      const res = await fetch("/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
+      const res = await fetch("https://function-bun-production-0725.up.railway.app/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
       const data = await res.json();
       const texto = data.lectura||"Error al generar la lectura.";
       await guardarLectura("lecturas", cyForm.nombre, cyForm.fecha, cyForm.ciudad, texto);
@@ -855,7 +855,7 @@ Q4 (octubre-diciembre): acción principal + señal de alerta si se va al extremo
 
 Tono del informe: profesional, directo e informativo. Como un informe técnico experto. Sin metáforas poéticas, sin lenguaje emocional, sin frases tipo "cierra los ojos" o "escúchame desde adentro". Usa el nombre de pila en todo el informe. Máximo 220 palabras por sección.
 `;
-      const res = await fetch("/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
+      const res = await fetch("https://function-bun-production-0725.up.railway.app/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
       const data = await res.json();
       const texto = data.lectura||"Error al generar la lectura.";
       await guardarLectura("lecturas_cosmicas", lcForm.nombre, lcForm.fecha, lcForm.ciudad, texto, lcForm.email);
