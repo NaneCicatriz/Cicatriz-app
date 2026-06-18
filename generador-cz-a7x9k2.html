@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generador de Códigos · Cicatriz</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #08060e; font-family: system-ui, sans-serif; color: #e8e0d0; min-height: 100vh; padding: 32px 20px; }
+  h1 { font-size: 22px; color: #c8a040; margin-bottom: 4px; }
+  .sub { font-size: 13px; color: rgba(180,150,80,.45); margin-bottom: 32px; }
+  .card { background: #110f1a; border: 1px solid rgba(200,150,40,.12); border-radius: 14px; padding: 24px; margin-bottom: 16px; max-width: 520px; }
+  label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(180,140,60,.6); display: block; margin-bottom: 8px; }
+  input[type=number], input[type=password] { width: 100%; background: rgba(180,140,30,.06); border: 1px solid rgba(180,140,30,.18); border-radius: 10px; padding: 12px 14px; color: #e8e0d0; font-size: 15px; outline: none; margin-bottom: 16px; }
+  .btn { background: linear-gradient(135deg,#7a5010,#c07820); color: #f5e8c0; border: none; border-radius: 12px; padding: 14px 28px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; margin-bottom: 12px; }
+  .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .btn-sec { background: transparent; border: 1px solid rgba(180,140,30,.25); color: rgba(200,160,80,.6); border-radius: 12px; padding: 12px; font-size: 13px; cursor: pointer; width: 100%; }
+  .preview { background: rgba(180,140,20,.06); border: 1px solid rgba(180,140,20,.15); border-radius: 10px; padding: 14px; margin-bottom: 14px; max-height: 220px; overflow-y: auto; }
+  .code-item { font-family: monospace; font-size: 13px; color: #c8a040; padding: 4px 0; border-bottom: 1px solid rgba(180,140,20,.07); }
+  .code-item:last-child { border-bottom: none; }
+  .status { font-size: 13px; padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; }
+  .status.ok { background: rgba(60,120,60,.2); border: 1px solid rgba(80,160,80,.3); color: #7ecf94; }
+  .status.err { background: rgba(120,40,40,.2); border: 1px solid rgba(180,60,60,.3); color: #e08080; }
+  .status.info { background: rgba(60,80,140,.2); border: 1px solid rgba(80,120,200,.3); color: #a0b8f0; }
+  .prod-opt { border: 1px solid rgba(180,140,30,.2); border-radius: 10px; padding: 12px 14px; cursor: pointer; transition: all .2s; margin-bottom: 8px; }
+  .prod-opt:hover { border-color: rgba(180,140,30,.4); }
+  .prod-opt.selected { border-color: #c8a040; background: rgba(180,140,20,.1); }
+  .prod-prefix { font-family: monospace; font-size: 12px; color: #c8a040; font-weight: 700; }
+  .prod-name { font-size: 14px; color: #e8e0d0; margin-top: 2px; }
+  .prod-desc { font-size: 11px; color: rgba(180,150,80,.45); }
+  .warn { background: rgba(140,80,20,.2); border: 1px solid rgba(200,120,40,.3); color: #e0a060; border-radius: 8px; padding: 12px 14px; font-size: 13px; margin-bottom: 14px; line-height: 1.6; }
+  .counter { font-size: 12px; color: rgba(180,150,80,.5); text-align: right; margin-top: -12px; margin-bottom: 14px; }
+  #appContent { display: none; }
+  #loginBox { max-width: 520px; }
+  .lock { font-size: 48px; text-align: center; display: block; margin-bottom: 16px; }
+  .err-msg { color: #e08080; font-size: 13px; margin-top: -12px; margin-bottom: 14px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginBox">
+  <span class="lock">🔐</span>
+  <h1 style="text-align:center">Cicatriz · Admin</h1>
+  <p class="sub" style="text-align:center;margin-bottom:24px">Generador de códigos de acceso</p>
+  <div class="card">
+    <label>Clave de acceso</label>
+    <input type="password" id="claveInput" placeholder="••••••••••••••" onkeydown="if(event.key==='Enter')verificar()"/>
+    <div class="err-msg" id="errLogin" style="display:none">Clave incorrecta. Intenta de nuevo.</div>
+    <button class="btn" onclick="verificar()">✦ Ingresar</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appContent">
+  <h1>⬡ Generador de Códigos · Cicatriz</h1>
+  <p class="sub">Genera e inserta códigos directamente en Supabase</p>
+
+  <div class="card">
+    <label>1. Selecciona el producto</label>
+    <div id="productos">
+      <div class="prod-opt" data-producto="cosmico" data-prefix="CZAC" onclick="seleccionar(this)">
+        <div class="prod-prefix">CZAC-XXXX-XXXX</div>
+        <div class="prod-name">Tu Año Cósmico</div>
+        <div class="prod-desc">$34.990 CLP</div>
+      </div>
+      <div class="prod-opt" data-producto="cosmica" data-prefix="CZLC" onclick="seleccionar(this)">
+        <div class="prod-prefix">CZLC-XXXX-XXXX</div>
+        <div class="prod-name">Lectura Cósmica Completa</div>
+        <div class="prod-desc">$59.990 CLP</div>
+      </div>
+      <div class="prod-opt" data-producto="oraculo" data-prefix="CZOK" onclick="seleccionar(this)">
+        <div class="prod-prefix">CZOK-XXXX-XXXX</div>
+        <div class="prod-name">Oráculo Kintsugi</div>
+        <div class="prod-desc">$9.990 CLP</div>
+      </div>
+      <div class="prod-opt" data-producto="programa" data-prefix="CZPBR" onclick="seleccionar(this)">
+        <div class="prod-prefix">CZPBR-XXXX-XXXX</div>
+        <div class="prod-name">Programa Bajar el Ruido</div>
+        <div class="prod-desc">$24.990 CLP</div>
+      </div>
+      <div class="prod-opt" data-producto="all" data-prefix="CZALL" onclick="seleccionar(this)">
+        <div class="prod-prefix">CZALL-XXXX-XXXX</div>
+        <div class="prod-name">Combo Completo</div>
+        <div class="prod-desc">$79.990 CLP · Acceso a todos los productos</div>
+      </div>
+    </div>
+
+    <label>2. ¿Cuántos códigos?</label>
+    <input type="number" id="cantidad" min="1" max="50" value="5" oninput="actualizarCounter()"/>
+    <div class="counter" id="counter">5 códigos</div>
+    <button class="btn" id="btnGenerar" onclick="generar()" disabled>✦ Generar códigos</button>
+  </div>
+
+  <div class="card" id="cardPreview" style="display:none">
+    <label>3. Previsualización</label>
+    <div class="preview" id="preview"></div>
+    <div class="warn">⚠️ Revisa producto y cantidad antes de insertar. Esta acción no se puede deshacer.</div>
+    <div id="statusMsg"></div>
+    <button class="btn" id="btnInsertar" onclick="insertar()">✦ Insertar en Supabase</button>
+    <button class="btn-sec" onclick="generar()">↩ Regenerar</button>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://deejemkhchkxupqnxakr.supabase.co";
+const SUPABASE_KEY = "sb_publishable_yoMN4BHw6Tv_ndSvJ6Zzjg_7qFTFlD4";
+const CLAVE = "CZACLCOKPBRALL";
+
+let selectedProducto = null;
+let selectedPrefix = null;
+let codigosGenerados = [];
+
+function verificar() {
+  const input = document.getElementById('claveInput').value.trim();
+  if (input === CLAVE) {
+    document.getElementById('loginBox').style.display = 'none';
+    document.getElementById('appContent').style.display = 'block';
+  } else {
+    document.getElementById('errLogin').style.display = 'block';
+    document.getElementById('claveInput').value = '';
+    document.getElementById('claveInput').focus();
+  }
+}
+
+function seleccionar(el) {
+  document.querySelectorAll('.prod-opt').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedProducto = el.dataset.producto;
+  selectedPrefix = el.dataset.prefix;
+  document.getElementById('btnGenerar').disabled = false;
+}
+
+function actualizarCounter() {
+  const v = parseInt(document.getElementById('cantidad').value) || 0;
+  document.getElementById('counter').textContent = v + ' código' + (v !== 1 ? 's' : '');
+}
+
+function randomSegment(len) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let result = '';
+  for (let i = 0; i < len; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
+function generar() {
+  const cantidad = Math.min(parseInt(document.getElementById('cantidad').value) || 1, 50);
+  if (!selectedPrefix) return;
+  codigosGenerados = [];
+  const usados = new Set();
+  while (codigosGenerados.length < cantidad) {
+    const codigo = `${selectedPrefix}-${randomSegment(4)}-${randomSegment(4)}`;
+    if (!usados.has(codigo)) { usados.add(codigo); codigosGenerados.push(codigo); }
+  }
+  document.getElementById('preview').innerHTML = codigosGenerados.map(c => `<div class="code-item">${c}</div>`).join('');
+  document.getElementById('cardPreview').style.display = 'block';
+  document.getElementById('statusMsg').innerHTML = '';
+  document.getElementById('btnInsertar').disabled = false;
+  document.getElementById('btnInsertar').textContent = '✦ Insertar en Supabase';
+  document.getElementById('cardPreview').scrollIntoView({ behavior: 'smooth' });
+}
+
+async function insertar() {
+  if (!codigosGenerados.length || !selectedProducto) return;
+  const btn = document.getElementById('btnInsertar');
+  btn.disabled = true;
+  btn.textContent = 'Insertando...';
+  const statusMsg = document.getElementById('statusMsg');
+  statusMsg.innerHTML = '<div class="status info">Insertando en Supabase...</div>';
+  try {
+    const rows = codigosGenerados.map(codigo => ({ codigo, producto: selectedProducto, usado: false }));
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/CODIGOS`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(rows)
+    });
+    if (res.ok) {
+      statusMsg.innerHTML = `<div class="status ok">✓ ${codigosGenerados.length} código${codigosGenerados.length !== 1 ? 's' : ''} insertado${codigosGenerados.length !== 1 ? 's' : ''} correctamente.</div>`;
+      btn.textContent = '✓ Insertados';
+    } else {
+      const err = await res.text();
+      statusMsg.innerHTML = `<div class="status err">Error: ${err}</div>`;
+      btn.disabled = false;
+      btn.textContent = '✦ Insertar en Supabase';
+    }
+  } catch(e) {
+    statusMsg.innerHTML = `<div class="status err">Error de conexión: ${e.message}</div>`;
+    btn.disabled = false;
+    btn.textContent = '✦ Insertar en Supabase';
+  }
+}
+</script>
+</body>
+</html>
