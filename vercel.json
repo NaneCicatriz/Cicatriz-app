@@ -3,5 +3,11 @@
     "api/lectura-cosmica.js": {
       "maxDuration": 60
     }
-  }
+  },
+  "routes": [
+    {
+      "src": "/generador-cz-a7x9k2.html",
+      "dest": "/generador-cz-a7x9k2.html"
+    }
+  ]
 }
