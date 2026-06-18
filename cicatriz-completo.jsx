@@ -30,17 +30,33 @@ const validarCodigo = async (codigo, producto) => {
   return row;
 };
 
+const buscarAccesoPorEmail = async (email, producto) => {
+  const data = await sbFetch(`CODIGOS?email=eq.${encodeURIComponent(email.trim().toLowerCase())}&usado=eq.TRUE&select=producto`);
+  if (!data || data.length === 0) return false;
+  return data.some(r => r.producto === "all" || r.producto === producto);
+};
+
+const marcarCodigoUsado = async (id, email) => {
+  await sbFetch(`CODIGOS?id=eq.${id}`, {
+    method: "PATCH",
+    prefer: "return=minimal",
+    body: JSON.stringify({ usado: true, email: email.trim().toLowerCase() }),
+  });
+};
+
 const buscarLectura = async (tabla, nombre, fecha) => {
   const data = await sbFetch(`${tabla}?nombre=eq.${encodeURIComponent(nombre.trim().toLowerCase())}&fecha_nacimiento=eq.${encodeURIComponent(fecha)}&select=informe`);
   if (!data || data.length === 0) return null;
   return data[0].informe;
 };
 
-const guardarLectura = async (tabla, nombre, fecha, ciudad, informe) => {
+const guardarLectura = async (tabla, nombre, fecha, ciudad, informe, email) => {
+  const payload = { nombre: nombre.trim().toLowerCase(), fecha_nacimiento: fecha, ciudad, informe };
+  if (email) payload.email = email;
   await sbFetch(tabla, {
     method: "POST",
     prefer: "return=minimal",
-    body: JSON.stringify({ nombre: nombre.trim().toLowerCase(), fecha_nacimiento: fecha, ciudad, informe }),
+    body: JSON.stringify(payload),
   });
 };
 
@@ -481,26 +497,47 @@ function parseSections(text) {
 // ── GATE ────────────────────────────────────────────────────────
 function Gate({ producto, emoji, titulo, precio, subtitulo, linkCompra, onAccess, onBack }) {
   const [codigo, setCodigo] = useState("");
+  const [emailInput, setEmailInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [modo, setModo] = useState("codigo"); // "codigo" | "email"
+
+  const darAccesoLocal = (productoRow) => {
+    const accesos = JSON.parse(localStorage.getItem("cicatriz_accesos") || "{}");
+    if (productoRow === "all") {
+      accesos["cosmico"] = true; accesos["cosmica"] = true;
+      accesos["oraculo"] = true; accesos["programa"] = true;
+    } else {
+      accesos[producto] = true;
+    }
+    localStorage.setItem("cicatriz_accesos", JSON.stringify(accesos));
+    onAccess();
+  };
 
   const handleValidar = async () => {
-    if (!codigo.trim()) return;
+    if (!codigo.trim() || !emailInput.trim()) return;
     setLoading(true); setError("");
     try {
       const row = await validarCodigo(codigo.trim().toUpperCase(), producto);
       if (!row) {
         setError("Código inválido o ya utilizado. Verifica e intenta de nuevo.");
       } else {
-        const accesos = JSON.parse(localStorage.getItem("cicatriz_accesos") || "{}");
-        if (row.producto === "all") {
-          accesos["cosmico"] = true; accesos["cosmica"] = true;
-          accesos["oraculo"] = true; accesos["programa"] = true;
-        } else {
-          accesos[producto] = true;
-        }
-        localStorage.setItem("cicatriz_accesos", JSON.stringify(accesos));
-        onAccess();
+        await marcarCodigoUsado(row.id, emailInput);
+        darAccesoLocal(row.producto);
+      }
+    } catch { setError("Error de conexión. Intenta nuevamente."); }
+    setLoading(false);
+  };
+
+  const handleRecuperar = async () => {
+    if (!emailInput.trim()) return;
+    setLoading(true); setError("");
+    try {
+      const tiene = await buscarAccesoPorEmail(emailInput, producto);
+      if (!tiene) {
+        setError("No encontramos acceso asociado a este email. Verifica o usa tu código.");
+      } else {
+        darAccesoLocal(producto);
       }
     } catch { setError("Error de conexión. Intenta nuevamente."); }
     setLoading(false);
@@ -517,14 +554,36 @@ function Gate({ producto, emoji, titulo, precio, subtitulo, linkCompra, onAccess
       <div className="gate-title">{titulo}</div>
       <div className="gate-price">{precio}</div>
       <div className="gate-sub">{subtitulo}</div>
-      <input className="gate-input" placeholder="CZ-XXXX-XXXX" value={codigo}
-        onChange={e=>{setCodigo(e.target.value.toUpperCase());setError("");}}
-        onKeyDown={e=>e.key==="Enter"&&handleValidar()}/>
-      {error && <div className="gate-error">{error}</div>}
-      <button className="gate-btn" onClick={handleValidar} disabled={loading||!codigo.trim()}>
-        {loading?"Verificando...":"✦ Ingresar con mi código"}
-      </button>
-      <div className="gate-divider">¿No tienes código?</div>
+      {modo === "codigo" ? (<>
+        <input className="gate-input" placeholder="tu@correo.com" type="email" value={emailInput}
+          onChange={e=>{setEmailInput(e.target.value);setError("");}}
+          style={{marginBottom:8}}/>
+        <input className="gate-input" placeholder="CZ-XXXX-XXXX" value={codigo}
+          onChange={e=>{setCodigo(e.target.value.toUpperCase());setError("");}}
+          onKeyDown={e=>e.key==="Enter"&&handleValidar()}/>
+        {error && <div className="gate-error">{error}</div>}
+        <button className="gate-btn" onClick={handleValidar} disabled={loading||!codigo.trim()||!emailInput.trim()}>
+          {loading?"Verificando...":"✦ Ingresar con mi código"}
+        </button>
+        <div className="gate-divider">¿Ya compraste antes?</div>
+        <button onClick={()=>{setModo("email");setError("");}} style={{background:"transparent",border:"none",color:"rgba(180,140,60,.45)",fontSize:13,cursor:"pointer",marginBottom:8,fontStyle:"italic"}}>
+          Recuperar acceso con mi email →
+        </button>
+        <div className="gate-divider">¿No tienes código?</div>
+      </>) : (<>
+        <input className="gate-input" placeholder="tu@correo.com" type="email" value={emailInput}
+          onChange={e=>{setEmailInput(e.target.value);setError("");}}
+          onKeyDown={e=>e.key==="Enter"&&handleRecuperar()}/>
+        {error && <div className="gate-error">{error}</div>}
+        <button className="gate-btn" onClick={handleRecuperar} disabled={loading||!emailInput.trim()}>
+          {loading?"Buscando...":"✦ Recuperar mi acceso"}
+        </button>
+        <div className="gate-divider">¿Tienes tu código?</div>
+        <button onClick={()=>{setModo("codigo");setError("");}} style={{background:"transparent",border:"none",color:"rgba(180,140,60,.45)",fontSize:13,cursor:"pointer",marginBottom:8,fontStyle:"italic"}}>
+          ← Ingresar con código
+        </button>
+        <div className="gate-divider">¿No tienes código?</div>
+      </>)}
       <a href={linkCompra} target="_blank" rel="noopener noreferrer" className="gate-buy">
         <div className="gate-buy-label">Comprar acceso</div>
         <div className="gate-buy-price">{precio}</div>
@@ -722,7 +781,7 @@ Genera el informe con estos encabezados exactos entre corchetes:
 [PROPÓSITO Y MISIÓN DE VIDA] El propósito profundo. 2 párrafos.
 [GUÍA DE ACCIÓN] Recomendaciones por trimestre Q1, Q2, Q3, Q4 del año ${ANIO}.
 Lenguaje poético pero concreto. Máximo 200 palabras por sección. No uses asteriscos ni markdown.`;
-      const res = await fetch("https://function-bun-production-0725.up.railway.app/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
+      const res = await fetch("/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
       const data = await res.json();
       const texto = data.lectura||"Error al generar la lectura.";
       await guardarLectura("lecturas", cyForm.nombre, cyForm.fecha, cyForm.ciudad, texto);
@@ -796,10 +855,10 @@ Q4 (octubre-diciembre): acción principal + señal de alerta si se va al extremo
 
 Tono del informe: profesional, directo e informativo. Como un informe técnico experto. Sin metáforas poéticas, sin lenguaje emocional, sin frases tipo "cierra los ojos" o "escúchame desde adentro". Usa el nombre de pila en todo el informe. Máximo 220 palabras por sección.
 `;
-      const res = await fetch("https://function-bun-production-0725.up.railway.app/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
+      const res = await fetch("/api/lectura-cosmica",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
       const data = await res.json();
       const texto = data.lectura||"Error al generar la lectura.";
-      await guardarLectura("lecturas_cosmicas", lcForm.nombre, lcForm.fecha, lcForm.ciudad, texto);
+      await guardarLectura("lecturas_cosmicas", lcForm.nombre, lcForm.fecha, lcForm.ciudad, texto, lcForm.email);
       setLcReport(texto);
     } catch { setLcReport("Error de conexión. Por favor intenta nuevamente."); }
     setLcScreen("report");
