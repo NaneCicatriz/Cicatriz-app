@@ -902,6 +902,16 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
               <h1 className="home-title">Llevas tiempo<br/>funcionando.<br/>Ya es hora de<br/>entenderte.</h1>
               <div className="home-sub">Lecturas y herramientas para mujeres<br/>que saben que algo tiene que cambiar.</div>
             </div>
+
+            {/* ── TESTIMONIAL ── */}
+            <div style={{margin:"0 16px",padding:"20px 20px 20px 24px",background:"rgba(200,144,10,.04)",border:"1px solid rgba(200,144,10,.12)",borderLeft:"3px solid rgba(200,144,10,.6)",borderRadius:"0 12px 12px 0"}}>
+              <div style={{fontFamily:"'Fraunces',serif",fontStyle:"italic",fontSize:15,color:"rgba(245,236,215,.75)",lineHeight:1.7,marginBottom:12}}>
+                "Lo que esto da no es un consejo ni una guía. Es certeza de quién eres de verdad."
+              </div>
+              <div style={{fontSize:10,fontWeight:700,letterSpacing:3,textTransform:"uppercase",color:"rgba(200,144,10,.6)"}}>
+                — Andrea G. · Lectura Cósmica
+              </div>
+            </div>
             <div style={{padding:"16px 16px 0"}}>
               <div style={{fontSize:11,fontWeight:700,letterSpacing:4,textTransform:"uppercase",color:"rgba(200,144,10,.7)",textAlign:"center",marginBottom:20}}>· Lecturas y Herramientas ·</div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:14}}>
