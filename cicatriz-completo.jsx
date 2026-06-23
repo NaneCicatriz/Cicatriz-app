@@ -953,12 +953,21 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                 </div>
 
               </div>
-              <div style={{background:"linear-gradient(135deg,rgba(140,80,200,.12),rgba(80,40,140,.08))",border:"1px solid rgba(160,90,220,.2)",borderRadius:14,padding:"18px 20px",marginTop:4,cursor:"pointer",textAlign:"center"}} onClick={()=>window.open(LINKS.combo,"_blank")}>
-                <div style={{fontSize:9,fontWeight:700,letterSpacing:3,color:"rgba(160,100,220,.6)",textTransform:"uppercase",marginBottom:6}}>✦ Mejor valor · Combo completo</div>
-                <div style={{fontFamily:"'Fraunces',serif",fontSize:20,color:"#d4a8f8",marginBottom:2}}>Todos los productos</div>
-                <div style={{fontFamily:"'Fraunces',serif",fontSize:24,color:"#d4a8f8",marginBottom:4}}><span style={{textDecoration:"line-through",opacity:.4,fontSize:"0.75em",marginRight:8}}>$79.990</span>$59.990 CLP</div>
-                <div style={{fontSize:11,color:"rgba(200,160,80,.6)",letterSpacing:1,marginBottom:4}}>Precio lanzamiento · hasta 30 julio</div>
-                <div style={{fontSize:11,color:"rgba(160,100,220,.4)"}}>Año Cósmico + Lectura Cósmica + Oráculo + 21 Días →</div>
+              <div style={{background:"linear-gradient(135deg,rgba(200,144,10,.1),rgba(160,100,10,.06))",border:"1px solid rgba(200,144,10,.3)",borderRadius:16,padding:"24px 20px",marginTop:4,cursor:"pointer",textAlign:"center",position:"relative",overflow:"hidden"}} onClick={()=>window.open(LINKS.combo,"_blank")}>
+                <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,transparent,rgba(200,144,10,.6),transparent)"}}/>
+                <div style={{fontSize:9,fontWeight:700,letterSpacing:4,color:"rgba(200,144,10,.7)",textTransform:"uppercase",marginBottom:10}}>✦ Mejor valor · Acceso completo</div>
+                <div style={{fontFamily:"'Fraunces',serif",fontSize:26,fontWeight:900,color:"var(--gold-l)",marginBottom:6,lineHeight:1.1}}>Todo Cicatriz 777</div>
+                <div style={{fontFamily:"'Fraunces',serif",fontSize:28,color:"var(--gold-l)",marginBottom:4}}>
+                  <span style={{textDecoration:"line-through",opacity:.35,fontSize:"0.65em",marginRight:8}}>$79.990</span>
+                  $59.990 CLP
+                </div>
+                <div style={{fontSize:11,color:"rgba(200,144,10,.65)",letterSpacing:1,marginBottom:12}}>Precio lanzamiento · hasta 30 julio</div>
+                <div style={{display:"flex",justifyContent:"center",gap:8,flexWrap:"wrap",marginBottom:4}}>
+                  {["Año Cósmico","Lectura Cósmica","Oráculo","21 Días"].map(p=>(
+                    <span key={p} style={{fontSize:10,background:"rgba(200,144,10,.08)",border:"1px solid rgba(200,144,10,.2)",borderRadius:20,padding:"3px 10px",color:"rgba(200,144,10,.7)"}}>{p}</span>
+                  ))}
+                </div>
+                <div style={{fontSize:12,color:"rgba(200,144,10,.5)",marginTop:8}}>Comprar ahora →</div>
               </div>
               <div className="hl" style={{marginTop:16}}>
                 <p>"Cicatriz nació porque la vida no me esperó. Tuve que seguir caminando mientras estaba rota por dentro — y para eso necesité herramientas reales. Las busqué, las creé, las fusioné. Eso es lo que hoy te ofrezco."</p>
