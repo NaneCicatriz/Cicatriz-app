@@ -301,13 +301,13 @@ body{background:var(--bg);}
 .sd{width:8px;height:8px;border-radius:50%;border:1px solid rgba(140,80,200,.25);}
 .sd.done{background:#9a50c0;border-color:#9a50c0;}
 .sd.today{border-color:rgba(180,110,240,.45);animation:pulse 2s ease-in-out infinite;}
-.today-card{background:linear-gradient(135deg,rgba(140,80,200,.18),rgba(80,40,140,.1));border:1px solid rgba(160,90,220,.2);border-radius:16px;padding:24px;text-align:center;cursor:pointer;transition:all .25s;}
-.today-card:hover{border-color:rgba(160,90,220,.4);transform:translateY(-1px);}
-.tc-status{font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(160,100,220,.5);text-transform:uppercase;margin-bottom:10px;}
+.today-card{background:linear-gradient(135deg,rgba(200,144,10,.1),rgba(160,100,10,.06));border:1px solid rgba(200,144,10,.25);border-radius:16px;padding:24px;text-align:center;cursor:pointer;transition:all .25s;}
+.today-card:hover{border-color:rgba(200,144,10,.45);transform:translateY(-1px);}
+.tc-status{font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(200,144,10,.6);text-transform:uppercase;margin-bottom:10px;}
 .tc-big-icon{font-size:40px;margin-bottom:8px;display:block;}
 .tc-big-t{font-family:'Fraunces',serif;font-size:20px;color:var(--gold-l);margin-bottom:4px;}
 .tc-big-s{font-size:13px;color:rgba(200,144,10,.4);font-style:italic;margin-bottom:16px;}
-.tc-go{display:inline-block;background:linear-gradient(135deg,#7a3a9a,#9a50c0);color:#f0e8fc;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;}
+.tc-go{display:inline-block;background:linear-gradient(135deg,rgba(200,144,10,.8),rgba(180,120,10,.9));color:#1a1008;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;border:none;cursor:pointer;}
 .past-c{background:rgba(20,12,36,.8);border:1px solid rgba(140,80,200,.1);border-radius:11px;padding:13px 16px;margin-bottom:9px;cursor:pointer;display:flex;align-items:flex-start;gap:12px;}
 .pc-date{font-size:10px;color:rgba(140,100,200,.4);min-width:55px;margin-top:2px;}
 .pc-n{font-family:'Fraunces',serif;font-size:15px;color:#c4a0e0;margin-bottom:2px;}
@@ -611,7 +611,7 @@ function Gate({ producto, emoji, titulo, precio, precioAntes, subtitulo, linkCom
       </a>
       <a href={LINKS.combo} target="_blank" rel="noopener noreferrer" className="gate-combo">
         <div className="gate-combo-label">✦ Combo completo · Todos los productos</div>
-        <div className="gate-combo-price"><span style={{textDecoration:"line-through",opacity:.4,fontSize:"0.8em",marginRight:6}}>$79.990</span>$59.990 CLP · lanzamiento hasta 30 julio</div>
+        <div className="gate-combo-price"><span style={{textDecoration:"line-through",opacity:.4,fontSize:"0.8em",marginRight:6}}>$59.990</span>$39.990 CLP · lanzamiento hasta 30 julio</div>
         <div className="gate-combo-sub">Año Cósmico + Lectura Cósmica + Oráculo + 21 Días →</div>
       </a>
       </div>
@@ -919,8 +919,8 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                 {/* Col 1 — Lecturas */}
                 <div style={{display:"flex",flexDirection:"column",gap:14}}>
                   {[
-                    {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M28 20a10 10 0 1 1-10-10 7 7 0 0 0 10 10z" stroke="#c8900a" strokeWidth="1.2" fill="none"/><circle cx="26" cy="14" r="1.5" fill="#c8900a"/></svg>,tag:"Lectura Esotérica",title:"Tu Año Cósmico",price:"$27.990",go:()=>setTab("cosmico")},
-                    {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M20 8l2.4 7.2H30l-6 4.4 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.4h7.6z" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinejoin="round"/></svg>,tag:"Lectura Premium",title:"Lectura Cósmica",price:"$44.990",go:()=>setTab("cosmica")},
+                    {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M28 20a10 10 0 1 1-10-10 7 7 0 0 0 10 10z" stroke="#c8900a" strokeWidth="1.2" fill="none"/><circle cx="26" cy="14" r="1.5" fill="#c8900a"/></svg>,tag:"Lectura Esotérica",title:"Tu Año Cósmico",price:"$19.990",go:()=>setTab("cosmico")},
+                    {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M20 8l2.4 7.2H30l-6 4.4 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.4h7.6z" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinejoin="round"/></svg>,tag:"Lectura Premium",title:"Lectura Cósmica",price:"$27.990",go:()=>setTab("cosmica")},
                   ].map((t,i)=>(
                     <div key={i} onClick={t.go} style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:14,padding:"20px 16px",cursor:"pointer",display:"flex",flexDirection:"column",gap:10,minHeight:150}}>
                       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
@@ -958,8 +958,8 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                 <div style={{fontSize:9,fontWeight:700,letterSpacing:4,color:"rgba(200,144,10,.7)",textTransform:"uppercase",marginBottom:10}}>✦ Mejor valor · Acceso completo</div>
                 <div style={{fontFamily:"'Fraunces',serif",fontSize:26,fontWeight:900,color:"var(--gold-l)",marginBottom:6,lineHeight:1.1}}>Todo Cicatriz 777</div>
                 <div style={{fontFamily:"'Fraunces',serif",fontSize:28,color:"var(--gold-l)",marginBottom:4}}>
-                  <span style={{textDecoration:"line-through",opacity:.35,fontSize:"0.65em",marginRight:8}}>$79.990</span>
-                  $59.990 CLP
+                  <span style={{textDecoration:"line-through",opacity:.35,fontSize:"0.65em",marginRight:8}}>$59.990</span>
+                  $39.990 CLP
                 </div>
                 <div style={{fontSize:11,color:"rgba(200,144,10,.65)",letterSpacing:1,marginBottom:12}}>Precio lanzamiento · hasta 30 julio</div>
                 <div style={{display:"flex",justifyContent:"center",gap:8,flexWrap:"wrap",marginBottom:4}}>
@@ -981,7 +981,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
         {tab==="cosmico" && (
           <div className="z1 pb80">
             {!tieneAcceso("cosmico") ? (
-              <Gate producto="cosmico" emoji="🌌" titulo="Tu Año Cósmico" precio="$27.990 CLP" precioAntes="$34.990"
+              <Gate producto="cosmico" emoji="🌌" titulo="Tu Año Cósmico" precio="$19.990 CLP" precioAntes="$27.990"
                 subtitulo="Ingresa tu código de acceso para recibir tu lectura personalizada."
                 linkCompra={LINKS.cosmico} onAccess={()=>darAcceso("cosmico")} onBack={()=>setTab("home")}/>
             ) : (
@@ -1042,7 +1042,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
         {tab==="cosmica" && (
           <div className="z1 pb80">
             {!tieneAcceso("cosmica") ? (
-              <Gate producto="cosmica" emoji="🔮" titulo="Lectura Cósmica" precio="$44.990 CLP" precioAntes="$59.990"
+              <Gate producto="cosmica" emoji="🔮" titulo="Lectura Cósmica" precio="$27.990 CLP" precioAntes="$44.990"
                 subtitulo="Carta Natal + Diseño Humano integrados en una lectura profunda."
                 linkCompra={LINKS.cosmica} onAccess={()=>darAcceso("cosmica")} onBack={()=>setTab("home")}/>
             ) : (
