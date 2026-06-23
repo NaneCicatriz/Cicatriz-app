@@ -1069,7 +1069,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                 {orPhase==="home" && (
                   <div className="pb80">
                     <div className="or-hero">
-                      <div className="or-title">🌸 Oráculo Kintsugi</div>
+                      <div className="or-title" style={{display:"flex",alignItems:"center",gap:8,justifyContent:"center"}}><span style={{display:"flex"}}>{SVGLarge.oraculo}</span> Oráculo Kintsugi</div>
                       <div className="or-sub">Una carta al día · Ritual de presencia</div>
                     </div>
                     <div className="streak-bar">
@@ -1091,7 +1091,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                       ) : (
                         <div className="today-card" onClick={()=>setOrPhase("breathe")}>
                           <div className="tc-status">✦ Disponible ahora</div>
-                          <span className="tc-big-icon">🌸</span>
+                          <span className="tc-big-icon" style={{display:"flex",justifyContent:"center"}}>{SVGLarge.oraculo}</span>
                           <div className="tc-big-t">Tu carta de hoy</div>
                           <div className="tc-big-s">Una carta. Un momento. Solo para ti.</div>
                           <button className="tc-go">Comenzar el ritual →</button>
@@ -1212,7 +1212,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                         <div className={`card-flip${flipped?" flipped":""}`}>
                           <div className="card-face card-back" onClick={()=>setFlipped(true)}>
                             <div className="cbp"/>
-                            <span className="cb-g">🌸</span>
+                            <span className="cb-g" style={{display:"flex",justifyContent:"center"}}>{SVGLarge.oraculo}</span>
                             <div className="cb-t">Kintsugi</div>
                             <div className="cb-h">Toca para revelar</div>
                           </div>
