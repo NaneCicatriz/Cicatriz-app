@@ -233,7 +233,7 @@ body{background:var(--bg);}
 .gate-combo-sub{font-size:11px;color:rgba(160,100,220,.35);}
 
 /* ── HOME ── */
-.home-hero{text-align:center;padding:72px 24px 56px;border-bottom:1px solid var(--border);background:radial-gradient(ellipse at 50% 40%,rgba(200,144,10,.08) 0%,transparent 70%);}
+.home-hero{text-align:center;padding:56px 24px 32px;border-bottom:1px solid var(--border);background:radial-gradient(ellipse at 50% 40%,rgba(200,144,10,.08) 0%,transparent 70%);}
 .home-glyph{display:none;}
 .home-eyebrow{font-size:13px;font-weight:700;letter-spacing:8px;text-transform:uppercase;color:var(--gold);margin-bottom:32px;opacity:.85;}
 .home-title{font-family:'Fraunces',serif;font-size:clamp(36px,9vw,58px);font-weight:900;color:var(--gold-l);letter-spacing:-1px;line-height:1.1;margin-bottom:20px;}
@@ -902,7 +902,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
               <h1 className="home-title">Llevas tiempo<br/>funcionando.<br/>Ya es hora de<br/>entenderte.</h1>
               <div className="home-sub">Lecturas y herramientas para mujeres<br/>que saben que algo tiene que cambiar.</div>
             </div>
-            <div style={{padding:"20px 16px 0"}}>
+            <div style={{padding:"16px 16px 0"}}>
               <div style={{fontSize:11,fontWeight:700,letterSpacing:4,textTransform:"uppercase",color:"rgba(200,144,10,.7)",textAlign:"center",marginBottom:20}}>· Lecturas y Herramientas ·</div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:14}}>
 
