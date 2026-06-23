@@ -495,7 +495,7 @@ function parseSections(text) {
 }
 
 // ── GATE ────────────────────────────────────────────────────────
-function Gate({ producto, emoji, titulo, precio, subtitulo, linkCompra, onAccess, onBack }) {
+function Gate({ producto, emoji, titulo, precio, precioAntes, subtitulo, linkCompra, onAccess, onBack }) {
   const [codigo, setCodigo] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -552,7 +552,11 @@ function Gate({ producto, emoji, titulo, precio, subtitulo, linkCompra, onAccess
       <div className="gate-wrap" style={{minHeight:"calc(100vh - 57px)"}}>
       <span className="gate-glyph">{emoji}</span>
       <div className="gate-title">{titulo}</div>
-      <div className="gate-price">{precio}</div>
+      <div className="gate-price">
+        {precioAntes && <span style={{textDecoration:"line-through",opacity:.4,fontSize:"0.78em",marginRight:8}}>{precioAntes}</span>}
+        {precio}
+      </div>
+      {precioAntes && <div style={{fontSize:11,color:"rgba(180,140,60,.55)",letterSpacing:1,marginBottom:4,textAlign:"center"}}>Precio lanzamiento · hasta 30 julio</div>}
       <div className="gate-sub">{subtitulo}</div>
       {modo === "codigo" ? (<>
         <input className="gate-input" placeholder="tu@correo.com" type="email" value={emailInput}
@@ -591,7 +595,7 @@ function Gate({ producto, emoji, titulo, precio, subtitulo, linkCompra, onAccess
       </a>
       <a href={LINKS.combo} target="_blank" rel="noopener noreferrer" className="gate-combo">
         <div className="gate-combo-label">✦ Combo completo · Todos los productos</div>
-        <div className="gate-combo-price">$79.990 CLP</div>
+        <div className="gate-combo-price"><span style={{textDecoration:"line-through",opacity:.4,fontSize:"0.8em",marginRight:6}}>$79.990</span>$59.990 CLP · lanzamiento hasta 30 julio</div>
         <div className="gate-combo-sub">Año Cósmico + Lectura Cósmica + Oráculo + 21 Días →</div>
       </a>
       </div>
@@ -886,10 +890,10 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
             </div>
             <div style={{padding:"24px 20px 0"}}>
               {[
-                {icon:"🌌",tag:"Lectura Esotérica · IA",title:"Tu Año Cósmico",desc:"Numerología · I Ching · Lenormand · Tránsitos",price:"$34.990 CLP",go:()=>setTab("cosmico")},
-                {icon:"🔮",tag:"Lectura Premium · IA",title:"Lectura Cósmica Completa",desc:"Carta Natal + Diseño Humano integrados",price:"$59.990 CLP",go:()=>setTab("cosmica")},
+                {icon:"🌌",tag:"Lectura Esotérica · IA",title:"Tu Año Cósmico",desc:"Numerología · I Ching · Lenormand · Tránsitos",price:"$27.990 CLP · lanzamiento",go:()=>setTab("cosmico")},
+                {icon:"🔮",tag:"Lectura Premium · IA",title:"Lectura Cósmica Completa",desc:"Carta Natal + Diseño Humano integrados",price:"$44.990 CLP · lanzamiento",go:()=>setTab("cosmica")},
                 {icon:"🌸",tag:"Oráculo · Ritual Diario",title:"Oráculo Kintsugi",desc:"52 cartas · Una por día · Ritual de presencia",price:"$9.990 CLP",go:()=>{setTab("oraculo");setOrPhase("home");}},
-                {icon:"🌿",tag:"Programa · 21 Días",title:"Bajar el Ruido",desc:"5 minutos al día para recuperar tu centro",price:"$24.990 CLP",go:()=>{setTab("programa");setProgView("home");}},
+                {icon:"🌿",tag:"Programa · 21 Días",title:"Bajar el Ruido",desc:"5 minutos al día para recuperar tu centro",price:"$19.990 CLP · lanzamiento",go:()=>{setTab("programa");setProgView("home");}},
               ].map((t,i)=>(
                 <div key={i} className="tool-card" onClick={t.go}>
                   <span className="tc-icon">{t.icon}</span>
@@ -905,7 +909,8 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
               <div style={{background:"linear-gradient(135deg,rgba(140,80,200,.12),rgba(80,40,140,.08))",border:"1px solid rgba(160,90,220,.2)",borderRadius:14,padding:"18px 20px",marginTop:4,cursor:"pointer",textAlign:"center"}} onClick={()=>window.open(LINKS.combo,"_blank")}>
                 <div style={{fontSize:9,fontWeight:700,letterSpacing:3,color:"rgba(160,100,220,.6)",textTransform:"uppercase",marginBottom:6}}>✦ Mejor valor · Combo completo</div>
                 <div style={{fontFamily:"'Fraunces',serif",fontSize:20,color:"#d4a8f8",marginBottom:2}}>Todos los productos</div>
-                <div style={{fontFamily:"'Fraunces',serif",fontSize:24,color:"#d4a8f8",marginBottom:4}}>$79.990 CLP</div>
+                <div style={{fontFamily:"'Fraunces',serif",fontSize:24,color:"#d4a8f8",marginBottom:4}}><span style={{textDecoration:"line-through",opacity:.4,fontSize:"0.75em",marginRight:8}}>$79.990</span>$59.990 CLP</div>
+                <div style={{fontSize:11,color:"rgba(200,160,80,.6)",letterSpacing:1,marginBottom:4}}>Precio lanzamiento · hasta 30 julio</div>
                 <div style={{fontSize:11,color:"rgba(160,100,220,.4)"}}>Año Cósmico + Lectura Cósmica + Oráculo + 21 Días →</div>
               </div>
               <div className="hl" style={{marginTop:16}}>
@@ -920,7 +925,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
         {tab==="cosmico" && (
           <div className="z1 pb80">
             {!tieneAcceso("cosmico") ? (
-              <Gate producto="cosmico" emoji="🌌" titulo="Tu Año Cósmico" precio="$34.990 CLP"
+              <Gate producto="cosmico" emoji="🌌" titulo="Tu Año Cósmico" precio="$27.990 CLP" precioAntes="$34.990"
                 subtitulo="Ingresa tu código de acceso para recibir tu lectura personalizada."
                 linkCompra={LINKS.cosmico} onAccess={()=>darAcceso("cosmico")} onBack={()=>setTab("home")}/>
             ) : (
@@ -981,7 +986,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
         {tab==="cosmica" && (
           <div className="z1 pb80">
             {!tieneAcceso("cosmica") ? (
-              <Gate producto="cosmica" emoji="🔮" titulo="Lectura Cósmica Completa" precio="$59.990 CLP"
+              <Gate producto="cosmica" emoji="🔮" titulo="Lectura Cósmica Completa" precio="$44.990 CLP" precioAntes="$59.990"
                 subtitulo="Carta Natal + Diseño Humano integrados en una lectura profunda."
                 linkCompra={LINKS.cosmica} onAccess={()=>darAcceso("cosmica")} onBack={()=>setTab("home")}/>
             ) : (
@@ -1244,7 +1249,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
         {tab==="programa" && (
           <div className="z1">
             {!tieneAcceso("programa") ? (
-              <Gate producto="programa" emoji="🌿" titulo="21 Días para Bajar el Ruido" precio="$24.990 CLP"
+              <Gate producto="programa" emoji="🌿" titulo="21 Días para Bajar el Ruido" precio="$19.990 CLP" precioAntes="$24.990"
                 subtitulo="5 minutos al día para recuperar tu centro."
                 linkCompra={LINKS.programa} onAccess={()=>darAcceso("programa")} onBack={()=>setTab("home")}/>
             ) : (
