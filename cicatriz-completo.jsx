@@ -226,11 +226,11 @@ body{background:var(--bg);}
 .gate-buy-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(180,140,60,.5);margin-bottom:4px;}
 .gate-buy-price{font-family:'Fraunces',serif;font-size:18px;color:var(--gold-l);margin-bottom:2px;}
 .gate-buy-sub{font-size:11px;color:rgba(180,140,60,.35);}
-.gate-combo{background:linear-gradient(135deg,rgba(140,80,200,.15),rgba(80,40,140,.1));border:1px solid rgba(160,90,220,.25);border-radius:12px;padding:16px;width:100%;max-width:300px;text-align:center;cursor:pointer;text-decoration:none;display:block;margin-top:10px;transition:all .2s;}
-.gate-combo:hover{border-color:rgba(160,90,220,.5);}
-.gate-combo-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(160,100,220,.5);margin-bottom:4px;}
-.gate-combo-price{font-family:'Fraunces',serif;font-size:18px;color:#d4a8f8;margin-bottom:2px;}
-.gate-combo-sub{font-size:11px;color:rgba(160,100,220,.35);}
+.gate-combo{background:linear-gradient(135deg,rgba(200,144,10,.1),rgba(160,100,10,.06));border:1px solid rgba(200,144,10,.3);border-radius:12px;padding:16px;width:100%;max-width:300px;text-align:center;cursor:pointer;text-decoration:none;display:block;margin-top:10px;transition:all .2s;}
+.gate-combo:hover{border-color:rgba(200,144,10,.5);}
+.gate-combo-label{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(200,144,10,.6);margin-bottom:4px;}
+.gate-combo-price{font-family:'Fraunces',serif;font-size:18px;color:var(--gold-l);margin-bottom:2px;}
+.gate-combo-sub{font-size:11px;color:rgba(200,144,10,.4);}
 
 /* ── HOME ── */
 .home-hero{text-align:center;padding:56px 24px 32px;border-bottom:1px solid var(--border);background:radial-gradient(ellipse at 50% 40%,rgba(200,144,10,.08) 0%,transparent 70%);}
