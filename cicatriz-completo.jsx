@@ -497,10 +497,10 @@ function parseSections(text) {
 // ── ICONOS SVG ───────────────────────────────────────────────────
 const SVG = {
   home: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 4l9 8v8a1 1 0 01-1 1h-5v-5H9v5H4a1 1 0 01-1-1v-8z" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinejoin="round"/></svg>,
-  cosmico: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 12a10 10 0 1 1-10-10 7 7 0 0 0 10 10z" stroke="currentColor" strokeWidth="1.3" fill="none"/><circle cx="18" cy="6" r="1.5" fill="currentColor"/></svg>,
-  cosmica: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.2H22l-6.4 4.8 2.4 7.2L12 17l-6 4.2 2.4-7.2L2 9.2h7.6z" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinejoin="round"/></svg>,
-  oraculo: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.3"/><path d="M12 3 Q15 8 12 12 Q9 16 12 21" stroke="currentColor" strokeWidth="1.3" fill="none"/><path d="M3 12 Q8 9 12 12 Q16 15 21 12" stroke="currentColor" strokeWidth="1.3" fill="none"/></svg>,
-  programa: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 12 Q13 9 12 6 Q11 3 12 1" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round"/><path d="M12 12 Q15 11 17 8 Q19 5 22 5" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round"/><path d="M12 12 Q15 14 16 18 Q17 21 20 22" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round"/><path d="M12 12 Q9 14 8 18 Q7 21 4 23" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round"/><path d="M12 12 Q9 11 7 8 Q5 5 2 5" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round"/><circle cx="12" cy="12" r="1.5" fill="currentColor" opacity="0.7"/></svg>,
+  cosmico: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 12.5A9 9 0 1 1 11.5 3a6.5 6.5 0 0 0 9.5 9.5z" stroke="currentColor" strokeWidth="1.3" fill="none"/></svg>,
+  cosmica: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2l1.5 4.5h4.5l-3.5 2.5 1.5 4.5L12 11l-4 2.5 1.5-4.5L6 6.5h4.5z" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinejoin="round"/></svg>,
+  oraculo: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.3"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/></svg>,
+  programa: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><line x1="4" y1="7" x2="20" y2="7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><line x1="4" y1="12" x2="20" y2="12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><line x1="4" y1="17" x2="14" y2="17" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
 };
 
 const SVGLarge = {
