@@ -253,8 +253,8 @@ body{background:var(--bg);}
 /* ── COSMIC / COSMICA ── */
 .cy-hero{text-align:center;padding:36px 20px 24px;background:radial-gradient(ellipse at 50% 30%,rgba(200,144,10,.08) 0%,transparent 60%),linear-gradient(170deg,#1a1008 0%,var(--bg) 70%);border-bottom:1px solid var(--border);}
 .cy-glyph{width:60px;height:60px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;background:rgba(200,144,10,.06);border:1px solid rgba(200,144,10,.18);border-radius:16px;}
-.cy-title{font-family:'Fraunces',serif;font-size:clamp(22px,5vw,36px);font-weight:900;color:#d4a8f8;margin-bottom:4px;}
-.cy-sub{font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:rgba(180,130,220,.4);margin-bottom:8px;}
+.cy-title{font-family:'Fraunces',serif;font-size:clamp(22px,5vw,36px);font-weight:900;color:var(--gold-l);margin-bottom:4px;}
+.cy-sub{font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:rgba(200,144,10,.4);margin-bottom:8px;}
 .cy-desc{font-size:13px;line-height:1.7;color:rgba(180,150,200,.5);max-width:360px;margin:0 auto;}
 .num-preview{background:rgba(180,140,20,.06);border:1px solid rgba(180,140,20,.15);border-radius:10px;padding:14px 16px;margin-bottom:16px;}
 .np-title{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(180,140,60,.5);margin-bottom:8px;}
@@ -292,11 +292,11 @@ body{background:var(--bg);}
 
 /* ── ORACLE ── */
 .or-hero{text-align:center;padding:32px 20px 24px;background:radial-gradient(ellipse at 50% 30%,rgba(200,144,10,.08) 0%,transparent 60%),linear-gradient(170deg,#1a1008 0%,var(--bg) 80%);border-bottom:1px solid var(--border);}
-.or-title{font-family:'Fraunces',serif;font-size:26px;color:#d4a8f0;margin-bottom:4px;}
-.or-sub{font-size:13px;color:rgba(180,130,220,.4);font-style:italic;}
-.streak-bar{background:rgba(12,8,22,.95);padding:12px 20px;border-bottom:1px solid rgba(140,80,200,.08);display:flex;align-items:center;justify-content:space-between;}
-.streak-n{font-family:'Fraunces',serif;font-size:20px;color:#d4a8f0;font-weight:700;}
-.streak-lbl{font-size:10px;color:rgba(160,110,220,.4);letter-spacing:1px;text-transform:uppercase;}
+.or-title{font-family:'Fraunces',serif;font-size:26px;color:var(--gold-l);margin-bottom:4px;}
+.or-sub{font-size:13px;color:rgba(200,144,10,.4);font-style:italic;}
+.streak-bar{background:rgba(17,13,8,.97);padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.streak-n{font-family:'Fraunces',serif;font-size:20px;color:var(--gold-l);font-weight:700;}
+.streak-lbl{font-size:10px;color:rgba(200,144,10,.4);letter-spacing:1px;text-transform:uppercase;}
 .streak-dots{display:flex;gap:5px;}
 .sd{width:8px;height:8px;border-radius:50%;border:1px solid rgba(140,80,200,.25);}
 .sd.done{background:#9a50c0;border-color:#9a50c0;}
@@ -305,8 +305,8 @@ body{background:var(--bg);}
 .today-card:hover{border-color:rgba(160,90,220,.4);transform:translateY(-1px);}
 .tc-status{font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(160,100,220,.5);text-transform:uppercase;margin-bottom:10px;}
 .tc-big-icon{font-size:40px;margin-bottom:8px;display:block;}
-.tc-big-t{font-family:'Fraunces',serif;font-size:20px;color:#d4a8f0;margin-bottom:4px;}
-.tc-big-s{font-size:13px;color:rgba(180,130,220,.4);font-style:italic;margin-bottom:16px;}
+.tc-big-t{font-family:'Fraunces',serif;font-size:20px;color:var(--gold-l);margin-bottom:4px;}
+.tc-big-s{font-size:13px;color:rgba(200,144,10,.4);font-style:italic;margin-bottom:16px;}
 .tc-go{display:inline-block;background:linear-gradient(135deg,#7a3a9a,#9a50c0);color:#f0e8fc;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;}
 .past-c{background:rgba(20,12,36,.8);border:1px solid rgba(140,80,200,.1);border-radius:11px;padding:13px 16px;margin-bottom:9px;cursor:pointer;display:flex;align-items:flex-start;gap:12px;}
 .pc-date{font-size:10px;color:rgba(140,100,200,.4);min-width:55px;margin-top:2px;}
@@ -315,13 +315,13 @@ body{background:var(--bg);}
 .ritual-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;background:radial-gradient(ellipse at 50% 35%,rgba(140,80,200,.15) 0%,transparent 65%);min-height:calc(100vh - 60px);}
 .rg{font-size:60px;margin-bottom:20px;display:block;animation:breathe 4s ease-in-out infinite;}
 @keyframes breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.07);}}
-.rt{font-family:'Fraunces',serif;font-size:32px;color:#d4a8f0;margin-bottom:4px;}
-.rs2{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:rgba(180,130,220,.4);margin-bottom:24px;}
+.rt{font-family:'Fraunces',serif;font-size:32px;color:var(--gold-l);margin-bottom:4px;}
+.rs2{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:rgba(200,144,10,.4);margin-bottom:24px;}
 .breathe-c{width:76px;height:76px;border-radius:50%;border:1.5px solid rgba(160,100,220,.3);display:flex;align-items:center;justify-content:center;font-size:26px;animation:breathe 4s ease-in-out infinite;margin:0 auto 8px;}
 .breathe-lbl{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(160,120,220,.4);margin-bottom:28px;}
 .int-wrap{width:100%;max-width:300px;margin-bottom:28px;}
 .int-lbl{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(160,100,220,.45);margin-bottom:8px;text-align:left;}
-.int-input{width:100%;background:rgba(140,80,200,.08);border:1px solid rgba(140,80,200,.2);border-radius:11px;padding:13px 16px;font-family:'Fraunces',serif;font-style:italic;font-size:15px;color:#d4a8f8;outline:none;text-align:center;}
+.int-input{width:100%;background:rgba(200,144,10,.06);border:1px solid rgba(200,144,10,.18);border-radius:11px;padding:13px 16px;font-family:'Fraunces',serif;font-style:italic;font-size:15px;color:var(--gold-l);outline:none;text-align:center;}
 .int-input::placeholder{color:rgba(160,120,220,.3);}
 .draw-btn{width:150px;height:150px;border-radius:50%;border:1.5px solid rgba(160,100,220,.25);background:radial-gradient(circle,rgba(140,80,200,.15),rgba(80,40,140,.08));display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:7px;transition:all .3s;}
 .draw-btn:hover{border-color:rgba(160,100,220,.5);transform:scale(1.04);}
@@ -354,23 +354,23 @@ body{background:var(--bg);}
 .journal{background:rgba(140,80,200,.06);border:1px solid rgba(140,80,200,.12);border-radius:13px;padding:16px;margin-bottom:12px;}
 .jlbl{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(160,100,220,.45);margin-bottom:8px;}
 .jq{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:rgba(200,155,240,.65);margin-bottom:10px;line-height:1.5;}
-.jta{width:100%;background:rgba(100,50,160,.08);border:1px solid rgba(140,80,200,.15);border-radius:7px;padding:11px 13px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:#d4a8f8;resize:none;min-height:75px;outline:none;line-height:1.6;}
+.jta{width:100%;background:rgba(200,144,10,.04);border:1px solid rgba(200,144,10,.12);border-radius:7px;padding:11px 13px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--gold-l);resize:none;min-height:75px;outline:none;line-height:1.6;}
 .jta::placeholder{color:rgba(160,100,220,.2);font-style:italic;}
 .act-row{display:flex;gap:9px;margin-bottom:10px;}
 .act-btn{flex:1;padding:12px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;text-align:center;}
-.act-p{background:linear-gradient(135deg,rgba(140,80,200,.4),rgba(100,50,160,.3));border:1px solid rgba(160,100,220,.3);color:#d4a8f8;}
-.act-s{background:transparent;border:1px solid rgba(140,80,200,.15);color:rgba(180,130,220,.4);}
+.act-p{background:linear-gradient(135deg,rgba(200,144,10,.35),rgba(160,100,10,.25));border:1px solid rgba(200,144,10,.3);color:var(--gold-l);}
+.act-s{background:transparent;border:1px solid rgba(200,144,10,.12);color:rgba(200,144,10,.4);}
 .save-btn{width:100%;padding:14px;border-radius:11px;border:none;background:linear-gradient(135deg,#7a3a9a,#9a50c0);color:#f0e8fc;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;}
 .saved-conf{text-align:center;padding:14px;background:rgba(140,80,200,.06);border:1px solid rgba(140,80,200,.12);border-radius:11px;}
 .sc-ico{font-size:20px;margin-bottom:5px;}
 .sc-t{font-family:'Fraunces',serif;font-size:15px;color:rgba(200,155,240,.65);margin-bottom:3px;}
 .sc-s{font-size:11px;color:rgba(160,110,220,.35);font-style:italic;margin-bottom:12px;}
-.sc-btn{background:transparent;border:1px solid rgba(140,80,200,.2);border-radius:7px;padding:8px 18px;color:rgba(180,120,230,.55);font-size:12px;cursor:pointer;}
+.sc-btn{background:transparent;border:1px solid rgba(200,144,10,.18);border-radius:7px;padding:8px 18px;color:rgba(180,120,230,.55);font-size:12px;cursor:pointer;}
 
 /* ── CATS & GRID ── */
 .cats-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;text-align:center;}
-.cats-title{font-family:'Fraunces',serif;font-size:22px;color:#d4a8f0;margin-bottom:4px;}
-.cats-sub{font-size:12px;color:rgba(180,130,220,.4);font-style:italic;margin-bottom:6px;}
+.cats-title{font-family:'Fraunces',serif;font-size:22px;color:var(--gold-l);margin-bottom:4px;}
+.cats-sub{font-size:12px;color:rgba(200,144,10,.4);font-style:italic;margin-bottom:6px;}
 .cats-int{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:rgba(200,160,240,.55);background:rgba(140,80,200,.06);border:1px solid rgba(140,80,200,.12);border-radius:10px;padding:8px 14px;margin-bottom:24px;max-width:280px;}
 .cat-cards{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;}
 .cat-card{border-radius:14px;padding:16px 18px;cursor:pointer;transition:all .25s;text-align:left;border:1px solid;display:flex;align-items:center;gap:14px;}
@@ -1053,8 +1053,8 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                 </div>
                 <div className="cy-hero" style={{background:"radial-gradient(ellipse at 50% 30%,rgba(200,144,10,.08) 0%,transparent 60%),linear-gradient(170deg,#1a1008 0%,var(--bg) 70%)"}}>
                   <span className="cy-glyph">{SVGLarge.cosmica}</span>
-                  <div className="cy-title" style={{color:"#a8d4f8"}}>Lectura Cósmica</div>
-                  <div className="cy-sub" style={{color:"rgba(130,180,220,.4)"}}>Carta Natal · Diseño Humano · Integración profunda</div>
+                  <div className="cy-title" style={{color:"var(--gold-l)"}}>Lectura Cósmica</div>
+                  <div className="cy-sub" style={{color:"rgba(200,144,10,.45)"}}>Carta Natal · Diseño Humano · Integración profunda</div>
                   <p className="cy-desc">Tu carta natal y Diseño Humano se calculan automáticamente. Solo necesitas tu fecha, hora y ciudad de nacimiento.</p>
                 </div>
                 <div style={{padding:"28px 20px 0"}}>
@@ -1172,7 +1172,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                   <div style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
                     <div className="header" style={{background:"rgba(8,5,14,.95)",borderBottom:"1px solid rgba(140,80,200,.08)"}}>
                       <button className="hbk" onClick={()=>setOrPhase("breathe")}>‹</button>
-                      <div className="htitle" style={{color:"#d4a8f0"}}>¿Cómo estás hoy?</div>
+                      <div className="htitle" style={{color:"var(--gold-l)"}}>¿Cómo estás hoy?</div>
                     </div>
                     <div style={{padding:"28px 20px 90px",display:"flex",flexDirection:"column",alignItems:"center"}}>
                       <p style={{fontSize:13,color:"rgba(180,130,220,.45)",fontStyle:"italic",marginBottom:22,textAlign:"center"}}>Toca lo que más se acerca a lo que sientes</p>
@@ -1195,7 +1195,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                   <div style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
                     <div className="header" style={{background:"rgba(8,5,14,.95)",borderBottom:"1px solid rgba(140,80,200,.08)"}}>
                       <button className="hbk" onClick={()=>setOrPhase("intention")}>‹</button>
-                      <div className="htitle" style={{color:"#d4a8f0"}}>Elige tu camino</div>
+                      <div className="htitle" style={{color:"var(--gold-l)"}}>Elige tu camino</div>
                     </div>
                     <div className="cats-wrap">
                       <div className="cats-title">Para lo que sientes</div>
