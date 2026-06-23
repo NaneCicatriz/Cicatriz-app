@@ -241,7 +241,7 @@ body{background:var(--bg);}
 .home-desc{display:none;}
 .tool-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:12px;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:16px;}
 .tool-card:hover{border-color:rgba(200,150,40,.3);transform:translateY(-1px);}
-.tc-icon{font-size:36px;flex-shrink:0;}
+.tc-icon{width:44px;height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(200,144,10,.06);border:1px solid rgba(200,144,10,.15);border-radius:12px;}
 .tc-body{flex:1;}
 .tc-tag{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:3px;opacity:.7;}
 .tc-title{font-family:'Fraunces',serif;font-size:18px;color:var(--gold-l);margin-bottom:2px;}
@@ -888,10 +888,10 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
             </div>
             <div style={{padding:"24px 20px 0"}}>
               {[
-                {icon:"🌌",tag:"Lectura Esotérica · IA",title:"Tu Año Cósmico",desc:"Numerología · I Ching · Lenormand · Tránsitos",price:"$27.990 CLP · lanzamiento",go:()=>setTab("cosmico")},
-                {icon:"🔮",tag:"Lectura Premium · IA",title:"Lectura Cósmica Completa",desc:"Carta Natal + Diseño Humano integrados",price:"$44.990 CLP · lanzamiento",go:()=>setTab("cosmica")},
-                {icon:"🌸",tag:"Oráculo · Ritual Diario",title:"Oráculo Kintsugi",desc:"52 cartas · Una por día · Ritual de presencia",price:"$9.990 CLP",go:()=>{setTab("oraculo");setOrPhase("home");}},
-                {icon:"🌿",tag:"Programa · 21 Días",title:"Bajar el Ruido",desc:"5 minutos al día para recuperar tu centro",price:"$19.990 CLP · lanzamiento",go:()=>{setTab("programa");setProgView("home");}},
+                {icon:<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M28 20a10 10 0 1 1-10-10 7 7 0 0 0 10 10z" stroke="#c8900a" strokeWidth="1.2" fill="none"/><circle cx="26" cy="14" r="1.5" fill="#c8900a"/></svg>,tag:"Lectura Esotérica · IA",title:"Tu Año Cósmico",desc:"Numerología · I Ching · Lenormand · Tránsitos",price:"$27.990 CLP · lanzamiento",go:()=>setTab("cosmico")},
+                {icon:<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 8l2.4 7.2H30l-6 4.4 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.4h7.6z" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinejoin="round"/></svg>,tag:"Lectura Premium · IA",title:"Lectura Cósmica Completa",desc:"Carta Natal + Diseño Humano integrados",price:"$44.990 CLP · lanzamiento",go:()=>setTab("cosmica")},
+                {icon:<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="11" stroke="#c8900a" strokeWidth="1.2"/><path d="M20 9 Q24 15 20 20 Q16 25 20 31" stroke="#c8900a" strokeWidth="1.2" fill="none"/><path d="M9 20 Q15 16 20 20 Q25 24 31 20" stroke="#c8900a" strokeWidth="1.2" fill="none"/></svg>,tag:"Oráculo · Ritual Diario",title:"Oráculo Kintsugi",desc:"52 cartas · Una por día · Ritual de presencia",price:"$9.990 CLP",go:()=>{setTab("oraculo");setOrPhase("home");}},
+                {icon:<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 20 Q22 16 20 12 Q18 8 20 4" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q25 18 28 14 Q31 10 35 10" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q24 22 26 27 Q28 32 32 34" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q16 24 14 29 Q12 34 8 36" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q15 22 12 18 Q9 14 5 14" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><circle cx="20" cy="20" r="2" fill="#c8900a" opacity="0.6"/></svg>,tag:"Programa · 21 Días",title:"Bajar el Ruido",desc:"5 minutos al día para recuperar tu centro",price:"$19.990 CLP · lanzamiento",go:()=>{setTab("programa");setProgView("home");}},
               ].map((t,i)=>(
                 <div key={i} className="tool-card" onClick={t.go}>
                   <span className="tc-icon">{t.icon}</span>
