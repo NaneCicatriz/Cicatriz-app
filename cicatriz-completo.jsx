@@ -175,7 +175,7 @@ const S = `
 ${FONTS}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#08060e;--surface:#110f1a;--gold:#c8900a;--gold-l:#e8c060;--text:#e8e0d0;--muted:#7a6a50;--border:rgba(200,150,40,0.12);
+  --bg:#110d08;--surface:#1c1508;--gold:#c8900a;--gold-l:#e8c060;--text:#F5ECD7;--muted:#8a7a60;--border:rgba(200,150,40,0.12);
 }
 body{background:var(--bg);}
 .app{background:var(--bg);min-height:100vh;font-family:'DM Sans',sans-serif;color:var(--text);max-width:480px;margin:0 auto;position:relative;overflow-x:hidden;}
@@ -233,12 +233,12 @@ body{background:var(--bg);}
 .gate-combo-sub{font-size:11px;color:rgba(160,100,220,.35);}
 
 /* ── HOME ── */
-.home-hero{text-align:center;padding:56px 20px 44px;border-bottom:1px solid var(--border);background:radial-gradient(ellipse at 50% 30%,rgba(180,120,20,.1) 0%,transparent 65%);}
-.home-glyph{font-size:56px;display:block;margin-bottom:16px;filter:drop-shadow(0 0 24px rgba(200,160,30,.4));}
-.home-eyebrow{font-size:10px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;opacity:.8;}
-.home-title{font-family:'Fraunces',serif;font-size:clamp(44px,12vw,80px);font-weight:900;color:var(--gold-l);letter-spacing:-2px;line-height:.95;margin-bottom:8px;}
-.home-sub{font-family:'Fraunces',serif;font-style:italic;font-size:15px;color:rgba(200,160,60,.45);margin-bottom:14px;}
-.home-desc{font-size:15px;line-height:1.75;color:rgba(200,180,140,.55);max-width:380px;margin:0 auto;}
+.home-hero{text-align:center;padding:72px 24px 56px;border-bottom:1px solid var(--border);background:radial-gradient(ellipse at 50% 40%,rgba(200,144,10,.08) 0%,transparent 70%);}
+.home-glyph{display:none;}
+.home-eyebrow{font-size:10px;font-weight:700;letter-spacing:8px;text-transform:uppercase;color:var(--gold);margin-bottom:32px;opacity:.7;}
+.home-title{font-family:'Fraunces',serif;font-size:clamp(36px,9vw,58px);font-weight:900;color:var(--gold-l);letter-spacing:-1px;line-height:1.1;margin-bottom:20px;}
+.home-sub{font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:rgba(245,236,215,.5);margin-bottom:0;line-height:1.6;}
+.home-desc{display:none;}
 .tool-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:12px;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:16px;}
 .tool-card:hover{border-color:rgba(200,150,40,.3);transform:translateY(-1px);}
 .tc-icon{font-size:36px;flex-shrink:0;}
@@ -882,11 +882,9 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
         {tab==="home" && (
           <div className="z1 pb80">
             <div className="home-hero">
-              <span className="home-glyph">🪷</span>
-              <div className="home-eyebrow">Herramientas de acompañamiento emocional</div>
-              <h1 className="home-title">Cicatriz</h1>
-              <div className="home-sub">by Nanette Vezanka</div>
-              <p className="home-desc">Herramientas simples y reales para personas en duelo, crisis y pérdida.</p>
+              <div className="home-eyebrow">· · · CICATRIZ 777 · · ·</div>
+              <h1 className="home-title">Llevas tiempo<br/>funcionando.<br/>Ya es hora de<br/>entenderte.</h1>
+              <div className="home-sub">Lecturas y herramientas para mujeres<br/>que saben que algo tiene que cambiar.</div>
             </div>
             <div style={{padding:"24px 20px 0"}}>
               {[
@@ -917,7 +915,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                 <p>"Cicatriz nació porque la vida no me esperó. Tuve que seguir caminando mientras estaba rota por dentro — y para eso necesité herramientas reales. Las busqué, las creé, las fusioné. Eso es lo que hoy te ofrezco."</p>
               </div>
             </div>
-            <div className="home-by">Antofagasta, Chile · {ANIO}</div>
+            <div className="home-by">by Nane · Antofagasta, Chile · {ANIO}</div>
           </div>
         )}
 
