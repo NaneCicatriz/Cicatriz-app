@@ -829,7 +829,7 @@ Tono: profesional, directo e informativo. Sin metáforas poéticas, sin frases t
       ? `DISEÑO HUMANO (calculado con precisión astronómica): Tipo: ${dh.tipo} | Estrategia: ${dh.estrategia} | Autoridad: ${dh.autoridad} | Perfil: ${dh.perfil} | Definición: ${dh.definicion} | Cruz de Encarnación: ${dh.cruz} | Centros definidos: ${(dh.centros_definidos||[]).join(", ")} | Canales: ${(dh.canales||[]).join(", ")} | Tema No-Self: ${dh.tema_no_self} | Firma: ${dh.firma}`
       : 'DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.';
     try {
-      const prompt = `Eres un astrólogo y analista de Diseño Humano experto. Genera una Lectura Cósmica Completa profunda y personalizada. Esta es la lectura más completa que existe — integra numerología, astrología, I Ching, Lenormand, carta natal y Diseño Humano en un solo informe.
+      const prompt = `Eres un astrólogo y analista de Diseño Humano experto. Genera una Lectura Cósmica profunda y personalizada. Esta es la lectura más completa que existe — integra numerología, astrología, I Ching, Lenormand, carta natal y Diseño Humano en un solo informe.
 
 DATOS PERSONALES: Nombre: ${lcForm.nombre} | Fecha: ${lcForm.fecha} | Hora: ${lcForm.hora||"desconocida"} | Ciudad: ${lcForm.ciudad}
 Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy}
@@ -902,24 +902,47 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
               <h1 className="home-title">Llevas tiempo<br/>funcionando.<br/>Ya es hora de<br/>entenderte.</h1>
               <div className="home-sub">Lecturas y herramientas para mujeres<br/>que saben que algo tiene que cambiar.</div>
             </div>
-            <div style={{padding:"24px 20px 0"}}>
-              {[
-                {icon:<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M28 20a10 10 0 1 1-10-10 7 7 0 0 0 10 10z" stroke="#c8900a" strokeWidth="1.2" fill="none"/><circle cx="26" cy="14" r="1.5" fill="#c8900a"/></svg>,tag:"Lectura Esotérica · IA",title:"Tu Año Cósmico",desc:"Numerología · I Ching · Lenormand · Tránsitos",price:"$27.990 CLP · lanzamiento",go:()=>setTab("cosmico")},
-                {icon:<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 8l2.4 7.2H30l-6 4.4 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.4h7.6z" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinejoin="round"/></svg>,tag:"Lectura Premium · IA",title:"Lectura Cósmica Completa",desc:"Carta Natal + Diseño Humano integrados",price:"$44.990 CLP · lanzamiento",go:()=>setTab("cosmica")},
-                {icon:<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="11" stroke="#c8900a" strokeWidth="1.2"/><path d="M20 9 Q24 15 20 20 Q16 25 20 31" stroke="#c8900a" strokeWidth="1.2" fill="none"/><path d="M9 20 Q15 16 20 20 Q25 24 31 20" stroke="#c8900a" strokeWidth="1.2" fill="none"/></svg>,tag:"Oráculo · Ritual Diario",title:"Oráculo Kintsugi",desc:"52 cartas · Una por día · Ritual de presencia",price:"$9.990 CLP",go:()=>{setTab("oraculo");setOrPhase("home");}},
-                {icon:<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 20 Q22 16 20 12 Q18 8 20 4" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q25 18 28 14 Q31 10 35 10" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q24 22 26 27 Q28 32 32 34" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q16 24 14 29 Q12 34 8 36" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q15 22 12 18 Q9 14 5 14" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><circle cx="20" cy="20" r="2" fill="#c8900a" opacity="0.6"/></svg>,tag:"Programa · 21 Días",title:"Bajar el Ruido",desc:"5 minutos al día para recuperar tu centro",price:"$19.990 CLP · lanzamiento",go:()=>{setTab("programa");setProgView("home");}},
-              ].map((t,i)=>(
-                <div key={i} className="tool-card" onClick={t.go}>
-                  <span className="tc-icon">{t.icon}</span>
-                  <div className="tc-body">
-                    <div className="tc-tag">{t.tag}</div>
-                    <div className="tc-title">{t.title}</div>
-                    <div className="tc-desc">{t.desc}</div>
-                    <div className="tc-price">{t.price}</div>
-                  </div>
-                  <span className="tc-arrow">›</span>
+            <div style={{padding:"20px 16px 0"}}>
+              <div style={{fontSize:9,fontWeight:700,letterSpacing:4,textTransform:"uppercase",color:"rgba(200,144,10,.5)",textAlign:"center",marginBottom:16}}>· Lecturas y Herramientas ·</div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:10}}>
+
+                {/* Col 1 — Lecturas */}
+                <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                  {[
+                    {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M28 20a10 10 0 1 1-10-10 7 7 0 0 0 10 10z" stroke="#c8900a" strokeWidth="1.2" fill="none"/><circle cx="26" cy="14" r="1.5" fill="#c8900a"/></svg>,tag:"Lectura Esotérica",title:"Tu Año Cósmico",price:"$27.990",go:()=>setTab("cosmico")},
+                    {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M20 8l2.4 7.2H30l-6 4.4 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.4h7.6z" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinejoin="round"/></svg>,tag:"Lectura Premium",title:"Lectura Cósmica",price:"$44.990",go:()=>setTab("cosmica")},
+                  ].map((t,i)=>(
+                    <div key={i} onClick={t.go} style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:14,padding:"16px 14px",cursor:"pointer",display:"flex",flexDirection:"column",gap:8,minHeight:130}}>
+                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                        <span style={{display:"flex",background:"rgba(200,144,10,.07)",border:"1px solid rgba(200,144,10,.15)",borderRadius:8,padding:6}}>{t.icon}</span>
+                        <span style={{color:"rgba(200,150,40,.3)",fontSize:16}}>›</span>
+                      </div>
+                      <div style={{fontSize:8,fontWeight:700,letterSpacing:2,textTransform:"uppercase",color:"var(--gold)",opacity:.7}}>{t.tag}</div>
+                      <div style={{fontFamily:"'Fraunces',serif",fontSize:14,color:"var(--gold-l)",lineHeight:1.2}}>{t.title}</div>
+                      <div style={{fontSize:10,color:"rgba(180,140,60,.6)",fontWeight:600,marginTop:"auto"}}>{t.price} · lanz.</div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+
+                {/* Col 2 — Herramientas */}
+                <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                  {[
+                    {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="11" stroke="#c8900a" strokeWidth="1.2"/><path d="M20 9 Q24 15 20 20 Q16 25 20 31" stroke="#c8900a" strokeWidth="1.2" fill="none"/><path d="M9 20 Q15 16 20 20 Q25 24 31 20" stroke="#c8900a" strokeWidth="1.2" fill="none"/></svg>,tag:"Oráculo Diario",title:"Oráculo Kintsugi",price:"$9.990",go:()=>{setTab("oraculo");setOrPhase("home");}},
+                    {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M20 20 Q22 16 20 12 Q18 8 20 4" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q25 18 28 14 Q31 10 35 10" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q24 22 26 27 Q28 32 32 34" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q16 24 14 29 Q12 34 8 36" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q15 22 12 18 Q9 14 5 14" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><circle cx="20" cy="20" r="2" fill="#c8900a" opacity="0.6"/></svg>,tag:"Programa 21 Días",title:"Bajar el Ruido",price:"$19.990",go:()=>{setTab("programa");setProgView("home");}},
+                  ].map((t,i)=>(
+                    <div key={i} onClick={t.go} style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:14,padding:"16px 14px",cursor:"pointer",display:"flex",flexDirection:"column",gap:8,minHeight:130}}>
+                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                        <span style={{display:"flex",background:"rgba(200,144,10,.07)",border:"1px solid rgba(200,144,10,.15)",borderRadius:8,padding:6}}>{t.icon}</span>
+                        <span style={{color:"rgba(200,150,40,.3)",fontSize:16}}>›</span>
+                      </div>
+                      <div style={{fontSize:8,fontWeight:700,letterSpacing:2,textTransform:"uppercase",color:"var(--gold)",opacity:.7}}>{t.tag}</div>
+                      <div style={{fontFamily:"'Fraunces',serif",fontSize:14,color:"var(--gold-l)",lineHeight:1.2}}>{t.title}</div>
+                      <div style={{fontSize:10,color:"rgba(180,140,60,.6)",fontWeight:600,marginTop:"auto"}}>{t.price} · lanz.</div>
+                    </div>
+                  ))}
+                </div>
+
+              </div>
               <div style={{background:"linear-gradient(135deg,rgba(140,80,200,.12),rgba(80,40,140,.08))",border:"1px solid rgba(160,90,220,.2)",borderRadius:14,padding:"18px 20px",marginTop:4,cursor:"pointer",textAlign:"center"}} onClick={()=>window.open(LINKS.combo,"_blank")}>
                 <div style={{fontSize:9,fontWeight:700,letterSpacing:3,color:"rgba(160,100,220,.6)",textTransform:"uppercase",marginBottom:6}}>✦ Mejor valor · Combo completo</div>
                 <div style={{fontFamily:"'Fraunces',serif",fontSize:20,color:"#d4a8f8",marginBottom:2}}>Todos los productos</div>
@@ -1000,7 +1023,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
         {tab==="cosmica" && (
           <div className="z1 pb80">
             {!tieneAcceso("cosmica") ? (
-              <Gate producto="cosmica" emoji="🔮" titulo="Lectura Cósmica Completa" precio="$44.990 CLP" precioAntes="$59.990"
+              <Gate producto="cosmica" emoji="🔮" titulo="Lectura Cósmica" precio="$44.990 CLP" precioAntes="$59.990"
                 subtitulo="Carta Natal + Diseño Humano integrados en una lectura profunda."
                 linkCompra={LINKS.cosmica} onAccess={()=>darAcceso("cosmica")} onBack={()=>setTab("home")}/>
             ) : (
@@ -1011,7 +1034,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                 </div>
                 <div className="cy-hero" style={{background:"radial-gradient(ellipse at 50% 30%,rgba(20,80,160,.15) 0%,transparent 60%),linear-gradient(170deg,#080e1a 0%,var(--bg) 70%)"}}>
                   <span className="cy-glyph">{SVGLarge.cosmica}</span>
-                  <div className="cy-title" style={{color:"#a8d4f8"}}>Lectura Cósmica Completa</div>
+                  <div className="cy-title" style={{color:"#a8d4f8"}}>Lectura Cósmica</div>
                   <div className="cy-sub" style={{color:"rgba(130,180,220,.4)"}}>Carta Natal · Diseño Humano · Integración profunda</div>
                   <p className="cy-desc">Tu carta natal y Diseño Humano se calculan automáticamente. Solo necesitas tu fecha, hora y ciudad de nacimiento.</p>
                 </div>
