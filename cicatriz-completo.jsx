@@ -922,14 +922,14 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                     {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M28 20a10 10 0 1 1-10-10 7 7 0 0 0 10 10z" stroke="#c8900a" strokeWidth="1.2" fill="none"/><circle cx="26" cy="14" r="1.5" fill="#c8900a"/></svg>,tag:"Lectura Esotérica",title:"Tu Año Cósmico",price:"$27.990",go:()=>setTab("cosmico")},
                     {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M20 8l2.4 7.2H30l-6 4.4 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.4h7.6z" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinejoin="round"/></svg>,tag:"Lectura Premium",title:"Lectura Cósmica",price:"$44.990",go:()=>setTab("cosmica")},
                   ].map((t,i)=>(
-                    <div key={i} onClick={t.go} style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:14,padding:"16px 14px",cursor:"pointer",display:"flex",flexDirection:"column",gap:8,minHeight:130}}>
+                    <div key={i} onClick={t.go} style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:14,padding:"20px 16px",cursor:"pointer",display:"flex",flexDirection:"column",gap:10,minHeight:150}}>
                       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                         <span style={{display:"flex",background:"rgba(200,144,10,.07)",border:"1px solid rgba(200,144,10,.15)",borderRadius:8,padding:6}}>{t.icon}</span>
                         <span style={{color:"rgba(200,150,40,.3)",fontSize:16}}>›</span>
                       </div>
                       <div style={{fontSize:8,fontWeight:700,letterSpacing:2,textTransform:"uppercase",color:"var(--gold)",opacity:.7}}>{t.tag}</div>
-                      <div style={{fontFamily:"'Fraunces',serif",fontSize:14,color:"var(--gold-l)",lineHeight:1.2}}>{t.title}</div>
-                      <div style={{fontSize:10,color:"rgba(180,140,60,.6)",fontWeight:600,marginTop:"auto"}}>{t.price} · lanz.</div>
+                      <div style={{fontFamily:"'Fraunces',serif",fontSize:16,color:"var(--gold-l)",lineHeight:1.25}}>{t.title}</div>
+                      <div style={{fontSize:11,color:"rgba(180,140,60,.7)",fontWeight:600,marginTop:"auto"}}>{t.price} · lanz.</div>
                     </div>
                   ))}
                 </div>
@@ -940,14 +940,14 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                     {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="11" stroke="#c8900a" strokeWidth="1.2"/><path d="M20 9 Q24 15 20 20 Q16 25 20 31" stroke="#c8900a" strokeWidth="1.2" fill="none"/><path d="M9 20 Q15 16 20 20 Q25 24 31 20" stroke="#c8900a" strokeWidth="1.2" fill="none"/></svg>,tag:"Oráculo Diario",title:"Oráculo Kintsugi",price:"$9.990",go:()=>{setTab("oraculo");setOrPhase("home");}},
                     {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M20 20 Q22 16 20 12 Q18 8 20 4" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q25 18 28 14 Q31 10 35 10" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q24 22 26 27 Q28 32 32 34" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q16 24 14 29 Q12 34 8 36" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q15 22 12 18 Q9 14 5 14" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><circle cx="20" cy="20" r="2" fill="#c8900a" opacity="0.6"/></svg>,tag:"Programa 21 Días",title:"Bajar el Ruido",price:"$19.990",go:()=>{setTab("programa");setProgView("home");}},
                   ].map((t,i)=>(
-                    <div key={i} onClick={t.go} style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:14,padding:"16px 14px",cursor:"pointer",display:"flex",flexDirection:"column",gap:8,minHeight:130}}>
+                    <div key={i} onClick={t.go} style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:14,padding:"20px 16px",cursor:"pointer",display:"flex",flexDirection:"column",gap:10,minHeight:150}}>
                       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                         <span style={{display:"flex",background:"rgba(200,144,10,.07)",border:"1px solid rgba(200,144,10,.15)",borderRadius:8,padding:6}}>{t.icon}</span>
                         <span style={{color:"rgba(200,150,40,.3)",fontSize:16}}>›</span>
                       </div>
                       <div style={{fontSize:8,fontWeight:700,letterSpacing:2,textTransform:"uppercase",color:"var(--gold)",opacity:.7}}>{t.tag}</div>
-                      <div style={{fontFamily:"'Fraunces',serif",fontSize:14,color:"var(--gold-l)",lineHeight:1.2}}>{t.title}</div>
-                      <div style={{fontSize:10,color:"rgba(180,140,60,.6)",fontWeight:600,marginTop:"auto"}}>{t.price} · lanz.</div>
+                      <div style={{fontFamily:"'Fraunces',serif",fontSize:16,color:"var(--gold-l)",lineHeight:1.25}}>{t.title}</div>
+                      <div style={{fontSize:11,color:"rgba(180,140,60,.7)",fontWeight:600,marginTop:"auto"}}>{t.price} · lanz.</div>
                     </div>
                   ))}
                 </div>
