@@ -183,7 +183,7 @@ body{background:var(--bg);}
 .z1{position:relative;z-index:1;}
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(8,5,14,0.97);border-top:1px solid var(--border);display:flex;padding:8px 0 14px;z-index:100;backdrop-filter:blur(12px);}
 .bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;transition:all 0.2s;}
-.bni-icon{font-size:20px;line-height:1;}
+.bni-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;}
 .bni-label{font-size:8px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
 .bni.on .bni-label{color:var(--gold-l);}
 .bni.on .bni-icon{filter:drop-shadow(0 0 6px rgba(200,160,40,0.5));}
@@ -210,7 +210,7 @@ body{background:var(--bg);}
 
 /* ── GATE ── */
 .gate-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;}
-.gate-glyph{font-size:56px;margin-bottom:20px;display:block;}
+.gate-glyph{width:72px;height:72px;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;background:rgba(200,144,10,.06);border:1px solid rgba(200,144,10,.2);border-radius:20px;}
 .gate-title{font-family:'Fraunces',serif;font-size:26px;color:var(--gold-l);margin-bottom:8px;}
 .gate-price{font-family:'Fraunces',serif;font-size:20px;color:rgba(200,160,60,.6);margin-bottom:6px;}
 .gate-sub{font-size:13px;color:rgba(200,170,100,.4);font-style:italic;margin-bottom:28px;line-height:1.6;}
@@ -235,7 +235,7 @@ body{background:var(--bg);}
 /* ── HOME ── */
 .home-hero{text-align:center;padding:72px 24px 56px;border-bottom:1px solid var(--border);background:radial-gradient(ellipse at 50% 40%,rgba(200,144,10,.08) 0%,transparent 70%);}
 .home-glyph{display:none;}
-.home-eyebrow{font-size:10px;font-weight:700;letter-spacing:8px;text-transform:uppercase;color:var(--gold);margin-bottom:32px;opacity:.7;}
+.home-eyebrow{font-size:13px;font-weight:700;letter-spacing:8px;text-transform:uppercase;color:var(--gold);margin-bottom:32px;opacity:.85;}
 .home-title{font-family:'Fraunces',serif;font-size:clamp(36px,9vw,58px);font-weight:900;color:var(--gold-l);letter-spacing:-1px;line-height:1.1;margin-bottom:20px;}
 .home-sub{font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:rgba(245,236,215,.5);margin-bottom:0;line-height:1.6;}
 .home-desc{display:none;}
@@ -252,7 +252,7 @@ body{background:var(--bg);}
 
 /* ── COSMIC / COSMICA ── */
 .cy-hero{text-align:center;padding:36px 20px 24px;background:radial-gradient(ellipse at 50% 30%,rgba(120,60,180,.12) 0%,transparent 60%),linear-gradient(170deg,#12080e 0%,var(--bg) 70%);border-bottom:1px solid var(--border);}
-.cy-glyph{font-size:44px;display:block;margin-bottom:10px;}
+.cy-glyph{width:60px;height:60px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;background:rgba(200,144,10,.06);border:1px solid rgba(200,144,10,.18);border-radius:16px;}
 .cy-title{font-family:'Fraunces',serif;font-size:clamp(22px,5vw,36px);font-weight:900;color:#d4a8f8;margin-bottom:4px;}
 .cy-sub{font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:rgba(180,130,220,.4);margin-bottom:8px;}
 .cy-desc{font-size:13px;line-height:1.7;color:rgba(180,150,200,.5);max-width:360px;margin:0 auto;}
@@ -494,6 +494,22 @@ function parseSections(text) {
   return sections;
 }
 
+// ── ICONOS SVG ───────────────────────────────────────────────────
+const SVG = {
+  home: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 4l9 8v8a1 1 0 01-1 1h-5v-5H9v5H4a1 1 0 01-1-1v-8z" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinejoin="round"/></svg>,
+  cosmico: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 12a10 10 0 1 1-10-10 7 7 0 0 0 10 10z" stroke="currentColor" strokeWidth="1.3" fill="none"/><circle cx="18" cy="6" r="1.5" fill="currentColor"/></svg>,
+  cosmica: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.2H22l-6.4 4.8 2.4 7.2L12 17l-6 4.2 2.4-7.2L2 9.2h7.6z" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinejoin="round"/></svg>,
+  oraculo: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.3"/><path d="M12 3 Q15 8 12 12 Q9 16 12 21" stroke="currentColor" strokeWidth="1.3" fill="none"/><path d="M3 12 Q8 9 12 12 Q16 15 21 12" stroke="currentColor" strokeWidth="1.3" fill="none"/></svg>,
+  programa: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 12 Q13 9 12 6 Q11 3 12 1" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round"/><path d="M12 12 Q15 11 17 8 Q19 5 22 5" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round"/><path d="M12 12 Q15 14 16 18 Q17 21 20 22" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round"/><path d="M12 12 Q9 14 8 18 Q7 21 4 23" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round"/><path d="M12 12 Q9 11 7 8 Q5 5 2 5" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round"/><circle cx="12" cy="12" r="1.5" fill="currentColor" opacity="0.7"/></svg>,
+};
+
+const SVGLarge = {
+  cosmico: <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M42 26a18 18 0 1 1-18-18 13 13 0 0 0 18 18z" stroke="#c8900a" strokeWidth="1.3" fill="none"/><circle cx="39" cy="13" r="2.5" fill="#c8900a"/></svg>,
+  cosmica: <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M26 6l4.5 13.5H44l-11 8 4.5 13.5L26 33l-11.5 8 4.5-13.5-11-8H22z" stroke="#c8900a" strokeWidth="1.3" fill="none" strokeLinejoin="round"/></svg>,
+  oraculo: <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="26" r="20" stroke="#c8900a" strokeWidth="1.3"/><path d="M26 6 Q32 16 26 26 Q20 36 26 46" stroke="#c8900a" strokeWidth="1.3" fill="none"/><path d="M6 26 Q16 20 26 26 Q36 32 46 26" stroke="#c8900a" strokeWidth="1.3" fill="none"/></svg>,
+  programa: <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><path d="M26 26 Q28 20 26 13 Q24 6 26 2" stroke="#c8900a" strokeWidth="1.3" fill="none" strokeLinecap="round"/><path d="M26 26 Q33 24 38 18 Q43 12 50 12" stroke="#c8900a" strokeWidth="1.3" fill="none" strokeLinecap="round"/><path d="M26 26 Q33 30 36 38 Q39 46 44 48" stroke="#c8900a" strokeWidth="1.3" fill="none" strokeLinecap="round"/><path d="M26 26 Q19 30 16 38 Q13 46 8 50" stroke="#c8900a" strokeWidth="1.3" fill="none" strokeLinecap="round"/><path d="M26 26 Q19 24 14 18 Q9 12 2 12" stroke="#c8900a" strokeWidth="1.3" fill="none" strokeLinecap="round"/><circle cx="26" cy="26" r="3" fill="#c8900a" opacity="0.6"/></svg>,
+};
+
 // ── GATE ────────────────────────────────────────────────────────
 function Gate({ producto, emoji, titulo, precio, precioAntes, subtitulo, linkCompra, onAccess, onBack }) {
   const [codigo, setCodigo] = useState("");
@@ -550,7 +566,7 @@ function Gate({ producto, emoji, titulo, precio, precioAntes, subtitulo, linkCom
         <div className="htitle">{titulo}</div>
       </div>
       <div className="gate-wrap" style={{minHeight:"calc(100vh - 57px)"}}>
-      <span className="gate-glyph">{emoji}</span>
+      <span className="gate-glyph">{SVGLarge[producto] || emoji}</span>
       <div className="gate-title">{titulo}</div>
       <div className="gate-price">
         {precioAntes && <span style={{textDecoration:"line-through",opacity:.4,fontSize:"0.78em",marginRight:8}}>{precioAntes}</span>}
@@ -933,7 +949,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                   <div className="htitle">Tu Año Cósmico</div>
                 </div>
                 <div className="cy-hero">
-                  <span className="cy-glyph">🌌</span>
+                  <span className="cy-glyph">{SVGLarge.cosmico}</span>
                   <div className="cy-title">Año Cósmico {ANIO}</div>
                   <div className="cy-sub">Numerología · I Ching · Lenormand · Astrología</div>
                   <p className="cy-desc">Tu informe queda guardado permanentemente — siempre verás el mismo.</p>
@@ -994,7 +1010,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                   <div className="htitle">Lectura Cósmica</div>
                 </div>
                 <div className="cy-hero" style={{background:"radial-gradient(ellipse at 50% 30%,rgba(20,80,160,.15) 0%,transparent 60%),linear-gradient(170deg,#080e1a 0%,var(--bg) 70%)"}}>
-                  <span className="cy-glyph">🔮</span>
+                  <span className="cy-glyph">{SVGLarge.cosmica}</span>
                   <div className="cy-title" style={{color:"#a8d4f8"}}>Lectura Cósmica Completa</div>
                   <div className="cy-sub" style={{color:"rgba(130,180,220,.4)"}}>Carta Natal · Diseño Humano · Integración profunda</div>
                   <p className="cy-desc">Tu carta natal y Diseño Humano se calculan automáticamente. Solo necesitas tu fecha, hora y ciudad de nacimiento.</p>
@@ -1349,11 +1365,11 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
         {/* ════ BOTTOM NAV ════ */}
         <div className="bnav">
           {[
-            {id:"home",icon:"🪷",lbl:"Inicio"},
-            {id:"cosmico",icon:"🌌",lbl:"Cósmico"},
-            {id:"cosmica",icon:"🔮",lbl:"Lectura"},
-            {id:"oraculo",icon:"🌸",lbl:"Oráculo"},
-            {id:"programa",icon:"🌿",lbl:"21 Días"},
+            {id:"home",icon:SVG.home,lbl:"Inicio"},
+            {id:"cosmico",icon:SVG.cosmico,lbl:"Cósmico"},
+            {id:"cosmica",icon:SVG.cosmica,lbl:"Lectura"},
+            {id:"oraculo",icon:SVG.oraculo,lbl:"Oráculo"},
+            {id:"programa",icon:SVG.programa,lbl:"21 Días"},
           ].map(n=>(
             <div key={n.id} className={`bni${tab===n.id?" on":""}`} onClick={()=>setTab(n.id)}>
               <span className="bni-icon">{n.icon}</span>
