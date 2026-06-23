@@ -251,7 +251,7 @@ body{background:var(--bg);}
 .home-by{text-align:center;padding:20px;font-family:'Fraunces',serif;font-style:italic;font-size:12px;color:rgba(160,130,50,.3);}
 
 /* ── COSMIC / COSMICA ── */
-.cy-hero{text-align:center;padding:36px 20px 24px;background:radial-gradient(ellipse at 50% 30%,rgba(120,60,180,.12) 0%,transparent 60%),linear-gradient(170deg,#12080e 0%,var(--bg) 70%);border-bottom:1px solid var(--border);}
+.cy-hero{text-align:center;padding:36px 20px 24px;background:radial-gradient(ellipse at 50% 30%,rgba(200,144,10,.08) 0%,transparent 60%),linear-gradient(170deg,#1a1008 0%,var(--bg) 70%);border-bottom:1px solid var(--border);}
 .cy-glyph{width:60px;height:60px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;background:rgba(200,144,10,.06);border:1px solid rgba(200,144,10,.18);border-radius:16px;}
 .cy-title{font-family:'Fraunces',serif;font-size:clamp(22px,5vw,36px);font-weight:900;color:#d4a8f8;margin-bottom:4px;}
 .cy-sub{font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:rgba(180,130,220,.4);margin-bottom:8px;}
@@ -291,7 +291,7 @@ body{background:var(--bg);}
 .powered{text-align:center;padding:14px 0 0;font-size:10px;color:rgba(140,110,40,.25);letter-spacing:2px;text-transform:uppercase;}
 
 /* ── ORACLE ── */
-.or-hero{text-align:center;padding:32px 20px 24px;background:radial-gradient(ellipse at 50% 30%,rgba(140,70,200,.12) 0%,transparent 60%),linear-gradient(170deg,#120a22 0%,var(--bg) 80%);border-bottom:1px solid rgba(140,80,200,.08);}
+.or-hero{text-align:center;padding:32px 20px 24px;background:radial-gradient(ellipse at 50% 30%,rgba(200,144,10,.08) 0%,transparent 60%),linear-gradient(170deg,#1a1008 0%,var(--bg) 80%);border-bottom:1px solid var(--border);}
 .or-title{font-family:'Fraunces',serif;font-size:26px;color:#d4a8f0;margin-bottom:4px;}
 .or-sub{font-size:13px;color:rgba(180,130,220,.4);font-style:italic;}
 .streak-bar{background:rgba(12,8,22,.95);padding:12px 20px;border-bottom:1px solid rgba(140,80,200,.08);display:flex;align-items:center;justify-content:space-between;}
@@ -333,7 +333,7 @@ body{background:var(--bg);}
 .card-flip{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,0,.2,1);}
 .card-flip.flipped{transform:rotateY(180deg);}
 .card-face{position:absolute;inset:0;border-radius:22px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;}
-.card-back{background:linear-gradient(145deg,#1a0e2e,#120a22);border:1px solid rgba(160,100,220,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:10px;}
+.card-back{background:linear-gradient(145deg,#1c1408,#110d08);border:1px solid rgba(200,144,10,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:10px;}
 .cbp{position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(160,100,220,.03) 20px,rgba(160,100,220,.03) 21px);}
 .cb-g{font-size:44px;position:relative;z-index:1;animation:breathe 3s ease-in-out infinite;}
 .cb-t{font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:rgba(180,130,220,.35);position:relative;z-index:1;}
@@ -397,7 +397,7 @@ body{background:var(--bg);}
 .grid-card-num{font-size:8px;letter-spacing:1px;opacity:.2;margin-top:3px;text-transform:uppercase;}
 
 /* ── 21 DIAS ── */
-.prog-hero{background:linear-gradient(170deg,#0c1a14 0%,var(--bg) 70%);padding:30px 20px 22px;text-align:center;border-bottom:1px solid rgba(80,160,80,.07);}
+.prog-hero{background:linear-gradient(170deg,#1a1008 0%,var(--bg) 70%);padding:30px 20px 22px;text-align:center;border-bottom:1px solid var(--border);}
 .prog-t{font-family:'Fraunces',serif;font-size:24px;color:#7ecf94;margin-bottom:3px;}
 .prog-s{font-size:13px;color:rgba(120,180,130,.4);font-style:italic;}
 .day-scroll{display:flex;gap:7px;overflow-x:auto;padding-bottom:3px;margin-bottom:20px;scrollbar-width:none;}
@@ -1051,7 +1051,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                   <button className="hbk" onClick={()=>setTab("home")}>‹</button>
                   <div className="htitle">Lectura Cósmica</div>
                 </div>
-                <div className="cy-hero" style={{background:"radial-gradient(ellipse at 50% 30%,rgba(20,80,160,.15) 0%,transparent 60%),linear-gradient(170deg,#080e1a 0%,var(--bg) 70%)"}}>
+                <div className="cy-hero" style={{background:"radial-gradient(ellipse at 50% 30%,rgba(200,144,10,.08) 0%,transparent 60%),linear-gradient(170deg,#1a1008 0%,var(--bg) 70%)"}}>
                   <span className="cy-glyph">{SVGLarge.cosmica}</span>
                   <div className="cy-title" style={{color:"#a8d4f8"}}>Lectura Cósmica</div>
                   <div className="cy-sub" style={{color:"rgba(130,180,220,.4)"}}>Carta Natal · Diseño Humano · Integración profunda</div>
