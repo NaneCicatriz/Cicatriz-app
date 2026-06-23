@@ -903,11 +903,11 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
               <div className="home-sub">Lecturas y herramientas para mujeres<br/>que saben que algo tiene que cambiar.</div>
             </div>
             <div style={{padding:"20px 16px 0"}}>
-              <div style={{fontSize:9,fontWeight:700,letterSpacing:4,textTransform:"uppercase",color:"rgba(200,144,10,.5)",textAlign:"center",marginBottom:16}}>· Lecturas y Herramientas ·</div>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:10}}>
+              <div style={{fontSize:11,fontWeight:700,letterSpacing:4,textTransform:"uppercase",color:"rgba(200,144,10,.7)",textAlign:"center",marginBottom:20}}>· Lecturas y Herramientas ·</div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:14}}>
 
                 {/* Col 1 — Lecturas */}
-                <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                <div style={{display:"flex",flexDirection:"column",gap:14}}>
                   {[
                     {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M28 20a10 10 0 1 1-10-10 7 7 0 0 0 10 10z" stroke="#c8900a" strokeWidth="1.2" fill="none"/><circle cx="26" cy="14" r="1.5" fill="#c8900a"/></svg>,tag:"Lectura Esotérica",title:"Tu Año Cósmico",price:"$27.990",go:()=>setTab("cosmico")},
                     {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M20 8l2.4 7.2H30l-6 4.4 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.4h7.6z" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinejoin="round"/></svg>,tag:"Lectura Premium",title:"Lectura Cósmica",price:"$44.990",go:()=>setTab("cosmica")},
@@ -925,7 +925,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                 </div>
 
                 {/* Col 2 — Herramientas */}
-                <div style={{display:"flex",flexDirection:"column",gap:10}}>
+                <div style={{display:"flex",flexDirection:"column",gap:14}}>
                   {[
                     {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="11" stroke="#c8900a" strokeWidth="1.2"/><path d="M20 9 Q24 15 20 20 Q16 25 20 31" stroke="#c8900a" strokeWidth="1.2" fill="none"/><path d="M9 20 Q15 16 20 20 Q25 24 31 20" stroke="#c8900a" strokeWidth="1.2" fill="none"/></svg>,tag:"Oráculo Diario",title:"Oráculo Kintsugi",price:"$9.990",go:()=>{setTab("oraculo");setOrPhase("home");}},
                     {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M20 20 Q22 16 20 12 Q18 8 20 4" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q25 18 28 14 Q31 10 35 10" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q24 22 26 27 Q28 32 32 34" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q16 24 14 29 Q12 34 8 36" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q15 22 12 18 Q9 14 5 14" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><circle cx="20" cy="20" r="2" fill="#c8900a" opacity="0.6"/></svg>,tag:"Programa 21 Días",title:"Bajar el Ruido",price:"$19.990",go:()=>{setTab("programa");setProgView("home");}},
