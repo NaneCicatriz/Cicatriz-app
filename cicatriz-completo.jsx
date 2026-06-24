@@ -69,7 +69,7 @@ const LINKS = {
   cosmico:  "https://mpago.la/2UAJ4SD",
   cosmica:  "https://mpago.la/1U7qumM",
   combo:    "https://mpago.la/29xD1mj",
-  upgrade:  "https://mpago.la/PENDIENTE", // $24.990 — crear link aparte
+  upgrade:  "https://mpago.la/2nXpjG3", // $8.990 — upgrade Año → Lectura Cósmica
 };
 
 // ─── ORACLE DATA ─────────────────────────────────────────────
