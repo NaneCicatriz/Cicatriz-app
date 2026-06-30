@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import { createClient } from '@supabase/supabase-js'
+import { Analytics } from '@vercel/analytics/react'
 import App from './cicatriz-completo'
 
 const supabase = createClient(
@@ -194,15 +195,23 @@ function Root() {
 
   if (product && PRODUCTS[product] && !hasAccess) {
     return (
-      <Gate
-        product={product}
-        productName={PRODUCTS[product]}
-        onAccess={() => setHasAccess(true)}
-      />
+      <>
+        <Gate
+          product={product}
+          productName={PRODUCTS[product]}
+          onAccess={() => setHasAccess(true)}
+        />
+        <Analytics />
+      </>
     )
   }
 
-  return <App />
+  return (
+    <>
+      <App />
+      <Analytics />
+    </>
+  )
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<Root />)
