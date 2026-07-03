@@ -665,10 +665,11 @@ export default function Cicatriz() {
 
   const tieneAcceso = (prod) => accesos[prod] || accesos["all"];
   const darAcceso = (prod) => {
-    const nuevo = {...accesos, [prod]:true};
-    setAccesos(nuevo);
-    localStorage.setItem("cicatriz_accesos", JSON.stringify(nuevo));
-  };
+  const actual = JSON.parse(localStorage.getItem("cicatriz_accesos") || "{}");
+  const nuevo = {...actual, [prod]:true};
+  setAccesos(nuevo);
+  localStorage.setItem("cicatriz_accesos", JSON.stringify(nuevo));
+};
 
   // Oracle state
   const [orPhase, setOrPhase] = useState("home");
