@@ -100,6 +100,11 @@
     <button class="btn" id="btnInsertar" onclick="insertar()">✦ Insertar en Supabase</button>
     <button class="btn-sec" onclick="generar()">↩ Regenerar</button>
   </div>
+ <div class="card" id="cardDisponibles">
+  <label>Códigos disponibles para asignar</label>
+  <div id="listaDisponibles">Cargando...</div>
+  <button class="btn-sec" onclick="cargarDisponibles()">↻ Actualizar lista</button>
+</div>
 </div>
 
 <script>
@@ -184,6 +189,7 @@ async function insertar() {
     if (res.ok) {
       statusMsg.innerHTML = `<div class="status ok">✓ ${codigosGenerados.length} código${codigosGenerados.length !== 1 ? 's' : ''} insertado${codigosGenerados.length !== 1 ? 's' : ''} correctamente.</div>`;
       btn.textContent = '✓ Insertados';
+     cargarDisponibles();
     } else {
       const err = await res.text();
       statusMsg.innerHTML = `<div class="status err">Error: ${err}</div>`;
@@ -194,6 +200,52 @@ async function insertar() {
     statusMsg.innerHTML = `<div class="status err">Error de conexión: ${e.message}</div>`;
     btn.disabled = false;
     btn.textContent = '✦ Insertar en Supabase';
+  }
+}
+ async function cargarDisponibles() {
+  const cont = document.getElementById('listaDisponibles');
+  cont.innerHTML = 'Cargando...';
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/CODIGOS?usado=eq.false&asignado_a=is.null&select=id,codigo,producto&order=id.desc&limit=100`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const data = await res.json();
+    if (!data.length) { cont.innerHTML = '<p>No hay códigos libres. Genera más arriba.</p>'; return; }
+    cont.innerHTML = data.map(row => `
+      <div class="code-item">
+        <span>${row.codigo} (${row.producto})</span>
+        <button class="btn-sec" onclick="asignarYCopiar(${row.id}, '${row.codigo}')">Copiar y asignar</button>
+      </div>
+    `).join('');
+  } catch(e) {
+    cont.innerHTML = `<div class="status err">Error: ${e.message}</div>`;
+  }
+}
+
+async function asignarYCopiar(id, codigo) {
+  const nombre = prompt(`¿Para quién es el código ${codigo}?`);
+  if (!nombre || !nombre.trim()) return;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/CODIGOS?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ asignado_a: nombre.trim() })
+    });
+    if (res.ok) {
+      await navigator.clipboard.writeText(codigo);
+      alert(`Código ${codigo} copiado y asignado a ${nombre.trim()}`);
+      cargarDisponibles();
+    } else {
+      const err = await res.text();
+      alert(`Error al asignar: ${err}`);
+    }
+  } catch(e) {
+    alert(`Error: ${e.message}`);
   }
 }
 </script>
