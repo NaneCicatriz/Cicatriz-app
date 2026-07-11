@@ -1484,7 +1484,7 @@ function CardTuMapa({ onMapa, onAno, onRuido, onOraculo, onCombo }) {
         }
         .tm-t {
           font-size: 11.5px; line-height: 1.45;
-          color: rgba(245,236,215,.5);
+          color: rgba(245,236,215,.65);
           margin: 0;
         }
 
