@@ -572,7 +572,7 @@ function Gate({ producto, emoji, titulo, precio, precioAntes, subtitulo, linkCom
         {precioAntes && <span style={{textDecoration:"line-through",opacity:.4,fontSize:"0.78em",marginRight:8}}>{precioAntes}</span>}
         {precio}
       </div>
-      {precioAntes && <div style={{fontSize:11,color:"rgba(180,140,60,.55)",letterSpacing:1,marginBottom:4,textAlign:"center"}}>Precio lanzamiento · hasta 30 julio</div>}
+      
       <div className="gate-sub">{subtitulo}</div>
       {modo === "codigo" ? (<>
         <input className="gate-input" placeholder="tu@correo.com" type="email" value={emailInput}
