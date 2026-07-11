@@ -469,7 +469,8 @@ const SECTION_META = {
   "DISEÑO HUMANO":{icon:"⬡",lbl:"Diseño Humano"},
   "CARTA NATAL COMPLETA":{icon:"🌟",lbl:"Carta Natal"},
   "INTEGRACIÓN CÓSMICA":{icon:"🔮",lbl:"Integración"},
-  "Tu Lectura":{icon:"✨",lbl:"Lectura"},
+  "Tu Lectura":{icon:"✨",lbl:"Tu Mapa"},
+  "Tu Mapa":{icon:"✨",lbl:"Tu Mapa"},
 };
 
 function cleanText(text) {
@@ -634,7 +635,7 @@ function ReportView({ nombre, fecha, ciudad, hora, lp, exp, py, sections, onRese
         </div>
       </div>
       {sections.map((sec,i) => {
-        const meta = SECTION_META[sec.title]||{icon:"✨",lbl:"Lectura"};
+        const meta = SECTION_META[sec.title]||{icon:"✨",lbl:"Tu Mapa"};
         return (
           <div key={i} className="rs">
             <div className="rs-hdr">
@@ -1352,7 +1353,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
           {[
             {id:"home",icon:SVG.home,lbl:"Inicio"},
             {id:"cosmico",icon:SVG.cosmico,lbl:"Cósmico"},
-            {id:"cosmica",icon:SVG.cosmica,lbl:"Lectura"},
+            {id:"cosmica",icon:SVG.cosmica,lbl:"Tu Mapa"},
             {id:"oraculo",icon:SVG.oraculo,lbl:"Oráculo"},
             {id:"programa",icon:SVG.programa,lbl:"21 Días"},
           ].map(n=>(
