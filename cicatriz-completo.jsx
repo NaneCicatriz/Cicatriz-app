@@ -611,7 +611,7 @@ function Gate({ producto, emoji, titulo, precio, precioAntes, subtitulo, linkCom
       </a>
       <a href={LINKS.combo} target="_blank" rel="noopener noreferrer" className="gate-combo">
         <div className="gate-combo-label">✦ Combo completo · Todos los productos</div>
-        <div className="gate-combo-price"><span style={{textDecoration:"line-through",opacity:.4,fontSize:"0.8em",marginRight:6}}>$59.990</span>$39.990 CLP · lanzamiento hasta 30 julio</div>
+        <div className="gate-combo-price">$39.990 CLP · pack de lanzamiento hasta el 3 de agosto</div>
         <div className="gate-combo-sub">Año Cósmico + Lectura Cósmica + Oráculo + 21 Días →</div>
       </a>
       </div>
