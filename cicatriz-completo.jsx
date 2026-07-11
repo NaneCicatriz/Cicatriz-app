@@ -612,7 +612,7 @@ function Gate({ producto, emoji, titulo, precio, precioAntes, subtitulo, linkCom
       <a href={LINKS.combo} target="_blank" rel="noopener noreferrer" className="gate-combo">
         <div className="gate-combo-label">✦ Combo completo · Todos los productos</div>
         <div className="gate-combo-price">$39.990 CLP · pack de lanzamiento hasta el 3 de agosto</div>
-        <div className="gate-combo-sub">Año Cósmico + Lectura Cósmica + Oráculo + 21 Días →</div>
+        <div className="gate-combo-sub">Año Cósmico + Tu Mapa + Oráculo + 21 Días →</div>
       </a>
       </div>
     </div>
@@ -830,7 +830,7 @@ Tono: profesional, directo e informativo. Sin metáforas poéticas, sin frases t
       ? `DISEÑO HUMANO (calculado con precisión astronómica): Tipo: ${dh.tipo} | Estrategia: ${dh.estrategia} | Autoridad: ${dh.autoridad} | Perfil: ${dh.perfil} | Definición: ${dh.definicion} | Cruz de Encarnación: ${dh.cruz} | Centros definidos: ${(dh.centros_definidos||[]).join(", ")} | Canales: ${(dh.canales||[]).join(", ")} | Tema No-Self: ${dh.tema_no_self} | Firma: ${dh.firma}`
       : 'DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.';
     try {
-      const prompt = `Eres un astrólogo y analista de Diseño Humano experto. Genera una Lectura Cósmica profunda y personalizada. Esta es la lectura más completa que existe — integra numerología, astrología, I Ching, Lenormand, carta natal y Diseño Humano en un solo informe.
+      const prompt = `Eres un astrólogo y analista de Diseño Humano experto. Genera un informe llamado "Tu Mapa", profundo y personalizado. Nunca lo llames "Lectura Cósmica": su nombre es Tu Mapa. Esta es la lectura más completa que existe — integra numerología, astrología, I Ching, Lenormand, carta natal y Diseño Humano en un solo informe.
 
 DATOS PERSONALES: Nombre: ${lcForm.nombre} | Fecha: ${lcForm.fecha} | Hora: ${lcForm.hora||"desconocida"} | Ciudad: ${lcForm.ciudad}
 Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy}
@@ -981,22 +981,22 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
           </div>
         )}
 
-        {/* ════ LECTURA CÓSMICA COMPLETA ════ */}
+        {/* ════ Tu Mapa ════ */}
         {tab==="cosmica" && (
           <div className="z1 pb80">
             {!tieneAcceso("cosmica") ? (
-              <Gate producto="cosmica" emoji="🔮" titulo="Lectura Cósmica" precio="$27.990 CLP" precioAntes="$44.990"
-                subtitulo="Carta Natal + Diseño Humano integrados en una lectura profunda."
+              <Gate producto="cosmica" emoji="🔮" titulo="Tu Mapa" precio="$27.990 CLP"
+                subtitulo="El mapa de cómo estás diseñada."
                 linkCompra={LINKS.cosmica} onAccess={()=>darAcceso("cosmica")} onBack={()=>setTab("home")}/>
             ) : (
               <>
                 <div className="header">
                   <button className="hbk" onClick={()=>setTab("home")}>‹</button>
-                  <div className="htitle">Lectura Cósmica</div>
+                  <div className="htitle">Tu Mapa</div>
                 </div>
                 <div className="cy-hero" style={{background:"radial-gradient(ellipse at 50% 30%,rgba(200,144,10,.08) 0%,transparent 60%),linear-gradient(170deg,#1a1008 0%,var(--bg) 70%)"}}>
                   <span className="cy-glyph">{SVGLarge.cosmica}</span>
-                  <div className="cy-title" style={{color:"var(--gold-l)"}}>Lectura Cósmica</div>
+                  <div className="cy-title" style={{color:"var(--gold-l)"}}>Tu Mapa</div>
                   <div className="cy-sub" style={{color:"rgba(200,144,10,.45)"}}>Carta Natal · Diseño Humano · Integración profunda</div>
                   <p className="cy-desc">Tu carta natal y Diseño Humano se calculan automáticamente. Solo necesitas tu fecha, hora y ciudad de nacimiento.</p>
                 </div>
@@ -1019,7 +1019,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                       <div style={{background:"rgba(20,60,100,.12)",border:"1px solid rgba(80,140,200,.15)",borderRadius:10,padding:"14px 16px",marginTop:8,marginBottom:18,fontSize:12.5,color:"rgba(160,200,240,.6)",lineHeight:1.7}}>
                         ⬡ Tu Diseño Humano se calcula automáticamente a partir de tu fecha, hora exacta y ciudad de nacimiento. Mientras más exacta la hora, más preciso el resultado.
                       </div>
-                      <button className="btn-primary" style={{background:"linear-gradient(135deg,#1a4a7a,#2a6aaa)"}} onClick={submitCosmica} disabled={!lcForm.nombre||!lcForm.fecha||!lcForm.ciudad||!lcForm.email}>✦ Generar mi lectura cósmica</button>
+                      <button className="btn-primary" style={{background:"linear-gradient(135deg,#1a4a7a,#2a6aaa)"}} onClick={submitCosmica} disabled={!lcForm.nombre||!lcForm.fecha||!lcForm.ciudad||!lcForm.email}>✦ Generar mi Mapa</button>
                     </>
                   )}
                   {lcScreen==="loading" && (
