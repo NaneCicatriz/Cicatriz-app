@@ -904,72 +904,14 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
               <div className="home-sub">Lecturas y herramientas para mujeres<br/>que saben que algo tiene que cambiar.</div>
             </div>
 
-            {/* ── TESTIMONIAL ── */}
-            <div style={{margin:"0 16px",padding:"20px 20px 20px 24px",background:"rgba(200,144,10,.04)",border:"1px solid rgba(200,144,10,.12)",borderLeft:"3px solid rgba(200,144,10,.6)",borderRadius:"0 12px 12px 0"}}>
-              <div style={{fontFamily:"'Fraunces',serif",fontStyle:"italic",fontSize:15,color:"rgba(245,236,215,.75)",lineHeight:1.7,marginBottom:12}}>
-                "Lo que esto da no es un consejo ni una guía. Es certeza de quién eres de verdad."
-              </div>
-              <div style={{fontSize:10,fontWeight:700,letterSpacing:3,textTransform:"uppercase",color:"rgba(200,144,10,.6)"}}>
-                — Andrea G. · Lectura Cósmica
-              </div>
-            </div>
-            <div style={{padding:"16px 16px 0"}}>
-              <div style={{fontSize:11,fontWeight:700,letterSpacing:4,textTransform:"uppercase",color:"rgba(200,144,10,.7)",textAlign:"center",marginBottom:20}}>· Lecturas y Herramientas ·</div>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:14}}>
-
-                {/* Col 1 — Lecturas */}
-                <div style={{display:"flex",flexDirection:"column",gap:14}}>
-                  {[
-                    {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M28 20a10 10 0 1 1-10-10 7 7 0 0 0 10 10z" stroke="#c8900a" strokeWidth="1.2" fill="none"/><circle cx="26" cy="14" r="1.5" fill="#c8900a"/></svg>,tag:"Lectura Esotérica",title:"Tu Año Cósmico",price:"$19.990",go:()=>setTab("cosmico")},
-                    {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M20 8l2.4 7.2H30l-6 4.4 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.4h7.6z" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinejoin="round"/></svg>,tag:"Lectura Premium",title:"Lectura Cósmica",price:"$27.990",go:()=>setTab("cosmica")},
-                  ].map((t,i)=>(
-                    <div key={i} onClick={t.go} style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:14,padding:"20px 16px",cursor:"pointer",display:"flex",flexDirection:"column",gap:10,minHeight:150}}>
-                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                        <span style={{display:"flex",background:"rgba(200,144,10,.07)",border:"1px solid rgba(200,144,10,.15)",borderRadius:8,padding:6}}>{t.icon}</span>
-                        <span style={{color:"rgba(200,150,40,.3)",fontSize:16}}>›</span>
-                      </div>
-                      <div style={{fontSize:8,fontWeight:700,letterSpacing:2,textTransform:"uppercase",color:"var(--gold)",opacity:.7}}>{t.tag}</div>
-                      <div style={{fontFamily:"'Fraunces',serif",fontSize:16,color:"var(--gold-l)",lineHeight:1.25}}>{t.title}</div>
-                      <div style={{fontSize:11,color:"rgba(180,140,60,.7)",fontWeight:600,marginTop:"auto"}}>{t.price} CLP · lanz.</div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Col 2 — Herramientas */}
-                <div style={{display:"flex",flexDirection:"column",gap:14}}>
-                  {[
-                    {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="11" stroke="#c8900a" strokeWidth="1.2"/><path d="M20 9 Q24 15 20 20 Q16 25 20 31" stroke="#c8900a" strokeWidth="1.2" fill="none"/><path d="M9 20 Q15 16 20 20 Q25 24 31 20" stroke="#c8900a" strokeWidth="1.2" fill="none"/></svg>,tag:"Oráculo Diario",title:"Oráculo Kintsugi",price:"$9.990 CLP",go:()=>{setTab("oraculo");setOrPhase("home");}},
-                    {icon:<svg width="32" height="32" viewBox="0 0 40 40" fill="none"><path d="M20 20 Q22 16 20 12 Q18 8 20 4" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q25 18 28 14 Q31 10 35 10" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q24 22 26 27 Q28 32 32 34" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q16 24 14 29 Q12 34 8 36" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><path d="M20 20 Q15 22 12 18 Q9 14 5 14" stroke="#c8900a" strokeWidth="1.2" fill="none" strokeLinecap="round"/><circle cx="20" cy="20" r="2" fill="#c8900a" opacity="0.6"/></svg>,tag:"Programa 21 Días",title:"Bajar el Ruido",price:"$19.990",go:()=>{setTab("programa");setProgView("home");}},
-                  ].map((t,i)=>(
-                    <div key={i} onClick={t.go} style={{background:"var(--surface)",border:"1px solid var(--border)",borderRadius:14,padding:"20px 16px",cursor:"pointer",display:"flex",flexDirection:"column",gap:10,minHeight:150}}>
-                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                        <span style={{display:"flex",background:"rgba(200,144,10,.07)",border:"1px solid rgba(200,144,10,.15)",borderRadius:8,padding:6}}>{t.icon}</span>
-                        <span style={{color:"rgba(200,150,40,.3)",fontSize:16}}>›</span>
-                      </div>
-                      <div style={{fontSize:8,fontWeight:700,letterSpacing:2,textTransform:"uppercase",color:"var(--gold)",opacity:.7}}>{t.tag}</div>
-                      <div style={{fontFamily:"'Fraunces',serif",fontSize:16,color:"var(--gold-l)",lineHeight:1.25}}>{t.title}</div>
-                      <div style={{fontSize:11,color:"rgba(180,140,60,.7)",fontWeight:600,marginTop:"auto"}}>{t.price} CLP · lanz.</div>
-                    </div>
-                  ))}
-                </div>
-
-              </div>
-              <div style={{background:"linear-gradient(135deg,rgba(200,144,10,.1),rgba(160,100,10,.06))",border:"1px solid rgba(200,144,10,.3)",borderRadius:16,padding:"24px 20px",marginTop:4,cursor:"pointer",textAlign:"center",position:"relative",overflow:"hidden"}} onClick={()=>window.open(LINKS.combo,"_blank")}>
-                <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:"linear-gradient(90deg,transparent,rgba(200,144,10,.6),transparent)"}}/>
-                <div style={{fontSize:9,fontWeight:700,letterSpacing:4,color:"rgba(200,144,10,.7)",textTransform:"uppercase",marginBottom:10}}>✦ Mejor valor · Acceso completo</div>
-                <div style={{fontFamily:"'Fraunces',serif",fontSize:26,fontWeight:900,color:"var(--gold-l)",marginBottom:6,lineHeight:1.1}}>Todo Cicatriz 777</div>
-                <div style={{fontFamily:"'Fraunces',serif",fontSize:28,color:"var(--gold-l)",marginBottom:4}}>
-                  <span style={{textDecoration:"line-through",opacity:.35,fontSize:"0.65em",marginRight:8}}>$59.990</span>
-                  $39.990 CLP
-                </div>
-                <div style={{fontSize:11,color:"rgba(200,144,10,.65)",letterSpacing:1,marginBottom:12}}>Precio lanzamiento · hasta 30 julio</div>
-                <div style={{display:"flex",justifyContent:"center",gap:8,flexWrap:"wrap",marginBottom:4}}>
-                  {["Año Cósmico","Lectura Cósmica","Oráculo","21 Días"].map(p=>(
-                    <span key={p} style={{fontSize:10,background:"rgba(200,144,10,.08)",border:"1px solid rgba(200,144,10,.2)",borderRadius:20,padding:"3px 10px",color:"rgba(200,144,10,.7)"}}>{p}</span>
-                  ))}
-                </div>
-                <div style={{fontSize:12,color:"rgba(200,144,10,.5)",marginTop:8}}>Comprar ahora →</div>
-              </div>
+              <div style={{padding:"16px 16px 0"}}>
+              <CardTuMapa
+  onMapa={()=>setTab("cosmica")}
+  onAno={()=>setTab("cosmico")}
+  onRuido={()=>{setTab("programa");setProgView("home");}}
+  onOraculo={()=>{setTab("oraculo");setOrPhase("home");}}
+  onCombo={()=>window.open(LINKS.combo,"_blank")}
+/>
               <div className="hl" style={{marginTop:16}}>
                 <p>"Cicatriz nació porque la vida no me esperó. Tuve que seguir caminando mientras estaba rota por dentro — y para eso necesité herramientas reales. Las busqué, las creé, las fusioné. Eso es lo que hoy te ofrezco."</p>
               </div>
@@ -1425,3 +1367,327 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
     </>
   );
 }
+
+/* =========================================================
+   CARD DESTACADA — TU MAPA  (Cicatriz)
+   Pegar al FINAL de cicatriz-completo.jsx.
+   Se usa en la home así:
+
+     <CardTuMapa
+       onMapa={()=>setTab("cosmica")}
+       onAno={()=>setTab("cosmico")}
+       onRuido={()=>{setTab("programa");setProgView("home");}}
+       onOraculo={()=>{setTab("oraculo");setOrPhase("home");}}
+       onCombo={()=>window.open(LINKS.combo,"_blank")}
+     />
+   ========================================================= */
+
+const TM_SISTEMAS = [
+  { n: "Numerología", t: "Los números de tu fecha y tu nombre: el carácter con el que llegaste." },
+  { n: "Carta Natal", t: "La foto del cielo el día que naciste: tu temperamento de base." },
+  { n: "Astrología del año", t: "Qué está activo en tu vida ahora y hasta cuándo dura." },
+  { n: "Las 12 Casas", t: "En qué área concreta —dinero, vínculos, trabajo— se juega cada energía." },
+  { n: "I Ching", t: "La lectura del momento: qué pide moverse y qué pide esperar." },
+  { n: "Tarot + Lenormand", t: "La imagen que resume el ciclo que estás atravesando." },
+  { n: "Diseño Humano", t: "Cómo tomas decisiones correctas y cómo funciona tu energía." },
+];
+
+const TM_CAPAS = [
+  { n: "Integración Cósmica", t: "Dónde los 7 sistemas dicen lo mismo. El patrón que se repite sin que nadie se ponga de acuerdo." },
+  { n: "Propósito y Misión", t: "A qué viniste, dicho en una frase que vas a reconocer apenas la leas." },
+  { n: "Guía de Acción Trimestral", t: "Qué hacer con todo esto en los próximos tres meses. Concreto." },
+];
+
+const TM_TESTIMONIOS = [
+  { q: "No es un consejo ni una guía. Es certeza de quién eres de verdad.", a: "Andrea G." },
+  { q: "Me sentí súper identificada. La sentí mucho más personalizada de lo que creía.", a: "Giselle M." },
+  { q: "Me voló la cabeza cuando leí mi propósito, a qué vine.", a: "Carolina Q." },
+];
+
+function CardTuMapa({ onMapa, onAno, onRuido, onOraculo, onCombo }) {
+  const TM_OTROS = [
+    { n: "Tu Año Cósmico", p: "$19.990", go: onAno },
+    { n: "Bajar el Ruido", p: "$19.990", go: onRuido },
+    { n: "Oráculo Kintsugi", p: "$9.990", go: onOraculo },
+  ];
+
+  return (
+    <div className="tm-wrap">
+      <style>{`
+        .tm-wrap { padding: 0; }
+
+        .tm-card {
+          background: var(--surface);
+          border: 1px solid rgba(200,144,10,.3);
+          border-radius: 16px;
+          padding: 26px 20px 30px;
+          position: relative;
+          overflow: hidden;
+        }
+        .tm-card::before {
+          content: "";
+          position: absolute; top: 0; left: 0; right: 0; height: 2px;
+          background: linear-gradient(90deg,transparent,rgba(200,144,10,.6),transparent);
+        }
+
+        .tm-badge {
+          display: inline-block;
+          font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+          color: rgba(200,144,10,.8);
+          border: 1px solid rgba(200,144,10,.3);
+          border-radius: 20px;
+          padding: 5px 12px;
+          margin-bottom: 16px;
+        }
+        .tm-titulo {
+          font-family: 'Fraunces', serif;
+          font-size: 40px; font-weight: 900; line-height: 1.05;
+          color: var(--gold-l);
+          margin: 0 0 8px;
+        }
+        .tm-bajada {
+          font-family: 'Fraunces', serif; font-style: italic;
+          font-size: 17px; color: rgba(200,144,10,.8);
+          margin: 0 0 6px;
+        }
+        .tm-promesa {
+          font-size: 14.5px; line-height: 1.6;
+          color: rgba(245,236,215,.75);
+          margin: 0 0 24px;
+        }
+
+        .tm-ancla {
+          border-left: 3px solid rgba(200,144,10,.6);
+          background: rgba(200,144,10,.04);
+          border-radius: 0 12px 12px 0;
+          padding: 16px 16px 16px 18px;
+          margin: 0 0 30px;
+          font-family: 'Fraunces', serif;
+          font-size: 14.5px; line-height: 1.7;
+          color: rgba(245,236,215,.85);
+        }
+
+        .tm-h3 {
+          font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+          color: rgba(200,144,10,.7);
+          margin: 0 0 16px;
+        }
+
+        .tm-grid {
+          display: grid; grid-template-columns: 1fr 1fr; gap: 16px 14px;
+          margin-bottom: 30px;
+        }
+        .tm-n {
+          font-family: 'Fraunces', serif;
+          font-size: 14px; color: var(--gold-l);
+          margin: 0 0 3px; line-height: 1.25;
+        }
+        .tm-t {
+          font-size: 11.5px; line-height: 1.45;
+          color: rgba(245,236,215,.5);
+          margin: 0;
+        }
+
+        .tm-capas { margin-bottom: 30px; }
+        .tm-capa {
+          border-top: 1px solid var(--border);
+          padding: 13px 0;
+        }
+        .tm-capa:last-child { border-bottom: 1px solid var(--border); }
+
+        .tm-muestra {
+          background: rgba(245,236,215,.03);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          padding: 20px 18px;
+          margin-bottom: 30px;
+        }
+        .tm-muestra p {
+          font-family: 'Fraunces', serif;
+          font-size: 14px; line-height: 1.75;
+          color: rgba(245,236,215,.8);
+          margin: 0 0 14px;
+        }
+        .tm-pie {
+          font-size: 11.5px !important;
+          font-style: italic;
+          color: rgba(200,144,10,.6) !important;
+          margin: 0 !important;
+        }
+
+        .tm-testis { display: flex; flex-direction: column; gap: 18px; margin-bottom: 30px; }
+        .tm-testi q {
+          display: block; quotes: none;
+          font-family: 'Fraunces', serif; font-style: italic;
+          font-size: 13.5px; line-height: 1.65;
+          color: rgba(245,236,215,.72);
+          margin-bottom: 6px;
+        }
+        .tm-testi span {
+          font-size: 9px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+          color: rgba(200,144,10,.6);
+        }
+
+        .tm-cierre { text-align: center; }
+        .tm-precio {
+          font-family: 'Fraunces', serif;
+          font-size: 32px; color: var(--gold-l);
+          margin: 0 0 4px;
+        }
+        .tm-pago {
+          font-size: 11px; letter-spacing: 1px;
+          color: rgba(200,144,10,.5);
+          margin: 0 0 18px;
+        }
+        .tm-cta {
+          width: 100%;
+          background: linear-gradient(135deg,#c8900a,#a06a0a);
+          color: #110d08;
+          font-size: 15px; font-weight: 700; letter-spacing: .5px;
+          border: none; border-radius: 12px;
+          padding: 16px 0;
+          cursor: pointer;
+          transition: filter 160ms ease, transform 160ms ease;
+        }
+        .tm-cta:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .tm-cta:focus-visible { outline: 2px solid var(--gold-l); outline-offset: 3px; }
+
+        .tm-otros {
+          display: flex; flex-wrap: wrap; justify-content: center;
+          gap: 8px 20px;
+          margin: 22px 0 0;
+        }
+        .tm-otro {
+          background: none; border: none; cursor: pointer;
+          font-size: 12px;
+          color: rgba(245,236,215,.4);
+          padding: 4px 0;
+          transition: color 160ms ease;
+        }
+        .tm-otro:hover { color: rgba(245,236,215,.75); }
+        .tm-otro b { font-weight: 600; color: inherit; }
+
+        .tm-combo {
+          margin-top: 22px;
+          background: rgba(200,144,10,.04);
+          border: 1px solid rgba(200,144,10,.15);
+          border-radius: 12px;
+          padding: 18px 18px 16px;
+          text-align: center;
+          cursor: pointer;
+          transition: border-color 160ms ease;
+        }
+        .tm-combo:hover { border-color: rgba(200,144,10,.35); }
+        .tm-combo-t {
+          font-family: 'Fraunces', serif;
+          font-size: 15px; color: var(--gold-l);
+          margin: 0 0 6px; line-height: 1.35;
+        }
+        .tm-combo-s {
+          font-size: 12px; line-height: 1.5;
+          color: rgba(245,236,215,.5);
+          margin: 0 0 10px;
+        }
+        .tm-combo-p {
+          font-size: 12px; color: rgba(200,144,10,.7); letter-spacing: .5px;
+        }
+        .tm-combo-f {
+          font-size: 10.5px; letter-spacing: .5px;
+          color: rgba(245,236,215,.35);
+          margin-top: 8px;
+        }
+
+        @media (max-width: 420px) {
+          .tm-grid { grid-template-columns: 1fr; gap: 14px; }
+          .tm-titulo { font-size: 34px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .tm-cta { transition: none; }
+          .tm-cta:hover { transform: none; }
+        }
+      `}</style>
+
+      <div className="tm-card">
+        <div className="tm-badge">✦ Producto estrella</div>
+
+        <h2 className="tm-titulo">Tu Mapa</h2>
+        <div className="tm-bajada">El mapa de cómo estás diseñada.</div>
+        <div className="tm-promesa">Entiende, por primera vez, por qué eres como eres.</div>
+
+        <div className="tm-ancla">
+          No es un horóscopo. Son 7 sistemas leyendo lo mismo desde 7 ángulos
+          distintos, y 3 capas de síntesis que revelan el patrón que todos confirman.
+        </div>
+
+        <div className="tm-h3">· Qué te dice cada sistema ·</div>
+        <div className="tm-grid">
+          {TM_SISTEMAS.map((s) => (
+            <div key={s.n}>
+              <div className="tm-n">{s.n}</div>
+              <p className="tm-t">{s.t}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="tm-h3">· Las 3 capas que lo unen todo ·</div>
+        <div className="tm-capas">
+          {TM_CAPAS.map((c) => (
+            <div className="tm-capa" key={c.n}>
+              <div className="tm-n">{c.n}</div>
+              <p className="tm-t">{c.t}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="tm-h3">· Un fragmento real del informe ·</div>
+        <div className="tm-muestra">
+          <p>
+            Tu Sol en Leo en la Casa 2 y el Canal 2-14, el «Pulso del Dinero»,
+            están diciendo lo mismo desde dos idiomas distintos: los recursos
+            llegan a ti cuando te muestras tal como eres, no cuando te esfuerzas
+            de más. Tu valor no se construye a fuerza de trabajo; se revela cuando
+            dejas de esconder lo que te hace distinta. Cada vez que forzaste el
+            esfuerzo para merecer, remaste contra tu propio diseño.
+          </p>
+          <p className="tm-pie">
+            Este es un fragmento de un mapa real. El tuyo se calcula con tus datos.
+          </p>
+        </div>
+
+        <div className="tm-testis">
+          {TM_TESTIMONIOS.map((t) => (
+            <div className="tm-testi" key={t.a}>
+              <q>«{t.q}»</q>
+              <span>— {t.a}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="tm-cierre">
+          <div className="tm-precio">$27.990 CLP</div>
+          <div className="tm-pago">Pago único · Acceso inmediato</div>
+          <button className="tm-cta" onClick={onMapa}>Quiero mi Mapa →</button>
+        </div>
+      </div>
+
+      <div className="tm-otros">
+        {TM_OTROS.map((o) => (
+          <button className="tm-otro" key={o.n} onClick={o.go}>
+            <b>{o.n}</b> · {o.p}
+          </button>
+        ))}
+      </div>
+
+      <div className="tm-combo" onClick={onCombo}>
+        <div className="tm-combo-t">Tu Mapa + todo lo demás</div>
+        <div className="tm-combo-s">
+          Por $12.000 más te llevas también Tu Año Cósmico, el Oráculo Kintsugi y
+          los 21 días de Bajar el Ruido.
+        </div>
+        <div className="tm-combo-p">$39.990 CLP · Comprar ahora →</div>
+        <div className="tm-combo-f">Pack de lanzamiento · disponible hasta el 3 de agosto</div>
+      </div>
+    </div>
+  );
+}
+
