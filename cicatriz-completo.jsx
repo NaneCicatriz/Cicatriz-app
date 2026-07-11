@@ -1393,7 +1393,7 @@ const TM_SISTEMAS = [
 ];
 
 const TM_CAPAS = [
-  { n: "Integración Cósmica", t: "Dónde los 7 sistemas dicen lo mismo. El patrón que se repite sin que nadie se ponga de acuerdo." },
+  { n: "Integración Cósmica", t: "Donde los 7 sistemas dicen lo mismo. El patrón que se repite sin que nadie se ponga de acuerdo." },
   { n: "Propósito y Misión", t: "A qué viniste, dicho en una frase que vas a reconocer apenas la leas." },
   { n: "Guía de Acción Trimestral", t: "Qué hacer con todo esto en los próximos tres meses. Concreto." },
 ];
