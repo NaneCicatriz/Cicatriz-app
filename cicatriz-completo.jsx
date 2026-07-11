@@ -1515,7 +1515,8 @@ function CardTuMapa({ onMapa, onAno, onRuido, onOraculo, onCombo }) {
           margin: 0 !important;
         }
 
-        .tm-testis { display: flex; flex-direction: column; gap: 18px; margin-bottom: 30px; }
+        .tm-testis { display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px; padding-top: 4px; }
+        .tm-testi { border-left: 2px solid rgba(200,144,10,.25); padding-left: 14px; }
         .tm-testi q {
           display: block; quotes: none;
           font-family: 'Fraunces', serif; font-style: italic;
