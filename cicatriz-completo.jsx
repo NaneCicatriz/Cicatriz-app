@@ -457,7 +457,7 @@ body{background:var(--bg);}
 
 const JQ = ["¿Qué resuena de esta carta en lo que vives hoy?","¿Qué parte de ti necesitaba escuchar esto?","¿Qué harás diferente después de esta carta?","¿Qué emoción se mueve en ti al leerla?"];
 const LOADING_STEPS = ["Calculando camino de vida y expresión...","Analizando tránsitos planetarios...","Consultando el I Ching...","Leyendo el Lenormand...","Interpretando las 12 casas...","Sintetizando todos los sistemas...","Preparando tu informe personalizado..."];
-const LOADING_STEPS_COSMICA = ["Calculando perfil numerológico...","Analizando tránsitos...","Consultando I Ching y Lenormand...","Calculando carta natal completa...","Analizando Diseño Humano...","Integrando todos los sistemas...","Preparando tu lectura cósmica completa..."];
+const LOADING_STEPS_COSMICA = ["Calculando perfil numerológico...","Analizando tránsitos...","Consultando I Ching y Lenormand...","Calculando carta natal completa...","Analizando Diseño Humano...","Integrando todos los sistemas...","Preparando tu mapa..."];
 const SECTION_META = {
   "PERFIL NUMEROLÓGICO":{icon:"🔢",lbl:"Numerología"},
   "EL AÑO EN SÍNTESIS":{icon:"🪐",lbl:"Astrología"},
