@@ -45,13 +45,17 @@ const marcarCodigoUsado = async (id, email) => {
 };
 
 const buscarLectura = async (tabla, nombre, fecha) => {
+  const data = await sbFetch(`${tabla}?nombre=eq.${encodeURIComponent(nombre.trim().toLowerCase())}&fecha_nacimiento=eq.${encodeURIComponent(fecha)}&anio=eq.${ANIO}&select=informe`);
+  if (!data || data.length === 0) return null;
+  return data[0].informe;
+};
   const data = await sbFetch(`${tabla}?nombre=eq.${encodeURIComponent(nombre.trim().toLowerCase())}&fecha_nacimiento=eq.${encodeURIComponent(fecha)}&select=informe`);
   if (!data || data.length === 0) return null;
   return data[0].informe;
 };
 
 const guardarLectura = async (tabla, nombre, fecha, ciudad, informe, email) => {
-  const payload = { nombre: nombre.trim().toLowerCase(), fecha_nacimiento: fecha, ciudad, informe };
+ const payload = { nombre: nombre.trim().toLowerCase(), fecha_nacimiento: fecha, ciudad, informe, anio: ANIO };
   if (email) payload.email = email;
   await sbFetch(tabla, {
     method: "POST",
