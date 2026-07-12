@@ -71,7 +71,17 @@ const LINKS = {
   combo:    "https://mpago.la/29xD1mj",
   upgrade:  "https://mpago.la/2nXpjG3", // $8.990 — upgrade Año → Lectura Cósmica
 };
-
+// ─── TRÁNSITOS POR AÑO (verificar y actualizar cada enero) ───
+const TRANSITOS = {
+  2026: `Júpiter: en Cáncer hasta el 29 de junio de 2026; en Leo desde el 30 de junio de 2026 en adelante. Retrógrado hasta el 10 de marzo.
+Saturno: en Piscis hasta el 13 de febrero de 2026; en Aries desde el 13 de febrero de 2026 en adelante. Retrógrado del 26 de julio al 10 de diciembre.
+Urano: en Tauro hasta el 25 de abril de 2026; en Géminis desde el 25 de abril de 2026 en adelante.
+Neptuno: en Piscis hasta el 26 de enero de 2026; en Aries desde el 26 de enero de 2026 en adelante.
+Plutón: en Acuario durante todo 2026. Retrógrado desde el 6 de mayo.
+Quirón: en Aries hasta el 19 de junio de 2026; en Tauro desde el 19 de junio de 2026.
+Nodo Norte: en Piscis hasta el 26 de julio de 2026; en Acuario desde el 26 de julio (Nodo Sur en Leo).
+Aspectos mayores: Saturno conjunción Neptuno en Aries (20 de febrero); Saturno sextil Plutón (28 de marzo); Urano trígono Plutón (17 de julio y 29 de noviembre); Júpiter oposición Plutón (20 de julio); Júpiter trígono Neptuno (20 de julio); Júpiter trígono Saturno (31 de agosto).`,
+};
 // ─── ORACLE DATA ─────────────────────────────────────────────
 const CATS = [
   { id:1, name:"Reconociendo el Dolor", color:"#e89090", bg:"linear-gradient(145deg,#2a0e0e,#1a0808)", border:"rgba(220,100,100,0.25)", emoji:"💔",
@@ -840,6 +850,8 @@ DISEÑO HUMANO (calculado con precisión astronómica): Tipo: ${dh.tipo} | Estra
 : 'DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.'
 
 IMPORTANTE: Los datos de Diseño Humano son REALES y calculados astronómicamente. Interprétalos con precisión y autoridad — NO digas "probablemente" ni "intuyo" respecto al Diseño Humano, porque son datos exactos.
+${TRANSITOS[ANIO] ? `TRÁNSITOS PLANETARIOS REALES DE ${ANIO} — datos verificados. Úsalos EXACTAMENTE como están escritos. NO los corrijas, NO los reemplaces por tu propio conocimiento, NO inventes fechas ni signos distintos:
+${TRANSITOS[ANIO]}` : `NO TIENES DATOS DE TRÁNSITOS PARA ${ANIO}. Está TERMINANTEMENTE PROHIBIDO inventarlos. Omite por completo la sección [EL AÑO EN SÍNTESIS] y no menciones ningún tránsito planetario en ninguna otra sección del informe.`}
 REGLA DE HONESTIDAD, obligatoria: nunca escribas un dato del que no estés seguro. Prohibido usar "probable", "probablemente", "si está presente", "posiblemente" o cualquier fórmula que revele que estás adivinando. Si un dato astrológico no se puede calcular con certeza a partir de la información entregada, simplemente NO lo menciones — omítelo por completo en vez de conjeturarlo. Está prohibido también cerrar el informe con una nota final sobre la calidad, exactitud o verificación de los datos: no escribas ese cierre.
 Traduce los términos
 
