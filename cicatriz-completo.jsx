@@ -930,6 +930,10 @@ Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy}
 
 ${dhTexto}
 ${dh && dh.cruz ? `HEXAGRAMA NATAL DEL I CHING — dato exacto, calculado, NO lo inventes ni lo cambies: Las 64 puertas del Diseño Humano son los mismos 64 hexagramas del I Ching, con idéntica numeración. La Cruz de Encarnación de esta persona es "${dh.cruz}". El PRIMER número que aparece en esa cruz es su Sol de Personalidad y, por lo tanto, ES su hexagrama natal del I Ching. Úsalo EXACTAMENTE, con su nombre tradicional correcto. Está terminantemente prohibido elegir otro hexagrama.` : `NO HAY DATOS DE DISEÑO HUMANO, así que no se puede determinar el hexagrama. Está PROHIBIDO inventarlo. Omite por completo la sección [EL MENSAJE DEL I CHING].`}
+${hexAnio ? `HEXAGRAMA DEL AÑO ${ANIO} — calculado con el método Mei Hua Yi Shu (Numerología de la Flor de Ciruelo, Shao Yong, siglo XI). Es un cálculo determinista, NO una elección tuya. Está terminantemente PROHIBIDO usar otro hexagrama o inventar uno distinto:
+Hexagrama principal: ${hexAnio.principal} — ${hexAnio.nombre}. Trigrama superior: ${hexAnio.supNombre}. Trigrama inferior: ${hexAnio.infNombre}.
+Línea móvil: ${hexAnio.linea}.
+Hexagrama mutado (hacia dónde se dirige la situación): ${hexAnio.mutado} — ${hexAnio.mutadoNombre}.` : `NO SE PUDO CALCULAR el hexagrama del año (falta hora de nacimiento). PROHIBIDO inventarlo: no menciones ningún hexagrama del año.`}
 IMPORTANTE: Los datos de Diseño Humano son REALES y calculados astronómicamente. Interprétalos con precisión y autoridad — NO digas "probablemente" ni "intuyo" respecto al Diseño Humano, porque son datos exactos.
 ${TRANSITOS[ANIO] ? `TRÁNSITOS PLANETARIOS REALES DE ${ANIO} — datos verificados. Úsalos EXACTAMENTE como están escritos. NO los corrijas, NO los reemplaces por tu propio conocimiento, NO inventes fechas ni signos distintos:
 ${TRANSITOS[ANIO]}` : `NO TIENES DATOS DE TRÁNSITOS PARA ${ANIO}. Está TERMINANTEMENTE PROHIBIDO inventarlos. Omite por completo la sección [EL AÑO EN SÍNTESIS] y no menciones ningún tránsito planetario en ninguna otra sección del informe.`}
@@ -945,9 +949,7 @@ Análisis técnico del Camino de Vida ${lcLp}, Expresión ${lcExp} y Año Person
 Los 3 tránsitos planetarios más importantes para esta persona nacida el ${lcForm.fecha} durante ${ANIO}. Para cada tránsito indica: qué planeta, en qué signo, qué área de vida afecta, y la fecha exacta aproximada de inicio y término (día y mes). Menciona Júpiter, Saturno o Plutón según corresponda. 2-3 párrafos concretos.
 
 [EL MENSAJE DEL I CHING]
-Usa EXACTAMENTE el hexagrama natal indicado arriba (el que sale de la Cruz de Encarnación). Explica que las 64 puertas del Diseño Humano son los mismos 64 hexagramas del I Ching: dos tradiciones separadas por milenios y continentes que leen el mismo símbolo. Nombra el hexagrama con su número y su nombre tradicional, di qué describe, y qué acción o actitud recomienda en ${ANIO}. 1-2 párrafos.
-
-[LECTURA DE LAS 12 CASAS]
+Dos lecturas, ambas calculadas, ninguna elegida por ti. PRIMERO, el hexagrama natal (el de la Cruz de Encarnación): explica que las 64 puertas del Diseño Humano son los mismos 64 hexagramas del I Ching, nómbralo con su número y nombre tradicional, y di qué describe de forma permanente en esta persona. SEGUNDO, el hexagrama del año ${ANIO} calculado por Mei Hua Yi Shu: nómbralo con su número y nombre, describe qué situación plantea, qué pide la línea móvil, y hacia dónde apunta el hexagrama mutado. Cierra diciendo si ambos hexagramas se refuerzan o se tensionan entre sí. 2-3 párrafos.[LECTURA DE LAS 12 CASAS]
 Las casas astrológicas más activadas en ${ANIO} y qué área concreta de vida impactan. 2-3 párrafos.
 
 [LENORMAND Y TAROT]
