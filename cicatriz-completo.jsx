@@ -590,14 +590,14 @@ body{background:var(--bg);}
 `;
 
 const JQ = ["¿Qué resuena de esta carta en lo que vives hoy?","¿Qué parte de ti necesitaba escuchar esto?","¿Qué harás diferente después de esta carta?","¿Qué emoción se mueve en ti al leerla?"];
-const LOADING_STEPS = ["Calculando camino de vida y expresión...","Analizando tránsitos planetarios...","Consultando el I Ching...","Leyendo el Lenormand...","Interpretando las 12 casas...","Sintetizando todos los sistemas...","Preparando tu informe personalizado..."];
-const LOADING_STEPS_COSMICA = ["Calculando perfil numerológico...","Analizando tránsitos...","Consultando I Ching y Lenormand...","Calculando carta natal completa...","Analizando Diseño Humano...","Integrando todos los sistemas...","Preparando tu mapa..."];
+const LOADING_STEPS = ["Calculando camino de vida y expresión...","Analizando tránsitos planetarios...","Consultando el I Ching...","Interpretando las 12 casas...","Sintetizando todos los sistemas...","Preparando tu informe personalizado..."];
+const LOADING_STEPS_COSMICA = ["Calculando perfil numerológico...","Analizando tránsitos...","Consultando el I Ching...","Calculando las cartas del Tarot...","Calculando carta natal completa...","Analizando Diseño Humano...","Integrando todos los sistemas...","Preparando tu mapa..."];
 const SECTION_META = {
   "PERFIL NUMEROLÓGICO":{icon:"🔢",lbl:"Numerología"},
   "EL AÑO EN SÍNTESIS":{icon:"🪐",lbl:"Astrología"},
   "EL MENSAJE DEL I CHING":{icon:"☯️",lbl:"I Ching"},
   "LECTURA DE LAS 12 CASAS":{icon:"🏛️",lbl:"Casas"},
-  "LENORMAND Y TAROT":{icon:"🃏",lbl:"Tarot"},
+  "LENORMAND Y TAROT":{icon:"🃏",lbl:"Oráculos"},
   "TAROT":{icon:"🃏",lbl:"Tarot"},
   "PROPÓSITO Y MISIÓN DE VIDA":{icon:"🔱",lbl:"Propósito"},
   "GUÍA DE ACCIÓN":{icon:"🗓️",lbl:"Acción"},
@@ -1096,8 +1096,8 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                 <div className="cy-hero">
                   <span className="cy-glyph">{SVGLarge.cosmico}</span>
                   <div className="cy-title">Año Cósmico {ANIO}</div>
-                  <div className="cy-sub">Numerología · I Ching · Lenormand · Astrología</div>
-                  <p className="cy-desc">Tu informe queda guardado permanentemente — siempre verás el mismo.</p>
+                  <div className="cy-sub">Numerología · I Ching · Tarot · Astrología</div>
+                  <p className="cy-desc">Tu informe queda guardado durante todo el año. Cada año nuevo se recalcula con los tránsitos que corresponden.</p>
                 </div>
                 <div style={{padding:"28px 20px 0"}}>
                   {cyScreen==="form" && (
