@@ -806,6 +806,9 @@ DATOS: Nombre: ${cyForm.nombre} | Fecha: ${cyForm.fecha} | Hora: ${cyForm.hora||
 Camino de Vida: ${lp} | Expresión: ${exp} | Año Personal ${ANIO}: ${py}
 Genera el informe con estos encabezados exactos entre corchetes:
 [PERFIL NUMEROLÓGICO] Análisis del Camino de Vida ${lp}, Expresión ${exp} y Año Personal ${py}. 2-3 párrafos.
+${TRANSITOS[ANIO] ? `TRÁNSITOS PLANETARIOS REALES DE ${ANIO} — datos verificados. Úsalos EXACTAMENTE como están escritos. NO los corrijas, NO los reemplaces por tu propio conocimiento, NO inventes fechas ni signos distintos:
+${TRANSITOS[ANIO]}` : `NO TIENES DATOS DE TRÁNSITOS PARA ${ANIO}. Está TERMINANTEMENTE PROHIBIDO inventarlos. Omite por completo la sección [EL AÑO EN SÍNTESIS] y no menciones ningún tránsito planetario en ninguna otra sección.`}
+REGLA DE HONESTIDAD, obligatoria: nunca escribas un dato del que no estés seguro. Prohibido usar "probable", "probablemente", "si está presente", "posiblemente" o cualquier fórmula que revele que estás adivinando. Si un dato astrológico no se puede calcular con certeza, NO lo menciones — omítelo en vez de conjeturarlo. Prohibido cerrar el informe con una nota sobre la calidad o verificación de los datos.
 [EL AÑO EN SÍNTESIS] Los 3 tránsitos más importantes de ${ANIO}. 2-3 párrafos.
 [EL MENSAJE DEL I CHING] El hexagrama más relevante. 1-2 párrafos.
 [LECTURA DE LAS 12 CASAS] Las casas más activadas en ${ANIO}. 2-3 párrafos.
