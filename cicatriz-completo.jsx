@@ -71,6 +71,84 @@ const LINKS = {
   combo:    "https://mpago.la/29xD1mj",
   upgrade:  "https://mpago.la/2nXpjG3", // $8.990 — upgrade Año → Lectura Cósmica
 };
+// ─── I CHING · MEI HUA YI SHU (Numerología de la Flor de Ciruelo, Shao Yong, s. XI) ───
+// Tabla del Rey Wen verificada contra fuente. Fórmula determinista: los mismos datos
+// dan siempre el mismo hexagrama. No hay azar y no interviene la IA.
+
+// Numeración Xiantian (Cielo Anterior): 1 Cielo · 2 Lago · 3 Fuego · 4 Trueno
+//                                       5 Viento · 6 Agua · 7 Montaña · 8 Tierra
+const HEX_TRIGRAMAS = ["","Cielo","Lago","Fuego","Trueno","Viento","Agua","Montaña","Tierra"];
+
+// Filas = trigrama SUPERIOR (1-8) · Columnas = trigrama INFERIOR (1-8)
+const HEX_KINGWEN = [
+  [ 1,10,13,25,44, 6,33,12],
+  [43,58,49,17,28,47,31,45],
+  [14,38,30,21,50,64,56,35],
+  [34,54,55,51,32,40,62,16],
+  [ 9,61,37,42,57,59,53,20],
+  [ 5,60,63, 3,48,29,39, 8],
+  [26,41,22,27,18, 4,52,23],
+  [11,19,36,24,46, 7,15, 2],
+];
+
+const HEX_NOMBRES = ["",
+"Lo Creativo","Lo Receptivo","La Dificultad Inicial","La Necedad Juvenil","La Espera",
+"El Conflicto","El Ejército","La Solidaridad","La Fuerza Domesticadora de lo Pequeño","El Porte",
+"La Paz","El Estancamiento","La Comunidad con los Hombres","La Posesión de lo Grande","La Modestia",
+"El Entusiasmo","El Seguimiento","El Trabajo en lo Echado a Perder","El Acercamiento","La Contemplación",
+"La Mordedura Tajante","La Gracia","La Desintegración","El Retorno","La Inocencia",
+"La Fuerza Domesticadora de lo Grande","La Nutrición","La Preponderancia de lo Grande","Lo Abismal (El Agua)","Lo Adherente (El Fuego)",
+"El Influjo","La Duración","La Retirada","El Poder de lo Grande","El Progreso",
+"El Oscurecimiento de la Luz","El Clan","El Antagonismo","El Impedimento","La Liberación",
+"La Merma","El Aumento","La Resolución","El Ir al Encuentro","La Reunión",
+"La Subida","La Desazón","El Pozo de Agua","La Revolución","El Caldero",
+"Lo Suscitativo (El Trueno)","El Aquietamiento (La Montaña)","La Evolución","La Muchacha que se Casa","La Plenitud",
+"El Andariego","Lo Suave (El Viento)","Lo Sereno (El Lago)","La Disolución","La Restricción",
+"La Verdad Interior","La Preponderancia de lo Pequeño","Después de la Consumación","Antes de la Consumación"];
+
+// Bits de cada trigrama, de abajo hacia arriba (1 = yang)
+const HEX_BITS = {1:[1,1,1],2:[1,1,0],3:[1,0,1],4:[1,0,0],5:[0,1,1],6:[0,1,0],7:[0,0,1],8:[0,0,0]};
+const HEX_DESDE_BITS = {}; for (const k in HEX_BITS) HEX_DESDE_BITS[HEX_BITS[k].join("")] = +k;
+
+const hexNum = (sup, inf) => HEX_KINGWEN[sup-1][inf-1];
+
+// Devuelve el hexagrama del año para una persona, o null si faltan datos.
+function meiHua(anio, fechaNac, horaNac) {
+  if (!anio || !fechaNac || !horaNac) return null;
+  const p = String(fechaNac).split("-");
+  const mes = parseInt(p[1], 10);
+  const dia = parseInt(p[2], 10);
+  const hora = parseInt(String(horaNac).split(":")[0], 10);
+  if (isNaN(mes) || isNaN(dia) || isNaN(hora)) return null;
+
+  const s1 = anio + mes + dia;
+  const s2 = s1 + hora;
+  const sup = (s1 % 8) || 8;
+  const inf = (s2 % 8) || 8;
+  const linea = (s2 % 6) || 6;
+  const principal = hexNum(sup, inf);
+
+  // La línea móvil muta: líneas 1-3 pertenecen al trigrama inferior, 4-6 al superior
+  let sup2 = sup, inf2 = inf;
+  if (linea <= 3) {
+    const b = HEX_BITS[inf].slice(); b[linea-1] = b[linea-1] ? 0 : 1;
+    inf2 = HEX_DESDE_BITS[b.join("")];
+  } else {
+    const b = HEX_BITS[sup].slice(); b[linea-4] = b[linea-4] ? 0 : 1;
+    sup2 = HEX_DESDE_BITS[b.join("")];
+  }
+  const mutado = hexNum(sup2, inf2);
+
+  return {
+    principal,
+    nombre: HEX_NOMBRES[principal],
+    supNombre: HEX_TRIGRAMAS[sup],
+    infNombre: HEX_TRIGRAMAS[inf],
+    linea,
+    mutado,
+    mutadoNombre: HEX_NOMBRES[mutado],
+  };
+}
 // ─── TRÁNSITOS POR AÑO (verificar y actualizar cada enero) ───
 const TRANSITOS = {
   2026: `Júpiter: en Cáncer hasta el 29 de junio de 2026; en Leo desde el 30 de junio de 2026 en adelante. Retrógrado hasta el 10 de marzo.
