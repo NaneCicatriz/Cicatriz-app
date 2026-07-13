@@ -931,11 +931,19 @@ export default function Cicatriz() {
       const prompt = `Eres un astrólogo experto en sistemas esotéricos. Genera una lectura COMPLETA y personalizada para el año ${ANIO}.
 DATOS: Nombre: ${cyForm.nombre} | Fecha: ${cyForm.fecha} | Hora: ${cyForm.hora||"desconocida"} | Ciudad: ${cyForm.ciudad}
 Camino de Vida: ${lp} | Expresión: ${exp} | Año Personal ${ANIO}: ${py}
-Genera el informe con estos encabezados exactos entre corchetes:
-[PERFIL NUMEROLÓGICO] Análisis del Camino de Vida ${lp}, Expresión ${exp} y Año Personal ${py}. 2-3 párrafos.
 ${TRANSITOS[ANIO] ? `TRÁNSITOS PLANETARIOS REALES DE ${ANIO} — datos verificados. Úsalos EXACTAMENTE como están escritos. NO los corrijas, NO los reemplaces por tu propio conocimiento, NO inventes fechas ni signos distintos:
 ${TRANSITOS[ANIO]}` : `NO TIENES DATOS DE TRÁNSITOS PARA ${ANIO}. Está TERMINANTEMENTE PROHIBIDO inventarlos. Omite por completo la sección [EL AÑO EN SÍNTESIS] y no menciones ningún tránsito planetario en ninguna otra sección.`}
+${hexAnio ? `HEXAGRAMA DEL AÑO ${ANIO} — calculado con el método Mei Hua Yi Shu (Shao Yong, siglo XI). Cálculo determinista, NO una elección tuya. PROHIBIDO usar otro hexagrama:
+Hexagrama principal: ${hexAnio.principal} — ${hexAnio.nombre}. Trigrama superior: ${hexAnio.supNombre}. Trigrama inferior: ${hexAnio.infNombre}.
+Línea móvil: ${hexAnio.linea}.
+Hexagrama mutado (hacia dónde se dirige la situación): ${hexAnio.mutado} — ${hexAnio.mutadoNombre}.` : `NO SE PUDO CALCULAR el hexagrama (falta hora de nacimiento). PROHIBIDO inventarlo: omite la sección [EL MENSAJE DEL I CHING].`}
+${tarot ? `CARTAS DE TAROT — CALCULADAS, no elegidas. PROHIBIDO usar otros arcanos:
+Carta del Año ${ANIO} (método Mary K. Greer): Arcano ${tarot.anio} — ${tarot.anioNombre}.
+Carta de Personalidad (método Tarot School): Arcano ${tarot.personalidad} — ${tarot.personalidadNombre}.
+Carta del Alma: Arcano ${tarot.alma} — ${tarot.almaNombre}.` : `NO SE PUDIERON CALCULAR las cartas. PROHIBIDO inventarlas: omite la sección [LENORMAND Y TAROT].`}
 REGLA DE HONESTIDAD, obligatoria: nunca escribas un dato del que no estés seguro. Prohibido usar "probable", "probablemente", "si está presente", "posiblemente" o cualquier fórmula que revele que estás adivinando. Si un dato astrológico no se puede calcular con certeza, NO lo menciones — omítelo en vez de conjeturarlo. Prohibido cerrar el informe con una nota sobre la calidad o verificación de los datos.
+Genera el informe con estos encabezados exactos entre corchetes:
+[PERFIL NUMEROLÓGICO] Análisis del Camino de Vida ${lp}, Expresión ${exp} y Año Personal ${py}. 2-3 párrafos.
 [EL AÑO EN SÍNTESIS] Los 3 tránsitos más importantes de ${ANIO}. 2-3 párrafos.
 [EL MENSAJE DEL I CHING] El hexagrama más relevante. 1-2 párrafos.
 [LECTURA DE LAS 12 CASAS] Las casas más activadas en ${ANIO}. 2-3 párrafos.
