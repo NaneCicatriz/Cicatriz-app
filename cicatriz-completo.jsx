@@ -926,6 +926,8 @@ export default function Cicatriz() {
     if (guardada) { setCyReport(guardada); setCyScreen("report"); return; }
     for (let i=0;i<LOADING_STEPS.length;i++) { await new Promise(r=>setTimeout(r,850)); setCyLoadStep(i+1); }
     try {
+      const hexAnio = meiHua(ANIO, cyForm.fecha, cyForm.hora);
+      const tarot = tarotCartas(ANIO, cyForm.fecha);
       const prompt = `Eres un astrólogo experto en sistemas esotéricos. Genera una lectura COMPLETA y personalizada para el año ${ANIO}.
 DATOS: Nombre: ${cyForm.nombre} | Fecha: ${cyForm.fecha} | Hora: ${cyForm.hora||"desconocida"} | Ciudad: ${cyForm.ciudad}
 Camino de Vida: ${lp} | Expresión: ${exp} | Año Personal ${ANIO}: ${py}
