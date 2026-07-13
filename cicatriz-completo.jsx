@@ -921,6 +921,7 @@ Tono: profesional, directo e informativo. Sin metáforas poéticas, sin frases t
     const dhTexto = dh
       ? `DISEÑO HUMANO (calculado con precisión astronómica): Tipo: ${dh.tipo} | Estrategia: ${dh.estrategia} | Autoridad: ${dh.autoridad} | Perfil: ${dh.perfil} | Definición: ${dh.definicion} | Cruz de Encarnación: ${dh.cruz} | Centros definidos: ${(dh.centros_definidos||[]).join(", ")} | Canales: ${(dh.canales||[]).join(", ")} | Tema No-Self: ${dh.tema_no_self} | Firma: ${dh.firma}`
       : 'DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.';
+    const hexAnio = meiHua(ANIO, lcForm.fecha, lcForm.hora);
     try {
       const prompt = `Eres un astrólogo y analista de Diseño Humano experto. Genera un informe llamado "Tu Mapa", profundo y personalizado. Nunca lo llames "Lectura Cósmica": su nombre es Tu Mapa. Esta es la lectura más completa que existe — integra numerología, astrología, I Ching, Lenormand, carta natal y Diseño Humano en un solo informe.
 
