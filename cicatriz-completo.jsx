@@ -149,6 +149,52 @@ function meiHua(anio, fechaNac, horaNac) {
     mutadoNombre: HEX_NOMBRES[mutado],
   };
 }
+// ─── TAROT · CARTAS CALCULADAS ───────────────────────────────
+// Carta del Año: método de Mary K. Greer (mes + día de nacimiento + año en curso).
+// Cartas de Nacimiento: método de la Tarot School (Amberstone), fecha completa.
+// Ambos son deterministas y verificados contra ejemplos documentados. La IA no elige.
+
+const ARCANOS = ["El Loco","El Mago","La Suma Sacerdotisa","La Emperatriz","El Emperador",
+"El Sumo Sacerdote","Los Enamorados","El Carro","La Fuerza","El Ermitaño","La Rueda de la Fortuna",
+"La Justicia","El Colgado","La Muerte","La Templanza","El Diablo","La Torre","La Estrella",
+"La Luna","El Sol","El Juicio","El Mundo"];
+
+const nombreArcano = (n) => (n === 22 ? "El Loco" : ARCANOS[n]);
+const sumarDigitos = (n) => String(n).split("").reduce((a, b) => a + Number(b), 0);
+
+// Devuelve las cartas de Tarot de una persona, o null si faltan datos.
+function tarotCartas(anio, fechaNac) {
+  if (!anio || !fechaNac) return null;
+  const p = String(fechaNac).split("-");
+  const anioNac = parseInt(p[0], 10);
+  const mes = parseInt(p[1], 10);
+  const dia = parseInt(p[2], 10);
+  if (isNaN(anioNac) || isNaN(mes) || isNaN(dia)) return null;
+
+  // Carta del Año (Greer): mes + día + año en curso, reducir hasta 1-22
+  let a = mes + dia + anio;
+  while (a > 22) a = sumarDigitos(a);
+
+  // Cartas de Nacimiento (Tarot School): día + mes + siglo + resto del año
+  let s = dia + mes + Math.floor(anioNac / 100) + (anioNac % 100);
+  if (s > 21) {
+    const d = String(s).split("");
+    s = d.length === 3 ? Number(d[0] + d[1]) + Number(d[2]) : sumarDigitos(s);
+  }
+  if (s > 21) s = sumarDigitos(s);
+  const personalidad = s;
+  const alma = s > 9 ? sumarDigitos(s) : s;
+
+  return {
+    anio: a,
+    anioNombre: nombreArcano(a),
+    personalidad,
+    personalidadNombre: nombreArcano(personalidad),
+    alma,
+    almaNombre: nombreArcano(alma),
+    mismaCarta: personalidad === alma,
+  };
+}
 // ─── TRÁNSITOS POR AÑO (verificar y actualizar cada enero) ───
 const TRANSITOS = {
   2026: `Júpiter: en Cáncer hasta el 29 de junio de 2026; en Leo desde el 30 de junio de 2026 en adelante. Retrógrado hasta el 10 de marzo.
