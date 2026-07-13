@@ -981,6 +981,10 @@ ${hexAnio ? `HEXAGRAMA DEL AÑO ${ANIO} — calculado con el método Mei Hua Yi 
 Hexagrama principal: ${hexAnio.principal} — ${hexAnio.nombre}. Trigrama superior: ${hexAnio.supNombre}. Trigrama inferior: ${hexAnio.infNombre}.
 Línea móvil: ${hexAnio.linea}.
 Hexagrama mutado (hacia dónde se dirige la situación): ${hexAnio.mutado} — ${hexAnio.mutadoNombre}.` : `NO SE PUDO CALCULAR el hexagrama del año (falta hora de nacimiento). PROHIBIDO inventarlo: no menciones ningún hexagrama del año.`}
+${tarot ? `CARTAS DE TAROT — CALCULADAS, no elegidas. Está terminantemente PROHIBIDO usar otros arcanos o inventar cartas distintas:
+Carta del Año ${ANIO} (método de Mary K. Greer: mes + día de nacimiento + año en curso): Arcano ${tarot.anio} — ${tarot.anioNombre}.
+Carta de Personalidad (método de la Tarot School, fecha completa de nacimiento): Arcano ${tarot.personalidad} — ${tarot.personalidadNombre}.
+Carta del Alma: Arcano ${tarot.alma} — ${tarot.almaNombre}.` : `NO SE PUDIERON CALCULAR las cartas de Tarot. PROHIBIDO inventarlas: omite por completo la sección [LENORMAND Y TAROT].`}
 IMPORTANTE: Los datos de Diseño Humano son REALES y calculados astronómicamente. Interprétalos con precisión y autoridad — NO digas "probablemente" ni "intuyo" respecto al Diseño Humano, porque son datos exactos.
 ${TRANSITOS[ANIO] ? `TRÁNSITOS PLANETARIOS REALES DE ${ANIO} — datos verificados. Úsalos EXACTAMENTE como están escritos. NO los corrijas, NO los reemplaces por tu propio conocimiento, NO inventes fechas ni signos distintos:
 ${TRANSITOS[ANIO]}` : `NO TIENES DATOS DE TRÁNSITOS PARA ${ANIO}. Está TERMINANTEMENTE PROHIBIDO inventarlos. Omite por completo la sección [EL AÑO EN SÍNTESIS] y no menciones ningún tránsito planetario en ninguna otra sección del informe.`}
@@ -999,8 +1003,8 @@ Los 3 tránsitos planetarios más importantes para esta persona nacida el ${lcFo
 Dos lecturas, ambas calculadas, ninguna elegida por ti. PRIMERO, el hexagrama natal (el de la Cruz de Encarnación): explica que las 64 puertas del Diseño Humano son los mismos 64 hexagramas del I Ching, nómbralo con su número y nombre tradicional, y di qué describe de forma permanente en esta persona. SEGUNDO, el hexagrama del año ${ANIO} calculado por Mei Hua Yi Shu: nómbralo con su número y nombre, describe qué situación plantea, qué pide la línea móvil, y hacia dónde apunta el hexagrama mutado. Cierra diciendo si ambos hexagramas se refuerzan o se tensionan entre sí. 2-3 párrafos.[LECTURA DE LAS 12 CASAS]
 Las casas astrológicas más activadas en ${ANIO} y qué área concreta de vida impactan. 2-3 párrafos.
 
-[LENORMAND Y TAROT]
-Las cartas Lenormand y el arcano mayor que rigen el año ${ANIO} para esta persona. Qué mensaje concreto entregan. 1-2 párrafos.
+[TAROT]
+Usa EXACTAMENTE los tres arcanos calculados arriba. NO menciones Lenormand: este informe no incluye tirada de Lenormand. Explica: (1) la Carta de Personalidad y la Carta del Alma, que salen de la fecha completa de nacimiento y no cambian nunca — qué arquetipo permanente describen; (2) la Carta del Año ${ANIO} — qué prueba, lección o tono trae este año concreto. Cierra cruzando estas cartas con el hexagrama natal y el del año: di si se refuerzan o se tensionan. Nombra cada arcano con su número y su nombre. Prohibido titubear entre varias cartas o explicar métodos alternativos de cálculo: las cartas ya están dadas. 2-3 párrafos.
 
 [CARTA NATAL COMPLETA]
 Análisis técnico de la carta natal: Sol, Luna, Ascendente (si hay hora exacta), planetas en casas principales, aspectos más relevantes. Cómo esta carta define la personalidad y el destino de ${lcForm.nombre.split(' ')[0]}. 3-4 párrafos informativos y precisos.
