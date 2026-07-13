@@ -849,14 +849,13 @@ Tono: profesional, directo e informativo. Sin metáforas poéticas, sin frases t
 DATOS PERSONALES: Nombre: ${lcForm.nombre} | Fecha: ${lcForm.fecha} | Hora: ${lcForm.hora||"desconocida"} | Ciudad: ${lcForm.ciudad}
 Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy}
 
-DISEÑO HUMANO (calculado con precisión astronómica): Tipo: ${dh.tipo} | Estrategia: ${dh.estrategia} | Autoridad: ${dh.autoridad} | Perfil: ${dh.perfil} | Definición: ${dh.definicion} | Cruz de Encarnación: ${dh.cruz} | Centros definidos: ${(dh.centros_definidos||[]).join(", ")} | Canales: ${(dh.canales||[]).join(", ")} | Tema No-Self: ${dh.tema_no_self} | Firma: ${dh.firma}
-: 'DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.'
+${dhTexto}
 
 IMPORTANTE: Los datos de Diseño Humano son REALES y calculados astronómicamente. Interprétalos con precisión y autoridad — NO digas "probablemente" ni "intuyo" respecto al Diseño Humano, porque son datos exactos.
 ${TRANSITOS[ANIO] ? `TRÁNSITOS PLANETARIOS REALES DE ${ANIO} — datos verificados. Úsalos EXACTAMENTE como están escritos. NO los corrijas, NO los reemplaces por tu propio conocimiento, NO inventes fechas ni signos distintos:
 ${TRANSITOS[ANIO]}` : `NO TIENES DATOS DE TRÁNSITOS PARA ${ANIO}. Está TERMINANTEMENTE PROHIBIDO inventarlos. Omite por completo la sección [EL AÑO EN SÍNTESIS] y no menciones ningún tránsito planetario en ninguna otra sección del informe.`}
 REGLA DE HONESTIDAD, obligatoria: nunca escribas un dato del que no estés seguro. Prohibido usar "probable", "probablemente", "si está presente", "posiblemente" o cualquier fórmula que revele que estás adivinando. Si un dato astrológico no se puede calcular con certeza a partir de la información entregada, simplemente NO lo menciones — omítelo por completo en vez de conjeturarlo. Está prohibido también cerrar el informe con una nota final sobre la calidad, exactitud o verificación de los datos: no escribas ese cierre.
-Traduce los términos
+Traduce los términos al español de forma natural.
 
 Genera el informe con estos encabezados exactos entre corchetes:
 
