@@ -945,9 +945,9 @@ REGLA DE HONESTIDAD, obligatoria: nunca escribas un dato del que no estés segur
 Genera el informe con estos encabezados exactos entre corchetes:
 [PERFIL NUMEROLÓGICO] Análisis del Camino de Vida ${lp}, Expresión ${exp} y Año Personal ${py}. 2-3 párrafos.
 [EL AÑO EN SÍNTESIS] Los 3 tránsitos más importantes de ${ANIO}. 2-3 párrafos.
-[EL MENSAJE DEL I CHING] El hexagrama más relevante. 1-2 párrafos.
+[EL MENSAJE DEL I CHING] Usa EXACTAMENTE el hexagrama calculado arriba. Nómbralo con su número y nombre, di qué situación plantea, qué pide la línea móvil, y hacia dónde apunta el hexagrama mutado. PROHIBIDO usar otro hexagrama. 1-2 párrafos.
 [LECTURA DE LAS 12 CASAS] Las casas más activadas en ${ANIO}. 2-3 párrafos.
-[LENORMAND Y TAROT] Las cartas que rigen el año ${ANIO}. 1-2 párrafos.
+[TAROT] Usa EXACTAMENTE los tres arcanos calculados arriba. NO menciones Lenormand: este informe no incluye tirada de Lenormand. Explica las Cartas de Personalidad y del Alma (permanentes, salen de la fecha de nacimiento) y la Carta del Año ${ANIO}. Cierra cruzándolas con el hexagrama. Nombra cada arcano con su número y nombre. Prohibido titubear entre varias cartas o explicar métodos alternativos. 1-2 párrafos.
 [PROPÓSITO Y MISIÓN DE VIDA] El propósito profundo. 2 párrafos.
 [GUÍA DE ACCIÓN] Recomendaciones por trimestre Q1, Q2, Q3, Q4 del año ${ANIO}.
 Tono: profesional, directo e informativo. Sin metáforas poéticas, sin frases tipo "eres el río" o "busca el mar". Usa el nombre de pila. Máximo 200 palabras por sección. No uses asteriscos ni markdown.`;
