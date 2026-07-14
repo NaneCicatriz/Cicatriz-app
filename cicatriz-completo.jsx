@@ -812,6 +812,7 @@ function Gate({ producto, emoji, titulo, precio, precioAntes, subtitulo, linkCom
 
 // ── REPORT VIEWER ────────────────────────────────────────────────
 function ReportView({ nombre, fecha, ciudad, hora, lp, exp, py, sections, onReset, glyph }) {
+  const intros = buildMiniIntros(sections);
   return (
     <>
       <div className="report-hdr">
@@ -826,19 +827,21 @@ function ReportView({ nombre, fecha, ciudad, hora, lp, exp, py, sections, onRese
       </div>
       {sections.map((sec,i) => {
         const meta = SECTION_META[sec.title]||{icon:"✨",lbl:"Tu Mapa"};
+        const intro = intros[sec.title];
         return (
           <div key={i} className="rs">
             <div className="rs-hdr">
               <span className="rs-icon">{meta.icon}</span>
               <div><div className="rs-label">{meta.lbl}</div><div className="rs-title">{sec.title}</div></div>
             </div>
+            {intro && <div className="mini-intro">{intro}</div>}
             <div className="rs-content">{sec.content}</div>
           </div>
         );
       })}
       <button className="restart-btn" style={{background:"linear-gradient(135deg,#2d7a4a,#3a9a5c)",color:"#e8f5ec",border:"none"}} onClick={()=>window.print()}>✦ Descargar en PDF</button>
       <button className="restart-btn" onClick={onReset}>↩ Nueva lectura</button>
-      <div className="powered">Cicatriz · IA · by Nanette Vezanka</div>
+      <div className="powered">Tu Mapa · Cicatriz · by Nanette Vezanka</div>
     </>
   );
 }
