@@ -300,6 +300,17 @@ const DIAS = {
 };
 const BLOQUES = {1:{name:"Bajar ruido interno",color:"#5a9a6a",days:[1,2,3,4,5,6,7]},2:{name:"Regular emoción",color:"#6a8aaa",days:[8,9,10,11,12,13,14]},3:{name:"Volver al centro",color:"#9a7a5a",days:[15,16,17,18,19,20,21]}};
 
+const calcularLuna = (fecha) => {
+  if (!fecha) return null;
+  const [anio, mes, dia] = fecha.split('-').map(Number);
+  const d = new Date(anio, mes - 1, dia);
+  const ref = new Date(2000, 0, 6);
+  const diff = (d - ref) / (1000 * 60 * 60 * 24);
+  const ciclo = ((diff % 29.53059) + 29.53059) % 29.53059;
+  const signos = ["Aries","Tauro","Géminis","Cáncer","Leo","Virgo","Libra","Escorpio","Sagitario","Capricornio","Acuario","Piscis"];
+  const idx = Math.floor((ciclo / 29.53059) * 12);
+  return signos[idx % 12];
+};
 const reduce = n => { while(n>9&&n!==11&&n!==22&&n!==33){n=String(n).split('').map(Number).reduce((a,b)=>a+b,0);} return n; };
 const lifePathNum = d => { if(!d)return null; return reduce(d.replace(/-/g,'').split('').map(Number).reduce((a,b)=>a+b,0)); };
 const expressionNum = n => { if(!n)return null; const m={a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,j:1,k:2,l:3,m:4,n:5,o:6,p:7,q:8,r:9,s:1,t:2,u:3,v:4,w:5,x:6,y:7,z:8}; return reduce(n.toLowerCase().replace(/[^a-z]/g,'').split('').reduce((a,c)=>a+(m[c]||0),0)); };
@@ -914,6 +925,7 @@ export default function Cicatriz() {
   const lcLp = lifePathNum(lcForm.fecha);
   const lcExp = expressionNum(lcForm.nombre);
   const lcPy = personalYear(lcForm.fecha);
+  const lcLuna = calcularLuna(lcForm.fecha);
 
   const completedDays = Object.keys(done).filter(k => done[k]?.min || done[k]?.full).length;
   const progress = Math.round((completedDays/21)*100);
@@ -1042,7 +1054,7 @@ Tono: profesional, directo e informativo. Sin metáforas poéticas, sin frases t
       const prompt = `Eres un astrólogo y analista de Diseño Humano experto. Genera un informe llamado "Tu Mapa", profundo y personalizado. Nunca lo llames "Lectura Cósmica": su nombre es Tu Mapa. Esta es la lectura más completa que existe — integra numerología, astrología, I Ching, Lenormand, carta natal y Diseño Humano en un solo informe.
 
 DATOS PERSONALES: Nombre: ${lcForm.nombre} | Fecha: ${lcForm.fecha} | Hora: ${lcForm.hora||"desconocida"} | Ciudad: ${lcForm.ciudad}
-Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy}
+Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy} | Luna natal: ${lcLuna || "no calculada"}
 
 ${dhTexto}
 ${dh && dh.cruz ? `HEXAGRAMA NATAL DEL I CHING — dato exacto, calculado, NO lo inventes ni lo cambies: Las 64 puertas del Diseño Humano son los mismos 64 hexagramas del I Ching, con idéntica numeración. La Cruz de Encarnación de esta persona es "${dh.cruz}". El PRIMER número que aparece en esa cruz es su Sol de Personalidad y, por lo tanto, ES su hexagrama natal del I Ching. Úsalo EXACTAMENTE, con su nombre tradicional correcto. Está terminantemente prohibido elegir otro hexagrama.` : `NO HAY DATOS DE DISEÑO HUMANO, así que no se puede determinar el hexagrama. Está PROHIBIDO inventarlo. Omite por completo la sección [EL MENSAJE DEL I CHING].`}
