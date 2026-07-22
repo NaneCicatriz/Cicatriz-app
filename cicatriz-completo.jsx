@@ -642,7 +642,7 @@ function parseSections(text) {
   return sections;
 }
 // ─── MINI-INTROS por sistema ──────────────────────────────────
-const buildMiniIntros = (sections, dh) => {
+const buildMiniIntros = (sections, dhData) => {
   const get = (title) => sections.find(s => s.title === title)?.content || "";
   const num = get("PERFIL NUMEROLÓGICO");
   const camino = num.match(/Camino de Vida\s+(\w+)/i)?.[1] || "—";
