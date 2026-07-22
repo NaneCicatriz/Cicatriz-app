@@ -642,7 +642,7 @@ function parseSections(text) {
   return sections;
 }
 // ─── MINI-INTROS por sistema ──────────────────────────────────
-const buildMiniIntros = (sections) => {
+const buildMiniIntros = (sections, dh) => {
   const get = (title) => sections.find(s => s.title === title)?.content || "";
   const num = get("PERFIL NUMEROLÓGICO");
   const camino = num.match(/Camino de Vida\s+(\w+)/i)?.[1] || "—";
@@ -657,7 +657,7 @@ const buildMiniIntros = (sections) => {
   const cn = get("CARTA NATAL COMPLETA");
   const sol = cn.match(/Sol\s+en\s+([^,.\n]+)/i)?.[1]?.trim() || "—";
   const luna = cn.match(/Luna\s+en\s+([^,.\n]+)/i)?.[1]?.trim() || "—";
-  const asc = cn.match(/Ascendente\s+(?:en\s+)?([^,.\n]+)/i)?.[1]?.trim() || null;
+  const asc = dh?.ascendente || cn.match(/Ascendente\s+(?:en\s+)?([^,.\n]+)/i)?.[1]?.trim() || null;
 
   const ic = get("EL MENSAJE DEL I CHING");
   const hexNatal = ic.match(/hexagrama\s+natal[^:]*:\s*([^\n.]+)/i)?.[1]?.trim() ||
@@ -822,8 +822,8 @@ function Gate({ producto, emoji, titulo, precio, precioAntes, subtitulo, linkCom
 }
 
 // ── REPORT VIEWER ────────────────────────────────────────────────
-function ReportView({ nombre, fecha, ciudad, hora, lp, exp, py, sections, onReset, glyph }) {
-  const intros = buildMiniIntros(sections);
+function ReportView({ nombre, fecha, ciudad, hora, lp, exp, py, sections, dh, onReset, glyph }) {
+  const intros = buildMiniIntros(sections, dh);
   return (
     <>
       <div className="report-hdr">
