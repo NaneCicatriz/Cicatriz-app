@@ -112,17 +112,18 @@ export default async function handler(req, res) {
 
     // 4. Extraer solo lo relevante para la lectura
     const resumen = {
-      tipo: d.type || null,
-      estrategia: inf.estrategia,
-      autoridad: d.authority || null,
-      perfil: d.profile || null,
-      definicion: d.definition || null,
-      cruz: d.incarnation_cross || null,
-      centros_definidos: d.centers || [],
-      canales: d.channels_short || d.channels || [],
-      tema_no_self: inf.tema_no_self,
-      firma: inf.firma,
-    };
+  tipo: d.type || null,
+  estrategia: inf.estrategia,
+  autoridad: d.authority || null,
+  perfil: d.profile || null,
+  definicion: d.definition || null,
+  cruz: d.incarnation_cross || null,
+  ascendente: d.ascendant || d.rising_sign || d.rising || null,
+  centros_definidos: d.centers || [],
+  canales: d.channels_short || d.channels || [],
+  tema_no_self: inf.tema_no_self,
+  firma: inf.firma,
+};
 
     return res.status(200).json({ diseno: resumen, ciudad_encontrada: loc.name || ciudad, timezone: offsetStr });
 
