@@ -1265,7 +1265,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
                   )}
                   {lcScreen==="report" && (
                     <ReportView nombre={lcForm.nombre} fecha={lcForm.fecha} ciudad={lcForm.ciudad} hora={lcForm.hora}
-                      lp={lcLp} exp={lcExp} py={lcPy} sections={lcSections} dh={dh} glyph="🔮"
+                      lp={lcLp} exp={lcExp} py={lcPy} sections={lcSections} dh={dhData} glyph="🔮"
                       onReset={()=>{setLcScreen("form");setLcReport("");setLcForm({nombre:"",fecha:"",hora:"",ciudad:"",tipo:"",autoridad:"",perfil:"",centros:""});}}/>
                   )}
                 </div>
