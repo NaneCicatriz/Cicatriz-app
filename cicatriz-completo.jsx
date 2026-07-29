@@ -659,7 +659,7 @@ if (!sections || !sections.length) return {};
   const cn = get("CARTA NATAL COMPLETA");
   const sol = cn.match(/Sol\s+en\s+([^,.\n]+)/i)?.[1]?.trim() || "—";
   const luna = cn.match(/Luna\s+en\s+([^,.\n]+)/i)?.[1]?.trim() || "—";
-  const asc = dh?.ascendente || cn.match(/Ascendente\s+(?:en\s+)?([^,.\n]+)/i)?.[1]?.trim() || null;
+  const asc = cn.match(/Ascendente\s+(?:en\s+)?([^,.\n]+)/i)?.[1]?.trim() || null;
 
   const ic = get("EL MENSAJE DEL I CHING");
   const hexNatal = ic.match(/hexagrama\s+natal[^:]*:\s*([^\n.]+)/i)?.[1]?.trim() ||
