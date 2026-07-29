@@ -641,62 +641,8 @@ function parseSections(text) {
   if (!sections.length && text.trim()) sections.push({title:"Tu Lectura", content:cleanText(text)});
   return sections;
 }
-// ─── MINI-INTROS por sistema ──────────────────────────────────
-const buildMiniIntros = (sections, dhData) => {
-if (!sections || !sections.length) return {};
-  if (!dhData) return {};
-  const get = (title) => sections.find(s => s.title === title)?.content || "";
-  const num = get("PERFIL NUMEROLÓGICO");
-  const camino = num.match(/Camino de Vida\s+(\w+)/i)?.[1] || "—";
-  const expresion = num.match(/Expresi[oó]n\s+(\w+)/i)?.[1] || "—";
-  const anio = num.match(/A[nñ]o Personal\s+(\w+)/i)?.[1] || "—";
-
-  const ast = get("EL AÑO EN SÍNTESIS");
-  const transito = ast.match(/([A-ZÁÉÍÓÚ][a-záéíóú]+)\s+(?:en|entra|ingresa|conjunci)/)?.[1] || "";
-  const casa = ast.match(/Casa\s+(\d+)/i)?.[1] || "";
-  const transitoTexto = transito && casa ? `${transito} en tu Casa ${casa}` : transito || "—";
-
-  const cn = get("CARTA NATAL COMPLETA");
-  const sol = cn.match(/Sol\s+en\s+([^,.\n]+)/i)?.[1]?.trim() || "—";
-  const luna = cn.match(/Luna\s+en\s+([^,.\n]+)/i)?.[1]?.trim() || "—";
-  const asc = cn.match(/Ascendente\s+(?:en\s+)?([^,.\n]+)/i)?.[1]?.trim() || null;
-
-  const ic = get("EL MENSAJE DEL I CHING");
-  const hexNatal = ic.match(/hexagrama\s+natal[^:]*:\s*([^\n.]+)/i)?.[1]?.trim() ||
-                   ic.match(/hexagrama\s+(\d+[^,.\n]*)/i)?.[1]?.trim() || "—";
-  const hexAnio = ic.match(/hexagrama\s+del\s+a[nñ]o[^:]*:\s*([^\n.]+)/i)?.[1]?.trim() ||
-                  ic.match(/hexagrama\s+mutado[^:]*:\s*([^\n.]+)/i)?.[1]?.trim() || "—";
-
-  const tar = get("TAROT");
-  const cardPersonalidad = tar.match(/Personalidad[^:]*:\s*([^\n.]+)/i)?.[1]?.trim() ||
-                           tar.match(/Arcano\s+\d+[^—]*—\s*([^\n.]+)/i)?.[1]?.trim() || "—";
-  const cardAlma = tar.match(/Alma[^:]*:\s*([^\n.]+)/i)?.[1]?.trim() || "—";
-  const cardAnio = tar.match(/A[nñ]o[^:]*:\s*([^\n.]+)/i)?.[1]?.trim() || "—";
-
-  const dh = get("DISEÑO HUMANO");
-  const tipo = dh.match(/tipo\s*:?\s*([^\n,.|]+)/i)?.[1]?.trim() || "—";
-  const autoridad = dh.match(/autoridad\s*:?\s*([^\n,.|]+)/i)?.[1]?.trim() || "—";
-  const perfil = dh.match(/perfil\s*:?\s*([^\n,.|]+)/i)?.[1]?.trim() || "—";
-
-  const casas = get("LECTURA DE LAS 12 CASAS");
-  const casaActivada = casas.match(/Casa\s+(\d+)[^.]*activ/i)
-    ? `Casa ${casas.match(/Casa\s+(\d+)[^.]*activ/i)[1]}`
-    : casas.match(/Casa\s+(\d+)/i)
-    ? `Casa ${casas.match(/Casa\s+(\d+)/i)[1]}`
-    : "—";
-
-  return {
-    "PERFIL NUMEROLÓGICO": `Tu Camino de Vida es ${camino}, tu Expresión es ${expresion}, y este año transitas un Año Personal ${anio}. Estos tres números describen quién eres, cómo te expresas y el ciclo específico que estás viviendo ahora.`,
-    "EL AÑO EN SÍNTESIS": `El tránsito más relevante para ti este año es ${transitoTexto}. No es una tendencia general — es lo que está activando tu carta natal en particular durante ${ANIO}.`,
-    "CARTA NATAL COMPLETA": `Tu Sol está en ${sol}, tu Luna en ${luna}${asc ? `, y tu Ascendente es ${asc}` : ""}. Esta es la estructura psicológica con la que llegaste — no cambia, define el terreno sobre el que opera todo lo demás.`,
-    "LECTURA DE LAS 12 CASAS": `La casa más activada este año en tu carta es la ${casaActivada}. Esta es el área concreta de tu vida que los tránsitos actuales están moviendo con más fuerza.`,
-    "EL MENSAJE DEL I CHING": `Tu hexagrama natal es el ${hexNatal} — el mismo patrón de tu Diseño Humano leído en otro lenguaje. Este año se mueve hacia el ${hexAnio}, indicando la dirección de tu situación actual.`,
-    "TAROT": `Tus cartas permanentes son ${cardPersonalidad} (Personalidad) y ${cardAlma} (Alma). Tu Carta del Año es ${cardAnio}: el arquetipo que rige este ciclo específico.`,
-    "DISEÑO HUMANO": `Tu diseño es ${tipo}, con ${autoridad} y Perfil ${perfil}. Este es el eje del que se desprenden los otros sistemas — cómo tomas decisiones, cómo usas tu energía, y qué necesitas para no operar contra tu propia naturaleza.`,
-    "INTEGRACIÓN CÓSMICA": `Hasta aquí viste los sistemas por separado. Esta sección los cruza: donde el mismo patrón aparece en lenguajes distintos, no es coincidencia — es confirmación.`,
-    "PROPÓSITO Y MISIÓN DE VIDA": `Con todos los sistemas integrados, esta sección responde la pregunta de fondo: para qué estás aquí, qué viniste a hacer con este diseño específico.`,
-    "GUÍA DE ACCIÓN": `La parte que se usa, no solo se lee: qué hacer cada trimestre de ${ANIO}, aplicando los tránsitos a tu Estrategia y Autoridad — concreto, sin adornos.`,
-  };
+const buildMiniIntros = (sections) => {
+  return {};
 };
 // ── ICONOS SVG ───────────────────────────────────────────────────
 const SVG = {
