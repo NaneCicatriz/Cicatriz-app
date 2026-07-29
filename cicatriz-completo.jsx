@@ -1005,7 +1005,6 @@ DATOS PERSONALES: Nombre: ${lcForm.nombre} | Fecha: ${lcForm.fecha} | Hora: ${lc
 Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy} | Luna natal: ${lcLuna || "no calculada"}
 
 ${dhTexto}
-${dh && dh.cruz ? `HEXAGRAMA NATAL DEL I CHING — dato exacto, calculado, NO lo inventes ni lo cambies: Las 64 puertas del Diseño Humano son los mismos 64 hexagramas del I Ching, con idéntica numeración. La Cruz de Encarnación de esta persona es "${dh.cruz}". El PRIMER número que aparece en esa cruz es su Sol de Personalidad y, por lo tanto, ES su hexagrama natal del I Ching. Úsalo EXACTAMENTE, con su nombre tradicional correcto. Está terminantemente prohibido elegir otro hexagrama.` : `NO HAY DATOS DE DISEÑO HUMANO, así que no se puede determinar el hexagrama. Está PROHIBIDO inventarlo. Omite por completo la sección [EL MENSAJE DEL I CHING].`}
 ${hexAnio ? `HEXAGRAMA DEL AÑO ${ANIO} — calculado con el método Mei Hua Yi Shu (Numerología de la Flor de Ciruelo, Shao Yong, siglo XI). Es un cálculo determinista, NO una elección tuya. Está terminantemente PROHIBIDO usar otro hexagrama o inventar uno distinto:
 Hexagrama principal: ${hexAnio.principal} — ${hexAnio.nombre}. Trigrama superior: ${hexAnio.supNombre}. Trigrama inferior: ${hexAnio.infNombre}.
 Línea móvil: ${hexAnio.linea}.
