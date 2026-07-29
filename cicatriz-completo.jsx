@@ -1044,8 +1044,7 @@ Tono: profesional, directo e informativo. Sin metáforas poéticas, sin frases t
       const dhData = await dhRes.json();
       if (dhData.diseno) dh = dhData.diseno;
     } catch { dh = null; }
-    setDhData(dh);
-
+    
     for (let i=0;i<LOADING_STEPS_COSMICA.length;i++) { await new Promise(r=>setTimeout(r,900)); setLcLoadStep(i+1); }
 
     const dhTexto = dh
