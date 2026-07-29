@@ -866,7 +866,6 @@ export default function Cicatriz() {
   const [tab, setTab] = useState("home");
   const [breathCount, setBreathCount] = useState(0);
   const [accesos, setAccesos] = useState(() => {
-    const [dhData, setDhData] = useState(null);
     try { return JSON.parse(localStorage.getItem("cicatriz_accesos") || "{}"); }
     catch { return {}; }
   });
