@@ -1,6 +1,7 @@
-import https from 'https';
+import Anthropic from '@anthropic-ai/sdk';
 
 export const config = { maxDuration: 60 };
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
@@ -11,42 +12,20 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Sin prompt' });
   }
 
-  const postData = JSON.stringify({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 4500,
-    messages: [{ role: 'user', content: prompt }],
-  });
-
-  return new Promise((resolve) => {
-    const options = {
-      hostname: 'api.anthropic.com',
-      path: '/v1/messages',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-        'Content-Length': Buffer.byteLength(postData),
-      },
-    };
-
-    const request = https.request(options, (response) => {
-      let data = '';
-      response.on('data', (chunk) => { data += chunk; });
-      response.on('end', () => {
-        const parsed = JSON.parse(data);
-        const texto = parsed.content?.[0]?.text ?? '';
-        res.status(200).json({ lectura: texto, httpStatus: response.statusCode, debug: parsed });
-        resolve();
-      });
+  try {
+    const client = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
     });
 
-    request.on('error', (error) => {
-      res.status(200).json({ lectura: '', error: error.message });
-      resolve();
+    const message = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 4500,
+      messages: [{ role: 'user', content: prompt }],
     });
 
-    request.write(postData);
-    request.end();
-  });
+    const texto = message.content[0]?.text ?? '';
+    res.status(200).json({ lectura: texto });
+  } catch (error) {
+    res.status(200).json({ lectura: '', error: error.message });
+  }
 }
