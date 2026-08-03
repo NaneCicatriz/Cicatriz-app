@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/lectura-cosmica.js": {
-      "maxDuration": 60
+      "maxDuration": 300
     }
   },
   "routes": [
