@@ -993,7 +993,10 @@ Tono: profesional, directo e informativo. Sin metáforas poéticas, sin frases t
     
     for (let i=0;i<LOADING_STEPS_COSMICA.length;i++) { await new Promise(r=>setTimeout(r,900)); setLcLoadStep(i+1); }
 
-    const dhTexto = 'DISEÑO HUMANO: No se pudo calcular automáticamente (verificar hora y ciudad de nacimiento). Interpreta desde la carta natal y numerología disponibles.';
+    const dhTexto = dh
+  ? `DISEÑO HUMANO — DATOS REALES calculados astronómicamente. Úsalos EXACTAMENTE como están. PROHIBIDO inventar o modificar cualquier dato de Diseño Humano:
+${JSON.stringify(dh, null, 1)}`
+  : 'DISEÑO HUMANO: No se pudo calcular automáticamente. PROHIBIDO inventar datos de Diseño Humano: omite por completo la sección [DISEÑO HUMANO] y no menciones tipo, autoridad, perfil, centros ni canales en ninguna parte del informe.';
     const hexAnio = meiHua(ANIO, lcForm.fecha, lcForm.hora);
     const tarot = tarotCartas(ANIO, lcForm.fecha);
     try {
