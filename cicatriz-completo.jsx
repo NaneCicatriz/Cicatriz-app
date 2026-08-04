@@ -806,7 +806,7 @@ function Gate({ producto, emoji, titulo, precio, precioAntes, subtitulo, linkCom
       </a>
       <a href={LINKS.combo} target="_blank" rel="noopener noreferrer" className="gate-combo">
         <div className="gate-combo-label">✦ Combo completo · Todos los productos</div>
-        <div className="gate-combo-price">$39.990 CLP · pack de lanzamiento hasta el 3 de agosto</div>
+        <div className="gate-combo-price">$39.990 CLP · pack de lanzamiento hasta el 31 de agosto</div>
         <div className="gate-combo-sub">Año Cósmico + Tu Mapa + Oráculo + 21 Días →</div>
       </a>
       </div>
@@ -1912,18 +1912,18 @@ function CardTuMapa({ onMapa, onAno, onRuido, onOraculo, onCombo }) {
             <b>{o.n}</b> · {o.p}
           </button>
         ))}
+      </div> 
+      <div className="tm-combo" onClick={onCombo}>
+          <div className="tm-combo-t">Tu Mapa + todo lo demás</div>
+          <div className="tm-combo-s">
+            Por $12.000 más te llevas también Tu Año Cósmico, el Oráculo Kintsugi y
+            los 21 días de Bajar el Ruido.
+          </div>
+          <div className="tm-combo-p">$39.990 CLP · Comprar ahora →</div>
+          <div className="tm-combo-f">Pack de lanzamiento · Agosto es nuestro mes</div>
+        </div>
       </div>
 
-      <div className="tm-combo" onClick={onCombo}>
-        <div className="tm-combo-t">Tu Mapa + todo lo demás</div>
-        <div className="tm-combo-s">
-          Por $12.000 más te llevas también Tu Año Cósmico, el Oráculo Kintsugi y
-          los 21 días de Bajar el Ruido.
-        </div>
-        <div className="tm-combo-p">$39.990 CLP · Comprar ahora →</div>
-        <div className="tm-combo-f">Pack de lanzamiento · disponible hasta el 3 de agosto</div>
-      </div>
-    </div>
-  );
+      );
 }
 
