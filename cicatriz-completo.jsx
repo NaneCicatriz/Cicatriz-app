@@ -1031,12 +1031,18 @@ Tono: profesional, directo e informativo. Sin metáforas poéticas, sin frases t
 
     let dh = null;
     let ct = null;
+    let geoCoords = null;
+    try {
+      const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(lcForm.ciudad)}&count=1&language=es`);
+      const geo = await geoRes.json();
+      if (geo.results && geo.results[0]) geoCoords = { lat: geo.results[0].latitude, lon: geo.results[0].longitude };
+    } catch { geoCoords = null; }
     try {
       const dhRes = await fetch("/api/diseno-humano",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({fecha:lcForm.fecha,hora:lcForm.hora,ciudad:lcForm.ciudad})});
       const dhData = await dhRes.json();
       if (dhData.diseno) dh = dhData.diseno;
-      try { ct = calcularCartaNatal(lcForm.fecha, lcForm.hora, dhData.timezone || '-04:00', dhData.lat, dhData.lon); } catch { ct = null; }
-    } catch { dh = null; try { ct = calcularCartaNatal(lcForm.fecha, lcForm.hora, '-04:00', null, null); } catch { ct = null; } }
+      try { ct = calcularCartaNatal(lcForm.fecha, lcForm.hora, dhData.timezone || '-04:00', geoCoords ? geoCoords.lat : null, geoCoords ? geoCoords.lon : null); } catch { ct = null; }
+    } catch { dh = null; try { ct = calcularCartaNatal(lcForm.fecha, lcForm.hora, '-04:00', geoCoords ? geoCoords.lat : null, geoCoords ? geoCoords.lon : null); } catch { ct = null; } }
     
     for (let i=0;i<LOADING_STEPS_COSMICA.length;i++) { await new Promise(r=>setTimeout(r,900)); setLcLoadStep(i+1); }
 
@@ -1069,7 +1075,7 @@ Carta del Alma: Arcano ${tarot.alma} — ${tarot.almaNombre}.` : `NO SE PUDIERON
 IMPORTANTE: Los datos de Diseño Humano son REALES y calculados astronómicamente. Interprétalos con precisión y autoridad — NO digas "probablemente" ni "intuyo" respecto al Diseño Humano, porque son datos exactos.
 ${TRANSITOS[ANIO] ? `TRÁNSITOS PLANETARIOS REALES DE ${ANIO} — datos verificados. Úsalos EXACTAMENTE como están escritos. NO los corrijas, NO los reemplaces por tu propio conocimiento, NO inventes fechas ni signos distintos:
 ${TRANSITOS[ANIO]}` : `NO TIENES DATOS DE TRÁNSITOS PARA ${ANIO}. Está TERMINANTEMENTE PROHIBIDO inventarlos. Omite por completo la sección [EL AÑO EN SÍNTESIS] y no menciones ningún tránsito planetario en ninguna otra sección del informe.`}
-REGLA DE HONESTIDAD, obligatoria: nunca escribas un dato del que no estés seguro. Prohibido usar "probable", "probablemente", "si está presente", "posiblemente" o cualquier fórmula que revele que estás adivinando. Si un dato astrológico no se puede calcular con certeza a partir de la información entregada, simplemente NO lo menciones — omítelo por completo en vez de conjeturarlo. Está prohibido también cerrar el informe con una nota final sobre la calidad, exactitud o verificación de los datos: no escribas ese cierre.
+REGLA DE HONESTIDAD, obligatoria: nunca escribas un dato del que no estés seguro. Prohibido usar "probable", "probablemente", "si está presente", "posiblemente" o cualquier fórmula que revele que estás adivinando. Si un dato astrológico no se puede calcular con certeza a partir de la información entregada, simplemente NO lo menciones — omítelo por completo en vez de conjeturarlo. Está prohibido también cerrar el informe con una nota final sobre la calidad, exactitud o verificación de los datos: no escribas ese cierre. Prohibido también escribir frases como "no se pudo calcular", "no disponible", "esta sección se omite", "por integridad técnica" o cualquier disculpa o mención de datos faltantes: si un dato no está, escribe la sección solo desde los datos que SÍ están, con naturalidad y sin explicar ausencias.
 Traduce los términos al español de forma natural.
 
 Genera el informe con estos encabezados exactos entre corchetes:
@@ -1082,8 +1088,7 @@ Los 3 tránsitos planetarios más importantes para esta persona nacida el ${lcFo
 
 [EL MENSAJE DEL I CHING]
 Dos lecturas, ambas calculadas, ninguna elegida por ti. PRIMERO, el hexagrama natal (el de la Cruz de Encarnación): explica que las 64 puertas del Diseño Humano son los mismos 64 hexagramas del I Ching, nómbralo con su número y nombre tradicional, y di qué describe de forma permanente en esta persona. SEGUNDO, el hexagrama del año ${ANIO} calculado por Mei Hua Yi Shu: nómbralo con su número y nombre, describe qué situación plantea, qué pide la línea móvil, y hacia dónde apunta el hexagrama mutado. Cierra diciendo si ambos hexagramas se refuerzan o se tensionan entre sí. 2-3 párrafos.[LECTURA DE LAS 12 CASAS]
-Las casas astrológicas más activadas en ${ANIO} y qué área concreta de vida impactan. 2-3 párrafos.
-
+Si los datos de CARTA NATAL incluyen casas (cada planeta trae su Casa) y Ascendente, cruza los tránsitos de ${ANIO} con esas casas natales REALES: qué casa activa cada tránsito y qué área concreta de vida impacta. Si los datos calculados no incluyen casas, analiza las áreas de vida activadas por los tránsitos según sus signos, con total naturalidad y sin mencionar casas ni ausencia de datos. 2-3 párrafos.
 [TAROT]
 Usa EXACTAMENTE los tres arcanos calculados arriba. NO menciones Lenormand: este informe no incluye tirada de Lenormand. Explica: (1) la Carta de Personalidad y la Carta del Alma, que salen de la fecha completa de nacimiento y no cambian nunca — qué arquetipo permanente describen; (2) la Carta del Año ${ANIO} — qué prueba, lección o tono trae este año concreto. Cierra cruzando estas cartas con el hexagrama natal y el del año: di si se refuerzan o se tensionan. Nombra cada arcano con su número y su nombre. Prohibido titubear entre varias cartas o explicar métodos alternativos de cálculo: las cartas ya están dadas. 2-3 párrafos.
 
