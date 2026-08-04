@@ -175,7 +175,7 @@ async function insertar() {
   const statusMsg = document.getElementById('statusMsg');
   statusMsg.innerHTML = '<div class="status info">Insertando en Supabase...</div>';
   try {
-    const rows = codigosGenerados.map(codigo => ({ codigo, producto: selectedProducto, usado: true }));
+    const rows = codigosGenerados.map(codigo => ({ codigo, producto: selectedProducto, usado: false }));
     const res = await fetch(`${SUPABASE_URL}/rest/v1/CODIGOS`, {
       method: 'POST',
       headers: {
