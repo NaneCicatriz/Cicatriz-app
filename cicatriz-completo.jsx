@@ -985,11 +985,13 @@ Tono: profesional, directo e informativo. Sin metáforas poéticas, sin frases t
     if (guardada) { setLcReport(guardada); setLcScreen("report"); return; }
 
     let dh = null;
+    let ct = null;
     try {
       const dhRes = await fetch("/api/diseno-humano",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({fecha:lcForm.fecha,hora:lcForm.hora,ciudad:lcForm.ciudad})});
       const dhData = await dhRes.json();
       if (dhData.diseno) dh = dhData.diseno;
-    } catch { dh = null; }
+      if (dhData.cartaNatal) ct = dhData.cartaNatal;
+   } catch { dh = null; ct = null; }
     
     for (let i=0;i<LOADING_STEPS_COSMICA.length;i++) { await new Promise(r=>setTimeout(r,900)); setLcLoadStep(i+1); }
 
@@ -997,15 +999,20 @@ Tono: profesional, directo e informativo. Sin metáforas poéticas, sin frases t
   ? `DISEÑO HUMANO — DATOS REALES calculados astronómicamente. Úsalos EXACTAMENTE como están. PROHIBIDO inventar o modificar cualquier dato de Diseño Humano:
 ${JSON.stringify(dh, null, 1)}`
   : 'DISEÑO HUMANO: No se pudo calcular automáticamente. PROHIBIDO inventar datos de Diseño Humano: omite por completo la sección [DISEÑO HUMANO] y no menciones tipo, autoridad, perfil, centros ni canales en ninguna parte del informe.';
+    const ctTexto = ct
+      ? `CARTA NATAL — POSICIONES PLANETARIAS REALES calculadas astronómicamente (signo, grado y casa). Úsalas EXACTAMENTE como están. PROHIBIDO inventar, corregir o agregar posiciones, aspectos o casas que no estén aquí:
+${JSON.stringify(ct, null, 1)}`
+      : 'CARTA NATAL: No se pudo calcular. PROHIBIDO inventar posiciones planetarias: omite por completo la sección [CARTA NATAL COMPLETA] y no menciones signos ni casas de ningún planeta.';
     const hexAnio = meiHua(ANIO, lcForm.fecha, lcForm.hora);
     const tarot = tarotCartas(ANIO, lcForm.fecha);
     try {
       const prompt = `Eres un astrólogo y analista de Diseño Humano experto. Genera un informe llamado "Tu Mapa", profundo y personalizado. Nunca lo llames "Lectura Cósmica": su nombre es Tu Mapa. Esta es la lectura más completa que existe — integra numerología, astrología, I Ching, Lenormand, carta natal y Diseño Humano en un solo informe.
 
 DATOS PERSONALES: Nombre: ${lcForm.nombre} | Fecha: ${lcForm.fecha} | Hora: ${lcForm.hora||"desconocida"} | Ciudad: ${lcForm.ciudad}
-Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy} | Luna natal: ${lcLuna || "no calculada"}
+Camino de Vida: ${lcLp} | Expresión: ${lcExp} | Año Personal ${ANIO}: ${lcPy} 
 
 ${dhTexto}
+${ctTexto}
 ${hexAnio ? `HEXAGRAMA DEL AÑO ${ANIO} — calculado con el método Mei Hua Yi Shu (Numerología de la Flor de Ciruelo, Shao Yong, siglo XI). Es un cálculo determinista, NO una elección tuya. Está terminantemente PROHIBIDO usar otro hexagrama o inventar uno distinto:
 Hexagrama principal: ${hexAnio.principal} — ${hexAnio.nombre}. Trigrama superior: ${hexAnio.supNombre}. Trigrama inferior: ${hexAnio.infNombre}.
 Línea móvil: ${hexAnio.linea}.
@@ -1036,7 +1043,7 @@ Las casas astrológicas más activadas en ${ANIO} y qué área concreta de vida 
 Usa EXACTAMENTE los tres arcanos calculados arriba. NO menciones Lenormand: este informe no incluye tirada de Lenormand. Explica: (1) la Carta de Personalidad y la Carta del Alma, que salen de la fecha completa de nacimiento y no cambian nunca — qué arquetipo permanente describen; (2) la Carta del Año ${ANIO} — qué prueba, lección o tono trae este año concreto. Cierra cruzando estas cartas con el hexagrama natal y el del año: di si se refuerzan o se tensionan. Nombra cada arcano con su número y su nombre. Prohibido titubear entre varias cartas o explicar métodos alternativos de cálculo: las cartas ya están dadas. 2-3 párrafos.
 
 [CARTA NATAL COMPLETA]
-Análisis técnico de la carta natal: Sol, Luna, Ascendente (si hay hora exacta), planetas en casas principales, aspectos más relevantes. Cómo esta carta define la personalidad y el destino de ${lcForm.nombre.split(' ')[0]}. 3-4 párrafos informativos y precisos.
+Usa EXACTAMENTE las posiciones calculadas arriba en CARTA NATAL: Sol, Luna, Ascendente y planetas, cada uno con su signo, grado y casa. PROHIBIDO mencionar posiciones, aspectos o casas que no estén en esos datos calculados. Interpreta qué significa cada posición y cómo esta carta define la personalidad y el destino de ${lcForm.nombre.split(' ')[0]}. 3-4 párrafos informativos y precisos.
 
 [DISEÑO HUMANO]
 Análisis preciso del Diseño Humano calculado: tipo y lo que significa en la práctica diaria, estrategia y cómo aplicarla, autoridad y cómo tomar decisiones con ella. Perfil y propósito. Centros definidos y abiertos: qué significa cada uno para esta persona específica. Canales activos y cómo condicionan su energía. Tema no-self y firma como indicadores de alineación. Cómo operar correctamente según este diseño. 3-4 párrafos técnicos y directos.
