@@ -1,4 +1,51 @@
 import https from 'https';
+import * as A from 'astronomy-engine';
+
+// ===== CARTA NATAL (cálculo astronómico real) =====
+const SIGNOS = ['Aries','Tauro','Géminis','Cáncer','Leo','Virgo','Libra','Escorpio','Sagitario','Capricornio','Acuario','Piscis'];
+
+function signoGrado(lon) {
+  lon = ((lon % 360) + 360) % 360;
+  return `${SIGNOS[Math.floor(lon / 30)]} ${(lon % 30).toFixed(1)}°`;
+}
+
+function calcularCartaNatal(fecha, horaFinal, offsetStr, lat, lon) {
+  const [year, month, day] = fecha.split('-').map(Number);
+  const [hh, mm] = horaFinal.split(':').map(Number);
+
+  const oSign = offsetStr.startsWith('-') ? -1 : 1;
+  const [oh, om] = offsetStr.slice(1).split(':').map(Number);
+  const tzHoras = oSign * (oh + (om || 0) / 60);
+
+  const date = new Date(Date.UTC(year, month - 1, day, hh, mm || 0) - tzHoras * 3600000);
+
+  const posiciones = {};
+  posiciones.sol = A.SunPosition(date).elon;
+  posiciones.luna = A.EclipticGeoMoon(date).lon;
+  for (const [clave, cuerpo] of [['mercurio','Mercury'],['venus','Venus'],['marte','Mars'],['jupiter','Jupiter'],['saturno','Saturn']]) {
+    posiciones[clave] = A.Ecliptic(A.GeoVector(A.Body[cuerpo], date, true)).elon;
+  }
+
+  let ascLon = null;
+  if (lat != null && lon != null) {
+    const gast = A.SiderealTime(date);
+    const ramc = (((gast * 15) + lon + 360) % 360) * Math.PI / 180;
+    const eps = 23.44 * Math.PI / 180;
+    const phi = lat * Math.PI / 180;
+    const y = Math.cos(ramc);
+    const x = -(Math.sin(ramc) * Math.cos(eps) + Math.tan(phi) * Math.sin(eps));
+    ascLon = ((Math.atan2(y, x) * 180 / Math.PI) % 360 + 360) % 360;
+  }
+
+  const casaDe = (l) => ascLon == null ? null : Math.floor((((l - ascLon) % 360) + 360) % 360 / 30) + 1;
+  const carta = {};
+  for (const [clave, l] of Object.entries(posiciones)) {
+    carta[clave] = signoGrado(l) + (ascLon != null ? ` (Casa ${casaDe(l)})` : '');
+  }
+  if (ascLon != null) carta.ascendente = signoGrado(ascLon);
+  return carta;
+}
+// ===== FIN CARTA NATAL =====
 
 // Helper para hacer POST a la API de Human Design Hub
 function hdRequest(path, bodyObj) {
@@ -91,11 +138,20 @@ export default async function handler(req, res) {
     const horaFinal = hora && hora.length >= 4 ? hora : '12:00';
     const datetime = `${fecha}T${horaFinal}${offsetStr}`;
 
+    // 2b. Calcular la carta natal con astronomía real (nunca rompe el DH si falla)
+    let cartaNatal = null;
+    try {
+      const latLoc = loc.latitude ?? loc.lat ?? null;
+      const lonLoc = loc.longitude ?? loc.lng ?? loc.lon ?? null;
+      const conHora = !!(hora && hora.length >= 4);
+      cartaNatal = calcularCartaNatal(fecha, horaFinal, offsetStr, conHora ? latLoc : null, conHora ? lonLoc : null);
+    } catch { cartaNatal = null; }
+
     // 3. Llamar al simple-bodygraph (incluido en plan Free)
     const hdResult = await hdRequest('/v1/simple-bodygraph', { datetime, verbose: true });
 
     if (hdResult.status !== 200) {
-      return res.status(200).json({ error: 'Error al calcular el diseño', detalle: hdResult.body });
+      return res.status(200).json({ error: 'Error al calcular el diseño', detalle: hdResult.body, cartaNatal });
     }
 
     const d = hdResult.body;
@@ -125,7 +181,7 @@ export default async function handler(req, res) {
   firma: inf.firma,
 };
 
-    return res.status(200).json({ diseno: resumen, ciudad_encontrada: loc.name || ciudad, timezone: offsetStr });
+    return res.status(200).json({ diseno: resumen, ciudad_encontrada: loc.name || ciudad, timezone: offsetStr, cartaNatal });
 
   } catch (error) {
     return res.status(200).json({ error: 'Error de conexión con el servicio de Diseño Humano', detalle: error.message });
