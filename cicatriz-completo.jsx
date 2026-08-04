@@ -1,5 +1,50 @@
 import { useState, useEffect } from "react";
+import * as Astro from 'astronomy-engine';
+// ===== CARTA NATAL — cálculo astronómico real (astronomy-engine) =====
+const SIGNOS_CN = ['Aries','Tauro','Géminis','Cáncer','Leo','Virgo','Libra','Escorpio','Sagitario','Capricornio','Acuario','Piscis'];
 
+function signoGradoCN(lon) {
+  lon = ((lon % 360) + 360) % 360;
+  return `${SIGNOS_CN[Math.floor(lon / 30)]} ${(lon % 30).toFixed(1)}°`;
+}
+
+function calcularCartaNatal(fecha, hora, offsetStr, lat, lon) {
+  const [year, month, day] = fecha.split('-').map(Number);
+  const conHora = !!(hora && hora.length >= 4);
+  const horaFinal = conHora ? hora : '12:00';
+  const [hh, mm] = horaFinal.split(':').map(Number);
+  const oSign = offsetStr.startsWith('-') ? -1 : 1;
+  const [oh, om] = offsetStr.slice(1).split(':').map(Number);
+  const tzHoras = oSign * (oh + (om || 0) / 60);
+  const date = new Date(Date.UTC(year, month - 1, day, hh, mm || 0) - tzHoras * 3600000);
+
+  const posiciones = {};
+  posiciones.sol = Astro.SunPosition(date).elon;
+  posiciones.luna = Astro.EclipticGeoMoon(date).lon;
+  const cuerpos = [['mercurio','Mercury'],['venus','Venus'],['marte','Mars'],['jupiter','Jupiter'],['saturno','Saturn']];
+  for (const [clave, cuerpo] of cuerpos) {
+    posiciones[clave] = Astro.Ecliptic(Astro.GeoVector(Astro.Body[cuerpo], date, true)).elon;
+  }
+
+  let ascLon = null;
+  if (conHora && lat != null && lon != null) {
+    const gast = Astro.SiderealTime(date);
+    const ramc = (((gast * 15) + lon + 360) % 360) * Math.PI / 180;
+    const eps = 23.44 * Math.PI / 180;
+    const phi = lat * Math.PI / 180;
+    const y = Math.cos(ramc);
+    const x = -(Math.sin(ramc) * Math.cos(eps) + Math.tan(phi) * Math.sin(eps));
+    ascLon = ((Math.atan2(y, x) * 180 / Math.PI) % 360 + 360) % 360;
+  }
+
+  const casaDe = (l) => Math.floor((((l - ascLon) % 360) + 360) % 360 / 30) + 1;
+  const carta = {};
+  for (const clave of Object.keys(posiciones)) {
+    carta[clave] = signoGradoCN(posiciones[clave]) + (ascLon != null ? ` (Casa ${casaDe(posiciones[clave])})` : '');
+  }
+  if (ascLon != null) carta.ascendente = signoGradoCN(ascLon);
+  return carta;
+}
 // Año actual dinámico — cambia solo cada año (2026, 2027, 2028...)
 const ANIO = new Date().getFullYear();
 
@@ -990,8 +1035,8 @@ Tono: profesional, directo e informativo. Sin metáforas poéticas, sin frases t
       const dhRes = await fetch("/api/diseno-humano",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({fecha:lcForm.fecha,hora:lcForm.hora,ciudad:lcForm.ciudad})});
       const dhData = await dhRes.json();
       if (dhData.diseno) dh = dhData.diseno;
-      if (dhData.cartaNatal) ct = dhData.cartaNatal;
-   } catch { dh = null; ct = null; }
+      try { ct = calcularCartaNatal(lcForm.fecha, lcForm.hora, dhData.timezone || '-04:00', dhData.lat, dhData.lon); } catch { ct = null; }
+    } catch { dh = null; try { ct = calcularCartaNatal(lcForm.fecha, lcForm.hora, '-04:00', null, null); } catch { ct = null; } }
     
     for (let i=0;i<LOADING_STEPS_COSMICA.length;i++) { await new Promise(r=>setTimeout(r,900)); setLcLoadStep(i+1); }
 
