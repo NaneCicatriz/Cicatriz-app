@@ -816,7 +816,7 @@ function Gate({ producto, emoji, titulo, precio, precioAntes, subtitulo, linkCom
 
 // ── REPORT VIEWER ────────────────────────────────────────────────
 function ReportView({ nombre, fecha, ciudad, hora, lp, exp, py, sections, onReset, glyph }) {
-  const intros = {};
+  const intros = buildMiniIntros(sections);
   return (
     <>
       <div className="report-hdr">
