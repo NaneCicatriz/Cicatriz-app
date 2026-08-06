@@ -687,8 +687,33 @@ function parseSections(text) {
   return sections;
 }
 const buildMiniIntros = (sections) => {
-  return {};
+  const INTROS = {
+    "PERFIL NUMEROLÓGICO":
+      "Empezamos por lo más antiguo que tienes: tus números. Estaban ahí antes de que supieras leer.",
+    "CARTA NATAL COMPLETA":
+      "Ahora subimos la mirada. Esto es lo que el cielo estaba haciendo mientras tú nacías — y nadie más tiene esta configuración.",
+    "EL AÑO EN SÍNTESIS":
+      "Volvamos al presente. El cielo de hoy no es el de tu nacimiento, y ese contraste es justo lo que vamos a leer aquí.",
+    "LECTURA DE LAS 12 CASAS":
+      "Todo lo anterior ocurre en algún lugar de tu vida. Aquí vemos en cuál: dónde se está jugando la partida este año.",
+    "EL MENSAJE DEL I CHING":
+      "Cambiamos de idioma, no de mensaje. Este oráculo habla en los mismos 64 símbolos que tu Diseño Humano — escucha cómo lo dice a su manera.",
+    "TAROT":
+      "Tres cartas te estaban esperando. Dos llegaron contigo; la tercera es solo de este año.",
+    "LENORMAND Y TAROT":
+      "Tres cartas te estaban esperando. Dos llegaron contigo; la tercera es solo de este año.",
+    "DISEÑO HUMANO":
+      "Aquí está el corazón de tu Mapa. Cómo decides, cómo se mueve tu energía, cómo funcionas cuando nadie te está corrigiendo.",
+    "INTEGRACIÓN CÓSMICA":
+      "Hasta aquí, siete voces distintas. Ahora escucha lo que pasa cuando hablan juntas: dicen lo mismo.",
+    "PROPÓSITO Y MISIÓN DE VIDA":
+      "Si todo tu Mapa se pudiera decir en una sola dirección, sería esta.",
+    "GUÍA DE ACCIÓN":
+      "El mapa ya está completo. Esto último es para caminarlo: paso a paso, trimestre a trimestre.",
+  };
+  return INTROS;
 };
+
 // ── ICONOS SVG ───────────────────────────────────────────────────
 const SVG = {
   home: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 4l9 8v8a1 1 0 01-1 1h-5v-5H9v5H4a1 1 0 01-1-1v-8z" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinejoin="round"/></svg>,
