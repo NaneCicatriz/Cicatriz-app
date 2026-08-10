@@ -26,6 +26,9 @@ export default async function handler(req, res) {
     const texto = message.content[0]?.text ?? '';
     res.status(200).json({ lectura: texto });
   } catch (error) {
+    console.error('ERROR COMPLETO lectura-cosmica:', JSON.stringify(error, null, 2));
+    console.error('Error status:', error.status);
+    console.error('Error response:', error.response?.data || error.error);
     res.status(200).json({ lectura: '', error: error.message });
   }
 }
