@@ -881,6 +881,7 @@ function ReportView({ nombre, fecha, ciudad, hora, lp, exp, py, sections, onRese
 // ═══════════════════════════════════════════════════════════════
 export default function Cicatriz() {
   const [tab, setTab] = useState("home");
+  const [homeView, setHomeView] = useState("paths");
   const [breathCount, setBreathCount] = useState(0);
   const [accesos, setAccesos] = useState(() => {
     try { return JSON.parse(localStorage.getItem("cicatriz_accesos") || "{}"); }
@@ -1157,42 +1158,77 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
       <div className="app">
 
         {/* ════ HOME ════ */}
-        {tab==="home" && (
-          <div className="z1 pb80">
-            <div className="home-hero">
-              <div className="home-eyebrow">· · · CICATRIZ 777 · · ·</div>
-              <h1 className="home-title">Llevas tiempo<br/>funcionando.<br/>Ya es hora de<br/>entenderte.</h1>
-              <div className="home-sub">Lecturas y herramientas para mujeres<br/>que saben que algo tiene que cambiar.</div>
-            </div>
-
-              <div style={{padding:"16px 16px 0"}}>
-              <CardTuMapa
-  onMapa={()=>setTab("cosmica")}
-  onAno={()=>setTab("cosmico")}
-  onRuido={()=>{setTab("programa");setProgView("home");}}
-  onOraculo={()=>{setTab("oraculo");setOrPhase("home");}}
-  onCombo={()=>window.open(LINKS.combo,"_blank")}
-/>
-              <div className="hl" style={{marginTop:16}}>
-                <p>"Cicatriz nació porque la vida no me esperó. Tuve que seguir caminando mientras estaba rota por dentro — y para eso necesité herramientas reales. Las busqué, las creé, las fusioné. Eso es lo que hoy te ofrezco."</p>
-              </div>
-                <div
-                onClick={()=>setTab("luca")}
-                style={{
-                  marginTop:16, cursor:"pointer", textAlign:"center",
-                  border:"1px solid rgba(212,175,112,0.3)", borderRadius:10,
-                  padding:"20px 16px", background:"rgba(212,175,112,0.04)"
-                }}
-              >
-                <div style={{color:"#D4AF70", fontSize:13, fontWeight:500, marginBottom:6}}>para tu hijo</div>
-                <div style={{color:"#F5ECD7", opacity:0.7, fontSize:13}}>
-                  Lo que Luca sentía por dentro — conoce el libro →
-                </div>
-              </div>
-            </div>
-            <div className="home-by">by Nane · Antofagasta, Chile · {ANIO}</div>
+{tab==="home" && (
+  <div className="z1 pb80">
+    {homeView==="paths" ? (
+      <>
+        <div className="home-hero" style={{padding:"48px 20px 32px"}}>
+          <div className="home-eyebrow">· · CICATRIZ 777 · ·</div>
+          <div style={{color:"#F5ECD7", fontSize:20, lineHeight:1.5, maxWidth:420, margin:"0 auto 12px", fontWeight:500}}>
+            no eres el problema. eres el diseño que nadie te explicó.
           </div>
-        )}
+        </div>
+        <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, padding:"0 16px 24px"}}>
+          <div
+            onClick={()=>setHomeView("tumapa")}
+            style={{
+              border:"1px solid rgba(212,175,112,0.3)", borderRadius:10,
+              padding:"24px 16px", textAlign:"center", cursor:"pointer",
+              background:"rgba(212,175,112,0.02)"
+            }}
+          >
+            <div style={{color:"#D4AF70", fontSize:15, fontWeight:500, marginBottom:8}}>para ti</div>
+            <div style={{color:"#F5ECD7", opacity:0.6, fontSize:12, marginBottom:16, lineHeight:1.5}}>
+              Cuatro herramientas para el duelo, la transformación y la pregunta de quién eres ahora — simples, para cuando sola no alcanza.
+            </div>
+            <div style={{border:"1px solid rgba(212,175,112,0.5)", borderRadius:6, padding:"8px 0", color:"#D4AF70", fontSize:12}}>entrar →</div>
+          </div>
+          <div
+            onClick={()=>setTab("luca")}
+            style={{
+              border:"1px solid rgba(212,175,112,0.3)", borderRadius:10,
+              padding:"24px 16px", textAlign:"center", cursor:"pointer",
+              background:"rgba(212,175,112,0.02)"
+            }}
+          >
+            <div style={{color:"#D4AF70", fontSize:15, fontWeight:500, marginBottom:8}}>para tu hijo</div>
+            <div style={{color:"#F5ECD7", opacity:0.6, fontSize:12, marginBottom:16, lineHeight:1.5}}>
+              Para niños que sienten mucho y no saben cómo decirlo. Luca, 11 años, y su perro Bruno les ponen nombre a esas emociones.
+            </div>
+            <div style={{border:"1px solid rgba(212,175,112,0.5)", borderRadius:6, padding:"8px 0", color:"#D4AF70", fontSize:12}}>conocer a luca →</div>
+          </div>
+        </div>
+        <div className="home-by">by Nane · Antofagasta, Chile · {ANIO}</div>
+      </>
+    ) : (
+      <>
+        <div className="home-hero">
+          <button
+            onClick={()=>setHomeView("paths")}
+            style={{background:"transparent", border:"none", color:"rgba(212,175,112,0.6)", fontSize:13, cursor:"pointer", marginBottom:16}}
+          >‹ volver</button>
+          <div className="home-eyebrow">· · CICATRIZ 777 · ·</div>
+          <h1 className="home-title">Llevas tiempo<br/>funcionando.<br/>Ya es hora de<br/>entenderte.</h1>
+          <div className="home-sub">Lecturas y herramientas para mujeres<br/>que saben que algo tiene que cambiar.</div>
+        </div>
+
+        <div style={{padding:"16px 16px 0"}}>
+          <CardTuMapa
+            onMapa={()=>setTab("cosmica")}
+            onAno={()=>setTab("cosmico")}
+            onRuido={()=>{setTab("programa");setProgView("home");}}
+            onOraculo={()=>{setTab("oraculo");setOrPhase("home");}}
+            onCombo={()=>window.open(LINKS.combo,"_blank")}
+          />
+          <div className="hl" style={{marginTop:16}}>
+            <p>"Cicatriz nació porque la vida no me esperó. Tuve que seguir caminando mientras estaba rota por dentro — y para eso necesité herramientas reales. Las busqué, las creé, las fusioné. Eso es lo que hoy te ofrezco."</p>
+          </div>
+        </div>
+        <div className="home-by">by Nane · Antofagasta, Chile · {ANIO}</div>
+      </>
+    )}
+  </div>
+)}
         {/* ════ LUCA ════ */}
         {tab==="luca" && (
           <PaginaLuca onVolver={()=>setTab("home")} />
