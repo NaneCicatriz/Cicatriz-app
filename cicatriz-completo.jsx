@@ -1676,7 +1676,10 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
     </div>
   ))}
 </div>
-/* 
+</div>
+    </>
+  );
+}/* 
   =========================================================
    CARD DESTACADA — TU MAPA  (Cicatriz)
    Pegar al FINAL de cicatriz-completo.jsx.
