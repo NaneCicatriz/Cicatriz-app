@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import * as Astro from 'astronomy-engine';
+import PaginaLuca from "./PaginaLuca";
 // ===== CARTA NATAL — cálculo astronómico real (astronomy-engine) =====
 const SIGNOS_CN = ['Aries','Tauro','Géminis','Cáncer','Leo','Virgo','Libra','Escorpio','Sagitario','Capricornio','Acuario','Piscis'];
 
@@ -1175,11 +1176,27 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
               <div className="hl" style={{marginTop:16}}>
                 <p>"Cicatriz nació porque la vida no me esperó. Tuve que seguir caminando mientras estaba rota por dentro — y para eso necesité herramientas reales. Las busqué, las creé, las fusioné. Eso es lo que hoy te ofrezco."</p>
               </div>
+                <div
+                onClick={()=>setTab("luca")}
+                style={{
+                  marginTop:16, cursor:"pointer", textAlign:"center",
+                  border:"1px solid rgba(212,175,112,0.3)", borderRadius:10,
+                  padding:"20px 16px", background:"rgba(212,175,112,0.04)"
+                }}
+              >
+                <div style={{color:"#D4AF70", fontSize:13, fontWeight:500, marginBottom:6}}>para tu hijo</div>
+                <div style={{color:"#F5ECD7", opacity:0.7, fontSize:13}}>
+                  Lo que Luca sentía por dentro — conoce el libro →
+                </div>
+              </div>
             </div>
             <div className="home-by">by Nane · Antofagasta, Chile · {ANIO}</div>
           </div>
         )}
-
+        {/* ════ LUCA ════ */}
+        {tab==="luca" && (
+          <PaginaLuca onVolver={()=>setTab("home")} />
+        )}
         {/* ════ AÑO CÓSMICO ════ */}
         {tab==="cosmico" && (
           <div className="z1 pb80">
