@@ -1165,7 +1165,7 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
         <div className="home-hero" style={{padding:"48px 20px 32px"}}>
           <div className="home-eyebrow">· · CICATRIZ 777 · ·</div>
           <div style={{color:"#F5ECD7", fontSize:20, lineHeight:1.5, maxWidth:420, margin:"0 auto 12px", fontWeight:500}}>
-            no eres el problema. eres el diseño que nadie te explicó.
+            No eres el problema. Eres el diseño que nadie te explicó.
           </div>
         </div>
         <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, padding:"0 16px 24px"}}>
@@ -1661,26 +1661,21 @@ Tono del informe: profesional, directo e informativo. Como un informe técnico e
         )}
 
         {/* ════ BOTTOM NAV ════ */}
-        <div className="bnav">
-          {[
-            {id:"home",icon:SVG.home,lbl:"Inicio"},
-            {id:"cosmico",icon:SVG.cosmico,lbl:"Cósmico"},
-            {id:"cosmica",icon:SVG.cosmica,lbl:"Tu Mapa"},
-            {id:"oraculo",icon:SVG.oraculo,lbl:"Oráculo"},
-            {id:"programa",icon:SVG.programa,lbl:"21 Días"},
-          ].map(n=>(
-            <div key={n.id} className={`bni${tab===n.id?" on":""}`} onClick={()=>setTab(n.id)}>
-              <span className="bni-icon">{n.icon}</span>
-              <span className="bni-label">{n.lbl}</span>
-            </div>
-          ))}
-        </div>
-
-      </div>
-    </>
-  );
-}
-
+<div className="bnav">
+  {[
+    {id:"home",icon:SVG.home,lbl:"Inicio"},
+    {id:"cosmico",icon:SVG.cosmico,lbl:"Cósmico"},
+    {id:"cosmica",icon:SVG.cosmica,lbl:"Tu Mapa"},
+    {id:"oraculo",icon:SVG.oraculo,lbl:"Oráculo"},
+    {id:"programa",icon:SVG.programa,lbl:"21 Días"},
+    {id:"luca",icon:"📖",lbl:"Luca"},
+  ].map(n=>(
+    <div key={n.id} className={`bni${tab===n.id?" on":""}`} onClick={()=>setTab(n.id)}>
+      <span className="bni-icon">{n.icon}</span>
+      <span className="bni-label">{n.lbl}</span>
+    </div>
+  ))}
+</div>
 /* =========================================================
    CARD DESTACADA — TU MAPA  (Cicatriz)
    Pegar al FINAL de cicatriz-completo.jsx.
